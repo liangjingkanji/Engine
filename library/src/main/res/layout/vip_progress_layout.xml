@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2018,巨神科技有限公司 All rights reserved.
+  ~ Project：Base
+  ~ Author：两津勘吉
+  ~ Date：12/31/18 2:34 AM
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/vip_ll"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="20dp"
+            android:layout_height="10dp"
+            android:background="@drawable/vip_progress_bg"
+            android:gravity="center"
+            android:text="200"
+            android:textColor="#FEA043"
+            android:textSize="8sp"
+            tools:ignore="HardcodedText,SmallSp" />
+
+        <FrameLayout
+            android:layout_width="1dp"
+            android:layout_height="7dp"
+            android:layout_gravity="center_horizontal"
+            android:background="#FDE8BE" />
+    </LinearLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_height="4dp"
+        android:max="100"
+        android:progressDrawable="@drawable/progress_bar_drawable" />
+</LinearLayout>

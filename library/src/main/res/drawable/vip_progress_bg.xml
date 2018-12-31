@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2018,巨神科技有限公司 All rights reserved.
+  ~ Project：Base
+  ~ Author：两津勘吉
+  ~ Date：12/31/18 2:34 AM
+  -->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="2dp" />
+    <solid android:color="#FDE8BE" />
+</shape>

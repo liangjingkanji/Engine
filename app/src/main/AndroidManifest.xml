@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2018,巨神科技有限公司 All rights reserved.
+  ~ Project：Base
+  ~ Author：两津勘吉
+  ~ Date：12/31/18 12:59 AM
+  -->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.liangjingkanji.base">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
