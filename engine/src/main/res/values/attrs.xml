@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (C) 2018, Umbrella CompanyLimited All rights reserved.
+  ~ Project：Base
+  ~ Author：Drake
+  ~ Date：9/11/19 7:25 PM
+  -->
+
+<resources>
+
+    <!--SmoothCheckBox-->
+    <declare-styleable name="SmoothCheckBox">
+        <attr name="duration" format="integer" />
+        <attr name="stroke_width" format="dimension" />
+        <attr name="color_tick" format="color" />
+        <attr name="color_checked" format="color" />
+        <attr name="color_unchecked" format="color" />
+        <attr name="color_unchecked_stroke" format="color" />
+    </declare-styleable>
+
+
+    <!--链接文本-->
+    <declare-styleable name="LinkTextView">
+        <attr name="qmui_linkBackgroundColor" format="color" />
+        <attr name="qmui_linkTextColor" format="color" />
+    </declare-styleable>
+
+
+    <!--下拉刷新上拉加载布局-->
+    <declare-styleable name="PageRefreshLayout">
+        <attr name="empty_layout" />
+        <attr name="error_layout" />
+    </declare-styleable>
+
+
+    <!--密码框-->
+    <declare-styleable name="gridPasswordView">
+        <attr name="gpvTextColor" format="color|reference" />
+        <attr name="gpvTextSize" format="dimension" />
+        <attr name="gpvLineColor" format="color" />
+        <attr name="gpvGridColor" format="color" />
+        <attr name="gpvLineWidth" format="dimension" />
+        <attr name="gpvPasswordLength" format="integer" />
+        <attr name="gpvPasswordTransformation" format="string" />
+        <attr name="gpvPasswordType" format="enum">
+            <enum name="numberPassword" value="0" />
+            <enum name="textPassword" value="1" />
+            <enum name="textVisiblePassword" value="2" />
+            <enum name="textWebPassword" value="3" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="TabLayout">
+        <attr name="tabIndicatorColor" format="color" />
+        <attr name="tabIndicatorHeight" format="dimension" />
+        <attr name="tabContentStart" format="dimension" />
+        <attr name="tabBackground" format="reference" />
+        <attr name="tabMode">
+            <enum name="scrollable" value="0" />
+            <enum name="fixed" value="1" />
+        </attr>
+        <attr name="tabGravity">
+            <enum name="fill" value="0" />
+            <enum name="center" value="1" />
+        </attr>
+        <attr name="tabMinWidth" format="dimension" />
+        <attr name="tabMaxWidth" format="dimension" />
+        <attr name="tabTextAppearance" format="reference" />
+        <attr name="tabTextColor" format="color" />
+        <attr name="tabSelectedTextColor" format="color" />
+        <attr name="tabPaddingStart" format="dimension" />
+        <attr name="tabPaddingTop" format="dimension" />
+        <attr name="tabPaddingEnd" format="dimension" />
+        <attr name="tabPaddingBottom" format="dimension" />
+        <attr name="tabPadding" format="dimension" />
+
+        <!--底部分隔栏的颜色-->
+        <attr name="bottomLineColor" format="color" />
+        <!--竖直分隔线的颜色-->
+        <attr name="dividerColor" format="color" />
+        <!--底部分隔栏的高度-->
+        <attr name="bottomLineHeight" format="dimension" />
+        <!--竖直分隔线的宽与高-->
+        <attr name="dividerWidth" format="dimension" />、
+        <attr name="dividerHeight" format="dimension" />
+        <attr name="bottomLineMode">
+            <!--不显示底部分割栏-->
+            <enum name="none" value="0" />
+            <!--显示在滑动栏外面-->
+            <enum name="outer" value="1" />
+            <!--显示在滑动栏里面-->
+            <enum name="inner" value="2" />
+        </attr>
+        <!--下划线的宽度-->
+        <attr name="tabLineOffset" format="dimension" />
+    </declare-styleable>
+
+    <!--SlideCard-->
+    <declare-styleable name="card">
+        <attr name="itemMarginTop" format="dimension" />
+        <attr name="bottomMarginTop" format="dimension" />
+        <attr name="yOffsetStep" format="dimension" />
+        <attr name="widthHeightRate" format="float" />
+    </declare-styleable>
+
+
+    <declare-styleable name="RectangleImageView">
+        <!-- 比例=宽/高 -->
+        <attr name="ratio" format="float" />
+    </declare-styleable>
+
+
+    <declare-styleable name="ScrollPickerView">
+        <!--行数-->
+        <attr name="scrollpicker_rows" />
+        <!--行间距-->
+        <attr name="scrollpicker_spacing" />
+        <!--字体大小-->
+        <attr name="scrollpicker_textSize" />
+        <!--字体格式，宽度为wrap_content时用于计算宽度-->
+        <attr name="scrollpicker_textFormat" />
+        <!--字体放大倍数-->
+        <attr name="scrollpicker_textRatio" />
+        <!--选中时字体颜色-->
+        <attr name="scrollpicker_textColor_center" />
+        <!--未选中时字体颜色-->
+        <attr name="scrollpicker_textColor_outside" />
+        <!--文本对齐方式（左、中、右）-->
+        <attr name="scrollpicker_gravity" />
+        <!--是否开启循环-->
+        <attr name="scrollpicker_loop" />
+
+    </declare-styleable>
+
+    <declare-styleable name="RoundImageView">
+        <!--圆角大小-->
+        <attr name="image_radius" format="dimension" />
+        <!--阴影大小-->
+        <attr name="image_shadow_radius" format="dimension" />
+        <!--是否圆形-->
+        <attr name="image_circle" format="boolean" />
+        <!--是否阴影-->
+        <attr name="image_shadow" format="boolean" />
+        <!--阴影颜色-->
+        <attr name="shadow_color" format="integer" />
+    </declare-styleable>
+
+</resources>

@@ -5,4 +5,4 @@
  * Date：12/31/18 1:06 AM
  */
 
-include ':app', ':library'
+include ':sample', ':engine'

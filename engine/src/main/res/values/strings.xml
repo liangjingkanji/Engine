@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2018, Umbrella CompanyLimited All rights reserved.
+  ~ Project：Base
+  ~ Author：Drake
+  ~ Date：9/11/19 7:25 PM
+  -->
+
+<resources>
+    <string name="left_text">左边文字</string>
+    <string name="right_text">右边文字</string>
+    <string name="last_text">最后文字</string>
+</resources>
