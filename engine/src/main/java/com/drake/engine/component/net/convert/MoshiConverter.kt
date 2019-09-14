@@ -1,26 +1,26 @@
 /*
  * Copyright (C) 2018, Umbrella CompanyLimited All rights reserved.
- * Project：Base
+ * Project：Engine
  * Author：Drake
  * Date：9/11/19 7:25 PM
  */
 
 package com.drake.engine.component.net.convert
 
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonSyntaxException
+import com.squareup.moshi.Moshi
 import com.yanzhenjie.kalle.Response
 import com.yanzhenjie.kalle.simple.Converter
 import com.yanzhenjie.kalle.simple.SimpleResponse
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.IOException
 import java.lang.reflect.Type
 
 /**
- * 网络请求GSON转换器
+ * 网络请求Moshi转换器
  */
 @Suppress("UNCHECKED_CAST")
-class GsonConverter(var successCode: Int = 1, var onResponse: (Response.() -> String)? = null) :
+class MoshiConverter(var successCode: Int = 1, var onResponse: (Response.() -> String)? = null) :
     Converter {
 
 
@@ -53,8 +53,8 @@ class GsonConverter(var successCode: Int = 1, var onResponse: (Response.() -> St
                                 succeedData = json as S
                             } else {
                                 try {
-                                    succeedData = GSON.fromJson<S>(json, succeed)
-                                } catch (e: JsonSyntaxException) {
+                                    succeedData = MOSHI.adapter<S>(succeed).fromJson(json)
+                                } catch (e: IOException) {
                                     e.printStackTrace()
                                     failedData = "无法解析数据" as F
                                 }
@@ -84,6 +84,6 @@ class GsonConverter(var successCode: Int = 1, var onResponse: (Response.() -> St
 
     companion object {
 
-        private val GSON = GsonBuilder().serializeNulls().create()
+        private val MOSHI = Moshi.Builder().build()
     }
 }
