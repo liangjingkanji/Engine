@@ -17,7 +17,7 @@ import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import com.drake.engine.base.Library
+import com.drake.engine.base.Engine
 import com.drake.engine.base.getApp
 import com.drake.statusbar.getNavigationBarHeight
 import com.drake.statusbar.getStatusBarHeight
@@ -204,7 +204,7 @@ class KeyBoardUtils private constructor() {
             if (context == null) {
                 return
             }
-            val imm = Library.app!!
+            val imm = Engine.app!!
                 .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
             val strArr = arrayOf("mCurRootView", "mServedView", "mNextServedView")

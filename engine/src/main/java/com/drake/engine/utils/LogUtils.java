@@ -17,7 +17,7 @@ import android.util.Log;
 import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
 
-import com.drake.engine.base.Library;
+import com.drake.engine.base.Engine;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -518,9 +518,9 @@ public final class LogUtils {
     String versionName = "";
     int versionCode = 0;
     try {
-      PackageInfo pi = Library.INSTANCE.getApp()
+        PackageInfo pi = Engine.INSTANCE.getApp()
               .getPackageManager()
-              .getPackageInfo(Library.INSTANCE.getApp()
+                .getPackageInfo(Engine.INSTANCE.getApp()
                       .getPackageName(), 0);
       if (pi != null) {
         versionName = pi.versionName;
@@ -622,12 +622,12 @@ public final class LogUtils {
         return;
       }
       if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-              && Library.INSTANCE.getApp()
+              && Engine.INSTANCE.getApp()
               .getExternalCacheDir() != null) {
-        mDefaultDir = Library.INSTANCE.getApp()
+          mDefaultDir = Engine.INSTANCE.getApp()
                 .getExternalCacheDir() + FILE_SEP + "log" + FILE_SEP;
       } else {
-        mDefaultDir = Library.INSTANCE.getApp()
+          mDefaultDir = Engine.INSTANCE.getApp()
                 .getCacheDir() + FILE_SEP + "log" + FILE_SEP;
       }
     }

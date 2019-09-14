@@ -17,7 +17,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.drake.engine.base.Library;
+import com.drake.engine.base.Engine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +33,7 @@ public class BasePagerAdapter extends PagerAdapter {
    */
   public BasePagerAdapter(Integer[] layoutIds) {
     for (Integer layoutId : layoutIds) {
-      ViewDataBinding viewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(Library.INSTANCE.getApp()), layoutId, null, false);
+        ViewDataBinding viewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(Engine.INSTANCE.getApp()), layoutId, null, false);
       viewDataBindings.add(viewDataBinding);
     }
   }
@@ -47,7 +47,7 @@ public class BasePagerAdapter extends PagerAdapter {
   public BasePagerAdapter(String[] titles, Integer[] layoutIds) {
     this.titles.addAll(Arrays.asList(titles));
     for (Integer layoutId : layoutIds) {
-      ViewDataBinding viewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(Library.INSTANCE.getApp()), layoutId, null, false);
+        ViewDataBinding viewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(Engine.INSTANCE.getApp()), layoutId, null, false);
       viewDataBindings.add(viewDataBinding);
     }
   }
@@ -95,13 +95,13 @@ public class BasePagerAdapter extends PagerAdapter {
    * 通过布局创建并且返回ViewDataBinding
    */
   public <B extends ViewDataBinding> B add(int layoutId) {
-    ViewDataBinding viewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(Library.INSTANCE.getApp()), layoutId, null, false);
+      ViewDataBinding viewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(Engine.INSTANCE.getApp()), layoutId, null, false);
     viewDataBindings.add(viewDataBinding);
     return (B) viewDataBinding;
   }
 
   public <B extends ViewDataBinding> B add(int layoutId, String title) {
-    ViewDataBinding viewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(Library.INSTANCE.getApp()), layoutId, null, false);
+      ViewDataBinding viewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(Engine.INSTANCE.getApp()), layoutId, null, false);
     viewDataBindings.add(viewDataBinding);
     titles.add(title);
     return (B) viewDataBinding;

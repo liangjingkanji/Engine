@@ -7,6 +7,8 @@
 
 package com.drake.engine.component.net.observer
 
+import android.app.Dialog
+import android.app.ProgressDialog
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -85,7 +87,20 @@ fun <M> Observable<M>.dialog(
     cancelable: Boolean = true,
     block: (DialogObserver<M>.(M) -> Unit)? = null
 ) {
-    subscribe(object : DialogObserver<M>(activity, cancelable) {
+    subscribe(object : DialogObserver<M>(activity, cancelable = cancelable) {
+        override fun onNext(t: M) {
+            block?.invoke(this, t)
+        }
+    })
+}
+
+fun <M> Observable<M>.dialog(
+    activity: FragmentActivity,
+    dialog: Dialog = ProgressDialog(activity),
+    cancelable: Boolean = true,
+    block: (DialogObserver<M>.(M) -> Unit)? = null
+) {
+    subscribe(object : DialogObserver<M>(activity, dialog, cancelable) {
         override fun onNext(t: M) {
             block?.invoke(this, t)
         }

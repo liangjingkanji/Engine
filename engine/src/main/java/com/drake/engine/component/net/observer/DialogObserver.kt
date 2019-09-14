@@ -2,13 +2,14 @@
  * Copyright (C) 2018, Umbrella CompanyLimited All rights reserved.
  * Project：Engine
  * Author：Drake
- * Date：9/11/19 7:25 PM
+ * Date：9/14/19 9:43 AM
  */
 
 @file:Suppress("DEPRECATION")
 
 package com.drake.engine.component.net.observer
 
+import android.app.Dialog
 import android.app.ProgressDialog
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle.Event
@@ -26,16 +27,21 @@ import io.reactivex.observers.DefaultObserver
  */
 abstract class DialogObserver<M>(
     var activity: FragmentActivity,
-    private var cancelable: Boolean = true
+    var dialog: Dialog = ProgressDialog(activity),
+    var cancelable: Boolean = true
 ) : DefaultObserver<M>(), LifecycleObserver {
 
-    lateinit var dialog: ProgressDialog
 
     override fun onStart() {
+
         activity.lifecycle.addObserver(this)
-        dialog = ProgressDialog(activity)
+
+
+        if (dialog is ProgressDialog) {
+            (dialog as ProgressDialog).setMessage("加载中")
+        }
+
         dialog.setOnDismissListener { cancel() }
-        dialog.setMessage("加载中")
         dialog.setCancelable(cancelable)
         dialog.show()
     }

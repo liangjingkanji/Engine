@@ -8,9 +8,9 @@
 package com.drake.engine.base
 
 import android.app.Application
-import com.drake.engine.base.Library.app
+import com.drake.engine.base.Engine.app
 
-object Library {
+object Engine {
     var app: Application? = null
 }
 

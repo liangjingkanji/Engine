@@ -17,7 +17,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
 
-import com.drake.engine.base.Library;
+import com.drake.engine.base.Engine;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -60,9 +60,9 @@ public final class CrashUtils {
 
   static {
     try {
-      PackageInfo pi = Library.INSTANCE.getApp()
+        PackageInfo pi = Engine.INSTANCE.getApp()
               .getPackageManager()
-              .getPackageInfo(Library.INSTANCE.getApp()
+                .getPackageInfo(Engine.INSTANCE.getApp()
                       .getPackageName(), 0);
       if (pi != null) {
         versionName = pi.versionName;
@@ -202,12 +202,12 @@ public final class CrashUtils {
       dir = crashDirPath.endsWith(FILE_SEP) ? crashDirPath : crashDirPath + FILE_SEP;
     }
     if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-            && Library.INSTANCE.getApp()
+            && Engine.INSTANCE.getApp()
             .getExternalCacheDir() != null) {
-      defaultDir = Library.INSTANCE.getApp()
+        defaultDir = Engine.INSTANCE.getApp()
               .getExternalCacheDir() + FILE_SEP + "crash" + FILE_SEP;
     } else {
-      defaultDir = Library.INSTANCE.getApp()
+        defaultDir = Engine.INSTANCE.getApp()
               .getCacheDir() + FILE_SEP + "crash" + FILE_SEP;
     }
     sOnCrashListener = onCrashListener;

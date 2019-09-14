@@ -2,21 +2,22 @@
  * Copyright (C) 2018, Umbrella CompanyLimited All rights reserved.
  * Project：Engine
  * Author：Drake
- * Date：9/13/19 4:20 PM
+ * Date：9/14/19 10:43 AM
  */
 
 package com.drake.engine.base
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.FragmentActivity
 import com.drake.engine.component.databinding.inflate
 
-abstract class DevDialog<B : ViewDataBinding>(context: Context) : Dialog(context), OnClickListener {
+abstract class DevDialog<B : ViewDataBinding>(var activity: FragmentActivity) : Dialog(activity),
+    OnClickListener {
 
     lateinit var binding: B
 

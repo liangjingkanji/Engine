@@ -20,7 +20,7 @@ import android.os.Process;
 import androidx.annotation.NonNull;
 import androidx.collection.SimpleArrayMap;
 
-import com.drake.engine.base.Library;
+import com.drake.engine.base.Engine;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -114,7 +114,7 @@ public final class CacheUtils {
     if (isSpace(cacheName)) {
       cacheName = "cacheUtils";
     }
-    File file = new File(Library.INSTANCE.getApp()
+      File file = new File(Engine.INSTANCE.getApp()
             .getCacheDir(), cacheName);
     return getInstance(file, maxSize, maxCount);
   }
@@ -888,7 +888,7 @@ public final class CacheUtils {
     private static Drawable bitmap2Drawable(final Bitmap bitmap) {
       return bitmap == null
               ? null
-              : new BitmapDrawable(Library.INSTANCE.getApp()
+              : new BitmapDrawable(Engine.INSTANCE.getApp()
               .getResources(), bitmap);
     }
   }

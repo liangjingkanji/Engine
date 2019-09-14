@@ -22,7 +22,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
 
-import com.drake.engine.base.Library;
+import com.drake.engine.base.Engine;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,7 +48,7 @@ public final class ProcessUtils {
    */
   public static String getForegroundProcessName() {
     ActivityManager am =
-            (ActivityManager) Library.INSTANCE.getApp()
+            (ActivityManager) Engine.INSTANCE.getApp()
                     .getSystemService(Context.ACTIVITY_SERVICE);
     if (am == null) {
       return null;
@@ -63,7 +63,7 @@ public final class ProcessUtils {
       }
     }
     if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.LOLLIPOP) {
-      PackageManager pm = Library.INSTANCE.getApp()
+        PackageManager pm = Engine.INSTANCE.getApp()
               .getPackageManager();
       Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
       List<ResolveInfo> list =
@@ -76,17 +76,17 @@ public final class ProcessUtils {
       }
       try {// Access to usage information.
         ApplicationInfo info =
-                pm.getApplicationInfo(Library.INSTANCE.getApp()
+                pm.getApplicationInfo(Engine.INSTANCE.getApp()
                         .getPackageName(), 0);
         AppOpsManager aom =
-                (AppOpsManager) Library.INSTANCE.getApp()
+                (AppOpsManager) Engine.INSTANCE.getApp()
                         .getSystemService(Context.APP_OPS_SERVICE);
         if (aom != null) {
           if (aom.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
                   info.uid,
                   info.packageName) != AppOpsManager.MODE_ALLOWED) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            Library.INSTANCE.getApp()
+              Engine.INSTANCE.getApp()
                     .startActivity(intent);
           }
           if (aom.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
@@ -97,7 +97,7 @@ public final class ProcessUtils {
             return null;
           }
         }
-        UsageStatsManager usageStatsManager = (UsageStatsManager) Library.INSTANCE.getApp()
+          UsageStatsManager usageStatsManager = (UsageStatsManager) Engine.INSTANCE.getApp()
                 .getSystemService(Context.USAGE_STATS_SERVICE);
         List<UsageStats> usageStatsList = null;
         if (usageStatsManager != null) {
@@ -135,7 +135,7 @@ public final class ProcessUtils {
   @RequiresPermission(KILL_BACKGROUND_PROCESSES)
   public static Set<String> getAllBackgroundProcesses() {
     ActivityManager am =
-            (ActivityManager) Library.INSTANCE.getApp()
+            (ActivityManager) Engine.INSTANCE.getApp()
                     .getSystemService(Context.ACTIVITY_SERVICE);
     if (am == null) {
       return Collections.emptySet();
@@ -160,7 +160,7 @@ public final class ProcessUtils {
   @RequiresPermission(KILL_BACKGROUND_PROCESSES)
   public static Set<String> killAllBackgroundProcesses() {
     ActivityManager am =
-            (ActivityManager) Library.INSTANCE.getApp()
+            (ActivityManager) Engine.INSTANCE.getApp()
                     .getSystemService(Context.ACTIVITY_SERVICE);
     if (am == null) {
       return Collections.emptySet();
@@ -193,7 +193,7 @@ public final class ProcessUtils {
   @RequiresPermission(KILL_BACKGROUND_PROCESSES)
   public static boolean killBackgroundProcesses(@NonNull final String packageName) {
     ActivityManager am =
-            (ActivityManager) Library.INSTANCE.getApp()
+            (ActivityManager) Engine.INSTANCE.getApp()
                     .getSystemService(Context.ACTIVITY_SERVICE);
     if (am == null) {
       return false;

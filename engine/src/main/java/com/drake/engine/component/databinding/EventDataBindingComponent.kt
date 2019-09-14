@@ -114,6 +114,7 @@ fun View.setHitView(isPrevent: Boolean) {
     }
 }
 
+
 /**
  * 关闭当前界面
  *

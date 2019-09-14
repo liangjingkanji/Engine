@@ -20,7 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresPermission;
 import androidx.core.content.FileProvider;
 
-import com.drake.engine.base.Library;
+import com.drake.engine.base.Engine;
 
 import java.io.File;
 
@@ -84,7 +84,7 @@ public final class IntentUtils {
       data = Uri.fromFile(file);
     } else {
       intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-      data = FileProvider.getUriForFile(Library.INSTANCE.getApp(), authority, file);
+        data = FileProvider.getUriForFile(Engine.INSTANCE.getApp(), authority, file);
     }
     intent.setDataAndType(data, type);
     return getIntent(intent, isNewTask);
@@ -131,7 +131,7 @@ public final class IntentUtils {
    * @return the intent of launch app
    */
   public static Intent getLaunchAppIntent(final String packageName, final boolean isNewTask) {
-    Intent intent = Library.INSTANCE.getApp().getPackageManager().getLaunchIntentForPackage(packageName);
+      Intent intent = Engine.INSTANCE.getApp().getPackageManager().getLaunchIntentForPackage(packageName);
     if (intent == null) {
       return null;
     }
@@ -520,7 +520,7 @@ public final class IntentUtils {
    * 打开应用市场当前应用的搜索结果页面
    */
   public static void launchMarketSearchResult() {
-    Context app = Library.INSTANCE.getApp();
+      Context app = Engine.INSTANCE.getApp();
     try {
       Intent intent = new Intent(Intent.ACTION_VIEW);
       intent.setData(Uri.parse("market://search?q=" + app.getPackageName()));
@@ -535,7 +535,7 @@ public final class IntentUtils {
    * 打开应用市场当前应用详情页面
    */
   public static void launchMarketDetail() {
-    Context app = Library.INSTANCE.getApp();
+      Context app = Engine.INSTANCE.getApp();
     try {
       Uri uri = Uri.parse("market://details?id=" + app.getPackageName());
       Intent intent = new Intent(Intent.ACTION_VIEW, uri);

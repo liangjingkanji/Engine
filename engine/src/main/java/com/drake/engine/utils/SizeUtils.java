@@ -12,7 +12,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.drake.engine.base.Library;
+import com.drake.engine.base.Engine;
 
 /**
  * <pre>
@@ -35,7 +35,7 @@ public final class SizeUtils {
    * @return value of px
    */
   public static int dp2px(final float dpValue) {
-    final float scale = Library.INSTANCE.getApp()
+      final float scale = Engine.INSTANCE.getApp()
             .getResources()
             .getDisplayMetrics().density;
     return (int) (dpValue * scale + 0.5f);
@@ -48,7 +48,7 @@ public final class SizeUtils {
    * @return value of dp
    */
   public static int px2dp(final float pxValue) {
-    final float scale = Library.INSTANCE.getApp()
+      final float scale = Engine.INSTANCE.getApp()
             .getResources()
             .getDisplayMetrics().density;
     return (int) (pxValue / scale + 0.5f);
@@ -61,7 +61,7 @@ public final class SizeUtils {
    * @return value of px
    */
   public static int sp2px(final float spValue) {
-    final float fontScale = Library.INSTANCE.getApp()
+      final float fontScale = Engine.INSTANCE.getApp()
             .getResources()
             .getDisplayMetrics().scaledDensity;
     return (int) (spValue * fontScale + 0.5f);
@@ -74,7 +74,7 @@ public final class SizeUtils {
    * @return value of sp
    */
   public static int px2sp(final float pxValue) {
-    final float fontScale = Library.INSTANCE.getApp()
+      final float fontScale = Engine.INSTANCE.getApp()
             .getResources()
             .getDisplayMetrics().scaledDensity;
     return (int) (pxValue / fontScale + 0.5f);
@@ -91,7 +91,7 @@ public final class SizeUtils {
    * unit.
    */
   public static float applyDimension(final float value, final int unit) {
-    DisplayMetrics metrics = Library.INSTANCE.getApp()
+      DisplayMetrics metrics = Engine.INSTANCE.getApp()
             .getResources()
             .getDisplayMetrics();
     switch (unit) {
