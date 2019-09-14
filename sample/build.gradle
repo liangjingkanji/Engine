@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
@@ -22,6 +23,10 @@ android {
         }
     }
 
+    dataBinding {
+        enabled = true
+    }
+
 }
 
 dependencies {
@@ -32,6 +37,5 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation project(path: ':engine')
-
 
 }
