@@ -22,7 +22,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.hwangjr.rxbus.RxBus
 
-abstract class DevActivity<B : ViewDataBinding> : AppCompatActivity(), OnClickListener {
+abstract class EngineActivity<B : ViewDataBinding> : AppCompatActivity(), OnClickListener {
 
     lateinit var binding: B
     lateinit var rootView: View

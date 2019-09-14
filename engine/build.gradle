@@ -36,11 +36,6 @@ android {
         enabled = true
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
     lintOptions {
         ignore 'AutoDispose', 'CheckResult', 'UNUSED_ANONYMOUS_PARAMETER'
     }
@@ -54,6 +49,10 @@ android {
         preDexLibraries true
         maxProcessCount 8
         javaMaxHeapSize "4g"
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
 }
 

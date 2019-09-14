@@ -17,7 +17,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentActivity
 import com.drake.engine.component.databinding.inflate
 
-abstract class DevDialog<B : ViewDataBinding>(context: Context) : Dialog(context),
+abstract class EngineDialog<B : ViewDataBinding>(context: Context) : Dialog(context),
     OnClickListener {
 
     lateinit var binding: B

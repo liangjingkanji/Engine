@@ -11,14 +11,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
+import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.DialogFragment
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hwangjr.rxbus.RxBus
 
-abstract class DevDialogFragment<B : ViewDataBinding> : DialogFragment(), OnClickListener {
+abstract class EngineBottomSheetDialogFragment<B : ViewDataBinding> : BottomSheetDialogFragment(),
+    OnClickListener {
 
     lateinit var binding: B
+    lateinit var behavior: BottomSheetBehavior<FrameLayout>
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -27,6 +31,11 @@ abstract class DevDialogFragment<B : ViewDataBinding> : DialogFragment(), OnClic
         if (!RxBus.get().hasRegistered(this)) {
             RxBus.get().register(this)
         }
+
+        val frameLayout =
+            dialog!!.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+        behavior = BottomSheetBehavior.from(frameLayout)
+
         try {
             initView()
             initData()
@@ -40,6 +49,11 @@ abstract class DevDialogFragment<B : ViewDataBinding> : DialogFragment(), OnClic
 
     }
 
+    fun setArgument(bundle: Bundle): EngineBottomSheetDialogFragment<B> {
+        super.setArguments(bundle)
+        return this
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         RxBus.get().unregister(this)
@@ -48,4 +62,5 @@ abstract class DevDialogFragment<B : ViewDataBinding> : DialogFragment(), OnClic
     abstract fun initData()
 
     abstract fun initView()
+
 }

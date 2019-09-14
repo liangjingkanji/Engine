@@ -16,7 +16,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.hwangjr.rxbus.RxBus
 
-abstract class DevFragment<B : ViewDataBinding> : Fragment(), OnClickListener {
+abstract class EngineFragment<B : ViewDataBinding> : Fragment(), OnClickListener {
 
     lateinit var binding: B
     protected var isVisibleToUser: Boolean = false // 是否用户可见
@@ -27,7 +27,7 @@ abstract class DevFragment<B : ViewDataBinding> : Fragment(), OnClickListener {
     override fun onClick(v: View) {
     }
 
-    fun setArgument(bundle: Bundle): DevFragment<B> {
+    fun setArgument(bundle: Bundle): EngineFragment<B> {
         super.setArguments(bundle)
         return this
     }
