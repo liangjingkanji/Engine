@@ -14,7 +14,7 @@ import androidx.databinding.ViewDataBinding
 import com.drake.engine.component.swipeback.SwipeBackHelper
 import org.jetbrains.anko.doFromSdk
 
-abstract class EngineSwipeActivity<B : ViewDataBinding> : DevActivity<B>() {
+abstract class EngineSwipeActivity<B : ViewDataBinding> : EngineActivity<B>() {
 
     private var swipeBackHelper: SwipeBackHelper? = null
 
