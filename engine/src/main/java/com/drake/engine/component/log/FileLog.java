@@ -13,12 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
 
@@ -48,15 +45,6 @@ public class FileLog {
       outputStreamWriter.flush();
       outputStream.close();
       return true;
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-      return false;
-    } catch (UnsupportedEncodingException e) {
-      e.printStackTrace();
-      return false;
-    } catch (IOException e) {
-      e.printStackTrace();
-      return false;
     } catch (Exception e) {
       e.printStackTrace();
       return false;

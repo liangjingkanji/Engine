@@ -18,10 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-/**
- * Author     : shandirong
- * Date       : 2018/11/24 14:27
- */
+
 public class AutoHeightViewPager extends ViewPager {
   private int current;
   private int height = 0;

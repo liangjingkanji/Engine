@@ -1,15 +1,10 @@
-
-
 apply plugin: 'com.android.library'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
-
 apply plugin: 'kotlin-kapt'
 
 apply plugin: 'com.github.dcendents.android-maven'
-group='com.gitlab.liangjingkanji'
+group = 'com.gitlab.liangjingkanji'
 
 
 android {
@@ -69,7 +64,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     api 'androidx.core:core-ktx:1.2.0-alpha04'
-    kapt 'com.github.bumptech.glide:compiler:4.9.0'
     api 'androidx.appcompat:appcompat:1.1.0'
 
     api 'org.jetbrains.anko:anko-commons:0.10.8'
@@ -98,6 +92,7 @@ dependencies {
 
     api 'com.github.bumptech.glide:glide:4.9.0'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
+    kapt 'com.github.bumptech.glide:compiler:4.9.0'
     api 'jp.wasabeef:glide-transformations:3.0.1'
     api 'com.yanzhenjie:permission:2.0.0-rc10'
     api 'com.yanzhenjie:okalle:0.1.7'
@@ -108,7 +103,6 @@ dependencies {
     api 'com.github.liangjingkanji:BRV:1.0.3'
     api 'com.github.liangjingkanji:StatusBar:1.0.2'
     api 'com.github.liangjingkanji:debugkit:1.2.5'
-    kapt 'com.android.databinding:compiler:3.1.4'
 
 
 }
