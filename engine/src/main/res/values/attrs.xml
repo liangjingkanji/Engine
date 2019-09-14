@@ -27,13 +27,6 @@
     </declare-styleable>
 
 
-    <!--下拉刷新上拉加载布局-->
-    <declare-styleable name="PageRefreshLayout">
-        <attr name="empty_layout" />
-        <attr name="error_layout" />
-    </declare-styleable>
-
-
     <!--密码框-->
     <declare-styleable name="gridPasswordView">
         <attr name="gpvTextColor" format="color|reference" />
@@ -49,65 +42,6 @@
             <enum name="textVisiblePassword" value="2" />
             <enum name="textWebPassword" value="3" />
         </attr>
-    </declare-styleable>
-
-    <declare-styleable name="TabLayout">
-        <attr name="tabIndicatorColor" format="color" />
-        <attr name="tabIndicatorHeight" format="dimension" />
-        <attr name="tabContentStart" format="dimension" />
-        <attr name="tabBackground" format="reference" />
-        <attr name="tabMode">
-            <enum name="scrollable" value="0" />
-            <enum name="fixed" value="1" />
-        </attr>
-        <attr name="tabGravity">
-            <enum name="fill" value="0" />
-            <enum name="center" value="1" />
-        </attr>
-        <attr name="tabMinWidth" format="dimension" />
-        <attr name="tabMaxWidth" format="dimension" />
-        <attr name="tabTextAppearance" format="reference" />
-        <attr name="tabTextColor" format="color" />
-        <attr name="tabSelectedTextColor" format="color" />
-        <attr name="tabPaddingStart" format="dimension" />
-        <attr name="tabPaddingTop" format="dimension" />
-        <attr name="tabPaddingEnd" format="dimension" />
-        <attr name="tabPaddingBottom" format="dimension" />
-        <attr name="tabPadding" format="dimension" />
-
-        <!--底部分隔栏的颜色-->
-        <attr name="bottomLineColor" format="color" />
-        <!--竖直分隔线的颜色-->
-        <attr name="dividerColor" format="color" />
-        <!--底部分隔栏的高度-->
-        <attr name="bottomLineHeight" format="dimension" />
-        <!--竖直分隔线的宽与高-->
-        <attr name="dividerWidth" format="dimension" />、
-        <attr name="dividerHeight" format="dimension" />
-        <attr name="bottomLineMode">
-            <!--不显示底部分割栏-->
-            <enum name="none" value="0" />
-            <!--显示在滑动栏外面-->
-            <enum name="outer" value="1" />
-            <!--显示在滑动栏里面-->
-            <enum name="inner" value="2" />
-        </attr>
-        <!--下划线的宽度-->
-        <attr name="tabLineOffset" format="dimension" />
-    </declare-styleable>
-
-    <!--SlideCard-->
-    <declare-styleable name="card">
-        <attr name="itemMarginTop" format="dimension" />
-        <attr name="bottomMarginTop" format="dimension" />
-        <attr name="yOffsetStep" format="dimension" />
-        <attr name="widthHeightRate" format="float" />
-    </declare-styleable>
-
-
-    <declare-styleable name="RectangleImageView">
-        <!-- 比例=宽/高 -->
-        <attr name="ratio" format="float" />
     </declare-styleable>
 
 
@@ -131,19 +65,6 @@
         <!--是否开启循环-->
         <attr name="scrollpicker_loop" />
 
-    </declare-styleable>
-
-    <declare-styleable name="RoundImageView">
-        <!--圆角大小-->
-        <attr name="image_radius" format="dimension" />
-        <!--阴影大小-->
-        <attr name="image_shadow_radius" format="dimension" />
-        <!--是否圆形-->
-        <attr name="image_circle" format="boolean" />
-        <!--是否阴影-->
-        <attr name="image_shadow" format="boolean" />
-        <!--阴影颜色-->
-        <attr name="shadow_color" format="integer" />
     </declare-styleable>
 
 </resources>

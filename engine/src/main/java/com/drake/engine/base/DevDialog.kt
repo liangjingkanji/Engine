@@ -8,6 +8,7 @@
 package com.drake.engine.base
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -16,7 +17,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentActivity
 import com.drake.engine.component.databinding.inflate
 
-abstract class DevDialog<B : ViewDataBinding>(var activity: FragmentActivity) : Dialog(activity),
+abstract class DevDialog<B : ViewDataBinding>(context: Context) : Dialog(context),
     OnClickListener {
 
     lateinit var binding: B
