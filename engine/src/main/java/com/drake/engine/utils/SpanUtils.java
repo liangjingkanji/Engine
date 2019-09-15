@@ -1054,7 +1054,7 @@ public final class SpanUtils {
 
     private CustomImageSpan(final Bitmap b, final int verticalAlignment) {
       super(verticalAlignment);
-        mDrawable = new BitmapDrawable(Engine.INSTANCE.getApp().getResources(), b);
+        mDrawable = new BitmapDrawable(Engine.INSTANCE.App.getResources(), b);
       mDrawable.setBounds(0, 0, mDrawable.getIntrinsicWidth(), mDrawable.getIntrinsicHeight());
     }
 
@@ -1082,9 +1082,9 @@ public final class SpanUtils {
       } else if (mContentUri != null) {
         Bitmap bitmap;
         try {
-            InputStream is = Engine.INSTANCE.getApp().getContentResolver().openInputStream(mContentUri);
+            InputStream is = Engine.INSTANCE.App.getContentResolver().openInputStream(mContentUri);
           bitmap = BitmapFactory.decodeStream(is);
-            drawable = new BitmapDrawable(Engine.INSTANCE.getApp().getResources(), bitmap);
+            drawable = new BitmapDrawable(Engine.INSTANCE.App.getResources(), bitmap);
           drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
           if (is != null) {
             is.close();
@@ -1094,7 +1094,7 @@ public final class SpanUtils {
         }
       } else {
         try {
-            drawable = ContextCompat.getDrawable(Engine.INSTANCE.getApp(), mResourceId);
+            drawable = ContextCompat.getDrawable(Engine.INSTANCE.App, mResourceId);
           drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
         } catch (Exception e) {
           Log.e("sms", "Unable to find resource: " + mResourceId);

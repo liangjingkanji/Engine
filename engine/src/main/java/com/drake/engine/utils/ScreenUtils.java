@@ -49,10 +49,10 @@ public final class ScreenUtils {
    * @return the width of screen, in pixel
    */
   public static int getScreenWidth() {
-      WindowManager wm = (WindowManager) Engine.INSTANCE.getApp()
+      WindowManager wm = (WindowManager) Engine.INSTANCE.App
             .getSystemService(Context.WINDOW_SERVICE);
     if (wm == null) {
-        return Engine.INSTANCE.getApp()
+        return Engine.INSTANCE.App
               .getResources()
               .getDisplayMetrics().widthPixels;
     }
@@ -73,10 +73,10 @@ public final class ScreenUtils {
    * @return the height of screen, in pixel
    */
   public static int getScreenHeight() {
-      WindowManager wm = (WindowManager) Engine.INSTANCE.getApp()
+      WindowManager wm = (WindowManager) Engine.INSTANCE.App
             .getSystemService(Context.WINDOW_SERVICE);
     if (wm == null) {
-        return Engine.INSTANCE.getApp()
+        return Engine.INSTANCE.App
               .getResources()
               .getDisplayMetrics().heightPixels;
     }
@@ -97,7 +97,7 @@ public final class ScreenUtils {
    * @return the density of screen
    */
   public static float getScreenDensity() {
-      return Engine.INSTANCE.getApp()
+      return Engine.INSTANCE.App
             .getResources()
             .getDisplayMetrics().density;
   }
@@ -108,7 +108,7 @@ public final class ScreenUtils {
    * @return the screen density expressed as dots-per-inch
    */
   public static int getScreenDensityDpi() {
-      return Engine.INSTANCE.getApp()
+      return Engine.INSTANCE.App
             .getResources()
             .getDisplayMetrics().densityDpi;
   }
@@ -130,7 +130,7 @@ public final class ScreenUtils {
    * @return {@code true}: yes<br>{@code false}: no
    */
   public static boolean isLandscape() {
-      return Engine.INSTANCE.getApp()
+      return Engine.INSTANCE.App
             .getResources()
             .getConfiguration().orientation
             == Configuration.ORIENTATION_LANDSCAPE;
@@ -151,7 +151,7 @@ public final class ScreenUtils {
    * @return {@code true}: yes<br>{@code false}: no
    */
   public static boolean isPortrait() {
-      return Engine.INSTANCE.getApp()
+      return Engine.INSTANCE.App
             .getResources()
             .getConfiguration().orientation
             == Configuration.ORIENTATION_PORTRAIT;
@@ -242,7 +242,7 @@ public final class ScreenUtils {
    */
   public static boolean isScreenLock() {
     KeyguardManager km =
-            (KeyguardManager) Engine.INSTANCE.getApp()
+            (KeyguardManager) Engine.INSTANCE.App
                     .getSystemService(Context.KEYGUARD_SERVICE);
     return km != null && km.inKeyguardRestrictedInputMode();
   }
@@ -255,7 +255,7 @@ public final class ScreenUtils {
   public static int getSleepDuration() {
     try {
       return Settings.System.getInt(
-              Engine.INSTANCE.getApp()
+              Engine.INSTANCE.App
                       .getContentResolver(),
               Settings.System.SCREEN_OFF_TIMEOUT
       );
@@ -274,7 +274,7 @@ public final class ScreenUtils {
   @RequiresPermission(WRITE_SETTINGS)
   public static void setSleepDuration(final int duration) {
     Settings.System.putInt(
-            Engine.INSTANCE.getApp()
+            Engine.INSTANCE.App
                     .getContentResolver(),
             Settings.System.SCREEN_OFF_TIMEOUT,
             duration
@@ -287,7 +287,7 @@ public final class ScreenUtils {
    * @return {@code true}: yes<br>{@code false}: no
    */
   public static boolean isTablet() {
-      return (Engine.INSTANCE.getApp()
+      return (Engine.INSTANCE.App
             .getResources()
             .getConfiguration().screenLayout
             & Configuration.SCREENLAYOUT_SIZE_MASK)

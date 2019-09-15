@@ -66,7 +66,7 @@ public final class AppUtils {
     if (!isFileExists(file)) {
       return;
     }
-      Engine.INSTANCE.getApp()
+      Engine.INSTANCE.App
             .startActivity(
                     IntentUtils.getInstallAppIntent(file,
                             authority, true));
@@ -191,7 +191,7 @@ public final class AppUtils {
     if (isSpace(packageName)) {
       return;
     }
-      Engine.INSTANCE.getApp()
+      Engine.INSTANCE.App
             .startActivity(
                     IntentUtils.getUninstallAppIntent(packageName,
                             true));
@@ -269,7 +269,7 @@ public final class AppUtils {
                                        @NonNull final String category) {
     Intent intent = new Intent(action);
     intent.addCategory(category);
-      PackageManager pm = Engine.INSTANCE.getApp()
+      PackageManager pm = Engine.INSTANCE.App
             .getPackageManager();
     ResolveInfo info = pm.resolveActivity(intent, 0);
     return info != null;
@@ -309,7 +309,7 @@ public final class AppUtils {
    * @return {@code true}: yes<br>{@code false}: no
    */
   public static boolean isAppDebug() {
-      return isAppDebug(Engine.INSTANCE.getApp()
+      return isAppDebug(Engine.INSTANCE.App
             .getPackageName());
   }
 
@@ -324,7 +324,7 @@ public final class AppUtils {
       return false;
     }
     try {
-        PackageManager pm = Engine.INSTANCE.getApp()
+        PackageManager pm = Engine.INSTANCE.App
               .getPackageManager();
       ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
       return ai != null && (ai.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
@@ -340,7 +340,7 @@ public final class AppUtils {
    * @return {@code true}: yes<br>{@code false}: no
    */
   public static boolean isAppSystem() {
-      return isAppSystem(Engine.INSTANCE.getApp()
+      return isAppSystem(Engine.INSTANCE.App
             .getPackageName());
   }
 
@@ -355,7 +355,7 @@ public final class AppUtils {
       return false;
     }
     try {
-        PackageManager pm = Engine.INSTANCE.getApp()
+        PackageManager pm = Engine.INSTANCE.App
               .getPackageManager();
       ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
       return ai != null && (ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
@@ -371,7 +371,7 @@ public final class AppUtils {
    * @return {@code true}: yes<br>{@code false}: no
    */
   public static boolean isAppForeground() {
-      ActivityManager am = (ActivityManager) Engine.INSTANCE.getApp().getSystemService(Context.ACTIVITY_SERVICE);
+      ActivityManager am = (ActivityManager) Engine.INSTANCE.App.getSystemService(Context.ACTIVITY_SERVICE);
     if (am == null) {
       return false;
     }
@@ -381,7 +381,7 @@ public final class AppUtils {
     }
     for (ActivityManager.RunningAppProcessInfo aInfo : info) {
       if (aInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-          return aInfo.processName.equals(Engine.INSTANCE.getApp().getPackageName());
+          return aInfo.processName.equals(Engine.INSTANCE.App.getPackageName());
       }
     }
     return false;
@@ -408,7 +408,7 @@ public final class AppUtils {
     if (isSpace(packageName)) {
       return;
     }
-      Engine.INSTANCE.getApp()
+      Engine.INSTANCE.App
             .startActivity(
                     IntentUtils.getLaunchAppIntent(packageName,
                             true));
@@ -437,7 +437,7 @@ public final class AppUtils {
    * Launch the application's details settings.
    */
   public static void launchAppDetailsSettings() {
-      launchAppDetailsSettings(Engine.INSTANCE.getApp()
+      launchAppDetailsSettings(Engine.INSTANCE.App
             .getPackageName());
   }
 
@@ -450,7 +450,7 @@ public final class AppUtils {
     if (isSpace(packageName)) {
       return;
     }
-      Engine.INSTANCE.getApp()
+      Engine.INSTANCE.App
             .startActivity(
                     IntentUtils.getLaunchAppDetailsSettingsIntent(
                             packageName, true)
@@ -463,7 +463,7 @@ public final class AppUtils {
    * @return the application's icon
    */
   public static Drawable getAppIcon() {
-      return getAppIcon(Engine.INSTANCE.getApp()
+      return getAppIcon(Engine.INSTANCE.App
             .getPackageName());
   }
 
@@ -478,7 +478,7 @@ public final class AppUtils {
       return null;
     }
     try {
-        PackageManager pm = Engine.INSTANCE.getApp()
+        PackageManager pm = Engine.INSTANCE.App
               .getPackageManager();
       PackageInfo pi = pm.getPackageInfo(packageName, 0);
       return pi == null ? null : pi.applicationInfo.loadIcon(pm);
@@ -494,7 +494,7 @@ public final class AppUtils {
    * @return the application's package name
    */
   public static String getAppPackageName() {
-      return Engine.INSTANCE.getApp()
+      return Engine.INSTANCE.App
             .getPackageName();
   }
 
@@ -504,7 +504,7 @@ public final class AppUtils {
    * @return the application's name
    */
   public static String getAppName() {
-      return getAppName(Engine.INSTANCE.getApp()
+      return getAppName(Engine.INSTANCE.App
             .getPackageName());
   }
 
@@ -519,7 +519,7 @@ public final class AppUtils {
       return null;
     }
     try {
-        PackageManager pm = Engine.INSTANCE.getApp()
+        PackageManager pm = Engine.INSTANCE.App
               .getPackageManager();
       PackageInfo pi = pm.getPackageInfo(packageName, 0);
       return pi == null ? null : pi.applicationInfo.loadLabel(pm)
@@ -536,7 +536,7 @@ public final class AppUtils {
    * @return the application's path
    */
   public static String getAppPath() {
-      return getAppPath(Engine.INSTANCE.getApp()
+      return getAppPath(Engine.INSTANCE.App
             .getPackageName());
   }
 
@@ -551,7 +551,7 @@ public final class AppUtils {
       return null;
     }
     try {
-        PackageManager pm = Engine.INSTANCE.getApp()
+        PackageManager pm = Engine.INSTANCE.App
               .getPackageManager();
       PackageInfo pi = pm.getPackageInfo(packageName, 0);
       return pi == null ? null : pi.applicationInfo.sourceDir;
@@ -567,7 +567,7 @@ public final class AppUtils {
    * @return the application's version name
    */
   public static String getAppVersionName() {
-      return getAppVersionName(Engine.INSTANCE.getApp().getPackageName());
+      return getAppVersionName(Engine.INSTANCE.App.getPackageName());
   }
 
   /**
@@ -581,7 +581,7 @@ public final class AppUtils {
       return null;
     }
     try {
-        PackageManager pm = Engine.INSTANCE.getApp()
+        PackageManager pm = Engine.INSTANCE.App
               .getPackageManager();
       PackageInfo pi = pm.getPackageInfo(packageName, 0);
       return pi == null ? null : pi.versionName;
@@ -597,7 +597,7 @@ public final class AppUtils {
    * @return the application's version code
    */
   public static int getAppVersionCode() {
-      return getAppVersionCode(Engine.INSTANCE.getApp()
+      return getAppVersionCode(Engine.INSTANCE.App
             .getPackageName());
   }
 
@@ -612,7 +612,7 @@ public final class AppUtils {
       return -1;
     }
     try {
-        PackageManager pm = Engine.INSTANCE.getApp()
+        PackageManager pm = Engine.INSTANCE.App
               .getPackageManager();
       PackageInfo pi = pm.getPackageInfo(packageName, 0);
       return pi == null ? -1 : pi.versionCode;
@@ -628,7 +628,7 @@ public final class AppUtils {
    * @return the application's signature
    */
   public static Signature[] getAppSignature() {
-      return getAppSignature(Engine.INSTANCE.getApp()
+      return getAppSignature(Engine.INSTANCE.App
             .getPackageName());
   }
 
@@ -643,7 +643,7 @@ public final class AppUtils {
       return null;
     }
     try {
-        PackageManager pm = Engine.INSTANCE.getApp()
+        PackageManager pm = Engine.INSTANCE.App
               .getPackageManager();
       @SuppressLint("PackageManagerGetSignatures")
       PackageInfo pi = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
@@ -660,7 +660,7 @@ public final class AppUtils {
    * @return the application's signature for SHA1 value
    */
   public static String getAppSignatureSHA1() {
-      return getAppSignatureSHA1(Engine.INSTANCE.getApp()
+      return getAppSignatureSHA1(Engine.INSTANCE.App
             .getPackageName());
   }
 
@@ -694,7 +694,7 @@ public final class AppUtils {
    * @return the application's information
    */
   public static AppInfo getAppInfo() {
-      return getAppInfo(Engine.INSTANCE.getApp()
+      return getAppInfo(Engine.INSTANCE.App
             .getPackageName());
   }
 
@@ -715,7 +715,7 @@ public final class AppUtils {
    */
   public static AppInfo getAppInfo(final String packageName) {
     try {
-        PackageManager pm = Engine.INSTANCE.getApp()
+        PackageManager pm = Engine.INSTANCE.App
               .getPackageManager();
       PackageInfo pi = pm.getPackageInfo(packageName, 0);
       return getBean(pm, pi);
@@ -732,7 +732,7 @@ public final class AppUtils {
    */
   public static List<AppInfo> getAppsInfo() {
     List<AppInfo> list = new ArrayList<>();
-      PackageManager pm = Engine.INSTANCE.getApp()
+      PackageManager pm = Engine.INSTANCE.App
             .getPackageManager();
     List<PackageInfo> installedPackages = pm.getInstalledPackages(0);
     for (PackageInfo pi : installedPackages) {

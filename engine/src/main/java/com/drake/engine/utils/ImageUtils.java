@@ -137,7 +137,7 @@ public final class ImageUtils {
    * @return drawable
    */
   public static Drawable bitmap2Drawable(final Bitmap bitmap) {
-      return bitmap == null ? null : new BitmapDrawable(Engine.INSTANCE.getApp()
+      return bitmap == null ? null : new BitmapDrawable(Engine.INSTANCE.App
             .getResources(), bitmap);
   }
 
@@ -326,7 +326,7 @@ public final class ImageUtils {
    * @return bitmap
    */
   public static Bitmap getBitmap(@DrawableRes final int resId) {
-      Drawable drawable = ContextCompat.getDrawable(Engine.INSTANCE.getApp(), resId);
+      Drawable drawable = ContextCompat.getDrawable(Engine.INSTANCE.App, resId);
     Canvas canvas = new Canvas();
     Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
             drawable.getIntrinsicHeight(),
@@ -349,7 +349,7 @@ public final class ImageUtils {
                                  final int maxWidth,
                                  final int maxHeight) {
     BitmapFactory.Options options = new BitmapFactory.Options();
-      final Resources resources = Engine.INSTANCE.getApp()
+      final Resources resources = Engine.INSTANCE.App
             .getResources();
     options.inJustDecodeBounds = true;
     BitmapFactory.decodeResource(resources, resId, options);
@@ -1290,7 +1290,7 @@ public final class ImageUtils {
     RenderScript rs = null;
     Bitmap ret = recycle ? src : src.copy(src.getConfig(), true);
     try {
-        rs = RenderScript.create(Engine.INSTANCE.getApp());
+        rs = RenderScript.create(Engine.INSTANCE.App);
       rs.setMessageHandler(new RenderScript.RSMessageHandler());
       Allocation input = Allocation.createFromBitmap(rs,
               ret,

@@ -36,7 +36,7 @@ import org.jetbrains.anko.dip
  */
 fun Dialog.setWidth(withDipValue: Int) {
     val window = window
-    window?.setLayout(getApp().dip(withDipValue.toFloat()), WRAP_CONTENT)
+    window?.setLayout(App.dip(withDipValue.toFloat()), WRAP_CONTENT)
 }
 
 
@@ -46,7 +46,7 @@ fun Dialog.setWidth(withDipValue: Int) {
  */
 fun Dialog.setHeight(heightDipValue: Int) {
     val window = window
-    window?.setLayout(WRAP_CONTENT, getApp().dip(heightDipValue.toFloat()))
+    window?.setLayout(WRAP_CONTENT, App.dip(heightDipValue.toFloat()))
 }
 
 /**
@@ -55,7 +55,7 @@ fun Dialog.setHeight(heightDipValue: Int) {
  */
 fun Dialog.setSize(withDipValue: Int, heightDipValue: Int) {
     val window = window
-    window?.setLayout(getApp().dip(withDipValue.toFloat()), getApp().dip(heightDipValue.toFloat()))
+    window?.setLayout(App.dip(withDipValue.toFloat()), App.dip(heightDipValue.toFloat()))
 }
 
 /**
@@ -89,7 +89,7 @@ fun AlertDialog.setDivider(@DrawableRes divider: Int) {
     val listView = this.listView
     if (listView != null) {
         listView.overscrollFooter = ColorDrawable(Color.TRANSPARENT)
-        listView.divider = ContextCompat.getDrawable(getApp(), divider)
+        listView.divider = ContextCompat.getDrawable(App, divider)
     }
 }
 

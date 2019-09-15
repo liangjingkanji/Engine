@@ -26,7 +26,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.drake.brv.DefaultDecoration
-import com.drake.engine.base.getApp
+import com.drake.engine.base.App
 import com.google.android.material.button.MaterialButton
 import org.jetbrains.anko.dip
 
@@ -115,7 +115,7 @@ fun ImageView.loadImgCorner(
     if (corner == 0) {
         requestOptions.circleCrop()
     } else {
-        requestOptions.transforms(CenterCrop(), RoundedCorners(getApp().dip(corner)))
+        requestOptions.transforms(CenterCrop(), RoundedCorners(App.dip(corner)))
     }
 
     if (holder == null && drawable != null) {
@@ -234,7 +234,7 @@ fun View.setGone(visibilityVar: Any?) {
 
 @BindingAdapter("elevation")
 fun View.setElevationDp(dp: Int) {
-    ViewCompat.setElevation(this, getApp().dip(dp).toFloat())
+    ViewCompat.setElevation(this, App.dip(dp).toFloat())
 }
 
 @BindingAdapter("elevation")

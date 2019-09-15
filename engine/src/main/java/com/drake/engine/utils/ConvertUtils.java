@@ -517,7 +517,7 @@ public final class ConvertUtils {
    * @return drawable
    */
   public static Drawable bitmap2Drawable(final Bitmap bitmap) {
-      return bitmap == null ? null : new BitmapDrawable(Engine.INSTANCE.getApp()
+      return bitmap == null ? null : new BitmapDrawable(Engine.INSTANCE.App
             .getResources(), bitmap);
   }
 
@@ -573,7 +573,7 @@ public final class ConvertUtils {
    * @return value of px
    */
   public static int dp2px(final float dpValue) {
-      final float scale = Engine.INSTANCE.getApp()
+      final float scale = Engine.INSTANCE.App
             .getResources()
             .getDisplayMetrics().density;
     return (int) (dpValue * scale + 0.5f);
@@ -586,7 +586,7 @@ public final class ConvertUtils {
    * @return value of dp
    */
   public static int px2dp(final float pxValue) {
-      final float scale = Engine.INSTANCE.getApp()
+      final float scale = Engine.INSTANCE.App
             .getResources()
             .getDisplayMetrics().density;
     return (int) (pxValue / scale + 0.5f);
@@ -599,7 +599,7 @@ public final class ConvertUtils {
    * @return value of px
    */
   public static int sp2px(final float spValue) {
-      final float fontScale = Engine.INSTANCE.getApp()
+      final float fontScale = Engine.INSTANCE.App
             .getResources()
             .getDisplayMetrics().scaledDensity;
     return (int) (spValue * fontScale + 0.5f);
@@ -612,7 +612,7 @@ public final class ConvertUtils {
    * @return value of sp
    */
   public static int px2sp(final float pxValue) {
-      final float fontScale = Engine.INSTANCE.getApp()
+      final float fontScale = Engine.INSTANCE.App
             .getResources()
             .getDisplayMetrics().scaledDensity;
     return (int) (pxValue / fontScale + 0.5f);

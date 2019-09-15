@@ -51,7 +51,7 @@ public final class SDCardUtils {
   public static List<String> getSDCardPaths(final boolean removable) {
     List<String> paths = new ArrayList<>();
     StorageManager sm =
-            (StorageManager) Engine.INSTANCE.getApp()
+            (StorageManager) Engine.INSTANCE.App
                     .getSystemService(Context.STORAGE_SERVICE);
     try {
       Class<?> storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
@@ -86,7 +86,7 @@ public final class SDCardUtils {
    * @return the paths of sdcard
    */
   public static List<String> getSDCardPaths() {
-      StorageManager storageManager = (StorageManager) Engine.INSTANCE.getApp()
+      StorageManager storageManager = (StorageManager) Engine.INSTANCE.App
             .getSystemService(Context.STORAGE_SERVICE);
     List<String> paths = new ArrayList<>();
     try {

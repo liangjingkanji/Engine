@@ -8,13 +8,12 @@
 package com.drake.engine.base
 
 import android.app.Application
-import com.drake.engine.base.Engine.app
 
-object Engine {
-    var app: Application? = null
+
+lateinit var App: Application
+
+
+fun Application.initEngine() {
+    App = this
 }
 
-
-fun getApp(): Application {
-    return app!!
-}

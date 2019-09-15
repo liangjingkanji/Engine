@@ -87,7 +87,7 @@ public final class DeviceUtils {
   @SuppressLint("HardwareIds")
   public static String getAndroidID() {
     return Settings.Secure.getString(
-            Engine.INSTANCE.getApp()
+            Engine.INSTANCE.App
                     .getContentResolver(),
             Settings.Secure.ANDROID_ID
     );
@@ -125,7 +125,7 @@ public final class DeviceUtils {
   @SuppressLint({"HardwareIds", "MissingPermission"})
   private static String getMacAddressByWifiInfo() {
     try {
-        Context context = Engine.INSTANCE.getApp()
+        Context context = Engine.INSTANCE.App
               .getApplicationContext();
       WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
       if (wifi != null) {
@@ -267,7 +267,7 @@ public final class DeviceUtils {
     ShellUtils.execCmd("reboot -p", true);
     Intent intent = new Intent("android.intent.action.ACTION_REQUEST_SHUTDOWN");
     intent.putExtra("android.intent.extra.KEY_CONFIRM", false);
-      Engine.INSTANCE.getApp()
+      Engine.INSTANCE.App
             .startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
   }
 
@@ -282,7 +282,7 @@ public final class DeviceUtils {
     intent.putExtra("nowait", 1);
     intent.putExtra("interval", 1);
     intent.putExtra("window", 0);
-      Engine.INSTANCE.getApp()
+      Engine.INSTANCE.App
             .sendBroadcast(intent);
   }
 
@@ -297,7 +297,7 @@ public final class DeviceUtils {
    */
   public static void reboot(final String reason) {
     PowerManager mPowerManager =
-            (PowerManager) Engine.INSTANCE.getApp()
+            (PowerManager) Engine.INSTANCE.App
                     .getSystemService(Context.POWER_SERVICE);
     try {
       if (mPowerManager == null) {

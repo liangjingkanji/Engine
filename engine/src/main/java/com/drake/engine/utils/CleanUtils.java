@@ -27,7 +27,7 @@ public final class CleanUtils {
    * @return {@code true}: success<br>{@code false}: fail
    */
   public static boolean cleanInternalCache() {
-      return deleteFilesInDir(Engine.INSTANCE.getApp()
+      return deleteFilesInDir(Engine.INSTANCE.App
             .getCacheDir());
   }
 
@@ -38,7 +38,7 @@ public final class CleanUtils {
    * @return {@code true}: success<br>{@code false}: fail
    */
   public static boolean cleanInternalFiles() {
-      return deleteFilesInDir(Engine.INSTANCE.getApp()
+      return deleteFilesInDir(Engine.INSTANCE.App
             .getFilesDir());
   }
 
@@ -49,7 +49,7 @@ public final class CleanUtils {
    * @return {@code true}: success<br>{@code false}: fail
    */
   public static boolean cleanInternalDbs() {
-      return deleteFilesInDir(new File(Engine.INSTANCE.getApp()
+      return deleteFilesInDir(new File(Engine.INSTANCE.App
             .getFilesDir()
             .getParent(), "databases"));
   }
@@ -62,7 +62,7 @@ public final class CleanUtils {
    * @return {@code true}: success<br>{@code false}: fail
    */
   public static boolean cleanInternalDbByName(final String dbName) {
-      return Engine.INSTANCE.getApp()
+      return Engine.INSTANCE.App
             .deleteDatabase(dbName);
   }
 
@@ -73,7 +73,7 @@ public final class CleanUtils {
    * @return {@code true}: success<br>{@code false}: fail
    */
   public static boolean cleanInternalSp() {
-      return deleteFilesInDir(new File(Engine.INSTANCE.getApp()
+      return deleteFilesInDir(new File(Engine.INSTANCE.App
             .getFilesDir()
             .getParent(), "shared_prefs"));
   }
@@ -86,7 +86,7 @@ public final class CleanUtils {
    */
   public static boolean cleanExternalCache() {
     return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-            && deleteFilesInDir(Engine.INSTANCE.getApp()
+            && deleteFilesInDir(Engine.INSTANCE.App
             .getExternalCacheDir());
   }
 

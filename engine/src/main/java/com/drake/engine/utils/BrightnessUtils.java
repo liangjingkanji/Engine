@@ -35,7 +35,7 @@ public final class BrightnessUtils {
   public static boolean isAutoBrightnessEnabled() {
     try {
       int mode = Settings.System.getInt(
-              Engine.INSTANCE.getApp()
+              Engine.INSTANCE.App
                       .getContentResolver(),
               Settings.System.SCREEN_BRIGHTNESS_MODE
       );
@@ -56,17 +56,17 @@ public final class BrightnessUtils {
    */
   public static boolean setAutoBrightnessEnabled(final boolean enabled) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-            && !Settings.System.canWrite(Engine.INSTANCE.getApp())) {
+            && !Settings.System.canWrite(Engine.INSTANCE.App)) {
       Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-        intent.setData(Uri.parse("package:" + Engine.INSTANCE.getApp()
+        intent.setData(Uri.parse("package:" + Engine.INSTANCE.App
               .getPackageName()));
       intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Engine.INSTANCE.getApp()
+        Engine.INSTANCE.App
               .startActivity(intent);
       return false;
     }
     return Settings.System.putInt(
-            Engine.INSTANCE.getApp()
+            Engine.INSTANCE.App
                     .getContentResolver(),
             Settings.System.SCREEN_BRIGHTNESS_MODE,
             enabled ? Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
@@ -82,7 +82,7 @@ public final class BrightnessUtils {
   public static int getBrightness() {
     try {
       return Settings.System.getInt(
-              Engine.INSTANCE.getApp()
+              Engine.INSTANCE.App
                       .getContentResolver(),
               Settings.System.SCREEN_BRIGHTNESS
       );
@@ -101,16 +101,16 @@ public final class BrightnessUtils {
    */
   public static boolean setBrightness(@IntRange(from = 0, to = 255) final int brightness) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-            && !Settings.System.canWrite(Engine.INSTANCE.getApp())) {
+            && !Settings.System.canWrite(Engine.INSTANCE.App)) {
       Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-        intent.setData(Uri.parse("package:" + Engine.INSTANCE.getApp()
+        intent.setData(Uri.parse("package:" + Engine.INSTANCE.App
               .getPackageName()));
       intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Engine.INSTANCE.getApp()
+        Engine.INSTANCE.App
               .startActivity(intent);
       return false;
     }
-      ContentResolver resolver = Engine.INSTANCE.getApp()
+      ContentResolver resolver = Engine.INSTANCE.App
             .getContentResolver();
     boolean b = Settings.System.putInt(resolver, Settings.System.SCREEN_BRIGHTNESS, brightness);
     resolver.notifyChange(Settings.System.getUriFor("screen_brightness"), null);

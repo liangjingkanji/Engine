@@ -17,8 +17,7 @@ import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import com.drake.engine.base.Engine
-import com.drake.engine.base.getApp
+import com.drake.engine.base.App
 import com.drake.statusbar.getNavigationBarHeight
 import com.drake.statusbar.getStatusBarHeight
 
@@ -35,7 +34,7 @@ class KeyBoardUtils private constructor() {
          */
         fun toggleKeyboard() {
             val imm =
-                getApp().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                App.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         }
 
@@ -80,7 +79,7 @@ class KeyBoardUtils private constructor() {
 
             val viewParent = view.parent as ViewGroup
             val parentScrollY = viewParent.scrollY
-            val tempStatusBarHeight = getApp().getStatusBarHeight()
+            val tempStatusBarHeight = App.getStatusBarHeight()
             val decorView = window.decorView
 
             var keyboardVisible = false
@@ -140,11 +139,11 @@ class KeyBoardUtils private constructor() {
 
 
                 val keyboardHeight =
-                    decorViewBottom - (displayRect.bottom + getApp().getNavigationBarHeight())
+                    decorViewBottom - (displayRect.bottom + App.getNavigationBarHeight())
 
                 Log.d(
                     "日志",
-                    "键盘监听 ___ displayRect.bottom = ${displayRect.bottom}  decorView.bottom = $decorViewBottom  keyboardVisible = $keyboardVisible  keyboardHeight = $keyboardHeight   navigationBarHeight =  ${getApp().getNavigationBarHeight()}  statusBarHeight = ${getApp().getStatusBarHeight()} paddingBottom =  ${viewParent.paddingBottom}"
+                    "键盘监听 ___ displayRect.bottom = ${displayRect.bottom}  decorView.bottom = $decorViewBottom  keyboardVisible = $keyboardVisible  keyboardHeight = $keyboardHeight   navigationBarHeight =  ${App.getNavigationBarHeight()}  statusBarHeight = ${App.getStatusBarHeight()} paddingBottom =  ${viewParent.paddingBottom}"
                 )
 
                 if (keyboardHeight > decorViewBottom / 4) {
@@ -204,8 +203,7 @@ class KeyBoardUtils private constructor() {
             if (context == null) {
                 return
             }
-            val imm = Engine.app!!
-                .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = App.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
             val strArr = arrayOf("mCurRootView", "mServedView", "mNextServedView")
             for (i in 0..2) {
@@ -267,7 +265,7 @@ fun EditText.showKeyboard() {
     isFocusable = true
     isFocusableInTouchMode = true
     requestFocus()
-    val imm = getApp().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    val imm = App.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.showSoftInput(this, 0)
 }
 

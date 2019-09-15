@@ -60,9 +60,9 @@ public final class CrashUtils {
 
   static {
     try {
-        PackageInfo pi = Engine.INSTANCE.getApp()
+        PackageInfo pi = Engine.INSTANCE.App
               .getPackageManager()
-                .getPackageInfo(Engine.INSTANCE.getApp()
+                .getPackageInfo(Engine.INSTANCE.App
                       .getPackageName(), 0);
       if (pi != null) {
         versionName = pi.versionName;
@@ -202,12 +202,12 @@ public final class CrashUtils {
       dir = crashDirPath.endsWith(FILE_SEP) ? crashDirPath : crashDirPath + FILE_SEP;
     }
     if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-            && Engine.INSTANCE.getApp()
+            && Engine.INSTANCE.App
             .getExternalCacheDir() != null) {
-        defaultDir = Engine.INSTANCE.getApp()
+        defaultDir = Engine.INSTANCE.App
               .getExternalCacheDir() + FILE_SEP + "crash" + FILE_SEP;
     } else {
-        defaultDir = Engine.INSTANCE.getApp()
+        defaultDir = Engine.INSTANCE.App
               .getCacheDir() + FILE_SEP + "crash" + FILE_SEP;
     }
     sOnCrashListener = onCrashListener;

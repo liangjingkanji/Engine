@@ -28,9 +28,9 @@ class LogCat private constructor() {
 
         private var enabled = true
 
-        private val subLength = 4
+        private const val subLength = 4
 
-        private val END = "}\r\n"
+        private const val END = "}\r\n"
 
         private var parseResponse: JSONObject? = null//最终被解析的JSON对象
 
@@ -148,7 +148,7 @@ class LogCat private constructor() {
             jsonBuilder.setLength(0)
 
 //            START
-            appendSb("$TagName", false)
+            appendSb(TagName, false)
 
             if (url != null) {
                 appendSb(

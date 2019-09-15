@@ -95,14 +95,12 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
     api 'jp.wasabeef:glide-transformations:3.0.1'
     api 'com.yanzhenjie:permission:2.0.0-rc10'
-    api 'com.yanzhenjie:okalle:0.1.7'
     api 'com.king.zxing:zxing-lite:1.0.3'
-    api 'com.squareup.moshi:moshi-kotlin:1.8.0'
-    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.8.0'
 
-    api 'com.github.liangjingkanji:BRV:1.0.3'
+    api 'com.github.liangjingkanji:BRV:1.0.5'
     api 'com.github.liangjingkanji:StatusBar:1.0.2'
     api 'com.github.liangjingkanji:debugkit:1.2.5'
+    api 'com.github.liangjingkanji:Net:1.0'
 
 
 }

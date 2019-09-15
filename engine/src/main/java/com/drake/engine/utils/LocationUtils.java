@@ -120,7 +120,7 @@ public final class LocationUtils {
    * @return {@code true}: 是<br>{@code false}: 否
    */
   public static boolean isGpsEnabled() {
-      LocationManager lm = (LocationManager) Engine.INSTANCE.getApp()
+      LocationManager lm = (LocationManager) Engine.INSTANCE.App
             .getSystemService(Context.LOCATION_SERVICE);
     return lm != null && lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
   }
@@ -131,7 +131,7 @@ public final class LocationUtils {
    * @return {@code true}: 是<br>{@code false}: 否
    */
   public static boolean isLocationEnabled() {
-      LocationManager lm = (LocationManager) Engine.INSTANCE.getApp()
+      LocationManager lm = (LocationManager) Engine.INSTANCE.App
             .getSystemService(Context.LOCATION_SERVICE);
     return lm != null
             && (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
@@ -144,7 +144,7 @@ public final class LocationUtils {
    */
   public static void openGpsSettings() {
     Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-      Engine.INSTANCE.getApp()
+      Engine.INSTANCE.App
             .startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
   }
 
@@ -167,7 +167,7 @@ public final class LocationUtils {
     if (listener == null) {
       return false;
     }
-      mLocationManager = (LocationManager) Engine.INSTANCE.getApp()
+      mLocationManager = (LocationManager) Engine.INSTANCE.App
             .getSystemService(Context.LOCATION_SERVICE);
     if (mLocationManager == null
             || (!mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
@@ -235,7 +235,7 @@ public final class LocationUtils {
    * @return {@link Address}
    */
   public static Address getAddress(double latitude, double longitude) {
-      Geocoder geocoder = new Geocoder(Engine.INSTANCE.getApp(), Locale.getDefault());
+      Geocoder geocoder = new Geocoder(Engine.INSTANCE.App, Locale.getDefault());
     try {
       List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
       if (addresses.size() > 0) {
