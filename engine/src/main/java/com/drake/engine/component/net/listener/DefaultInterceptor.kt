@@ -5,9 +5,9 @@
  * Date：9/11/19 7:25 PM
  */
 
-package com.drake.engine.component.net.interceptor
+package com.drake.engine.component.net.listener
 
-import android.util.Log
+import com.drake.engine.component.net.NetConfig
 import com.yanzhenjie.kalle.Response
 import com.yanzhenjie.kalle.connect.Interceptor
 import com.yanzhenjie.kalle.connect.http.Chain
@@ -16,17 +16,15 @@ import java.io.IOException
 /**
  * 响应体的日志打印器
  */
-class LogInterceptor : Interceptor {
+class DefaultInterceptor : Interceptor {
 
 
     @Throws(IOException::class)
     override fun intercept(chain: Chain): Response {
         val request = chain.request()
-        val url = request.url().toString()
-        Log.d(url, request.copyParams().entrySet().toString())
-
         val response = chain.proceed(request)
-        response.headers().add("url", url)
+        NetConfig.listener?.net(request, response)
         return response
     }
 }
+

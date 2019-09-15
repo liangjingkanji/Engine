@@ -33,6 +33,6 @@ public class ViewPagerForScrollView extends ViewPager {
         height = h;
     }
     heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+      super.onMeasure(widthMeasureSpec, heightMeasureSpec);
   }
 }

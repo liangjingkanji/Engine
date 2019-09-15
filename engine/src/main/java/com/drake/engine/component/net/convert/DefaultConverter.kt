@@ -7,6 +7,7 @@
 
 package com.drake.engine.component.net.convert
 
+import com.drake.engine.component.net.NetConfig
 import com.squareup.moshi.Moshi
 import com.yanzhenjie.kalle.Response
 import com.yanzhenjie.kalle.simple.Converter
@@ -16,11 +17,9 @@ import org.json.JSONObject
 import java.io.IOException
 import java.lang.reflect.Type
 
-/**
- * 网络请求Moshi转换器
- */
+
 @Suppress("UNCHECKED_CAST")
-class MoshiConverter(var successCode: Int = 1, var onResponse: (Response.() -> String)? = null) :
+class DefaultConverter(val successCode: Int = 1) :
     Converter {
 
 
@@ -34,13 +33,11 @@ class MoshiConverter(var successCode: Int = 1, var onResponse: (Response.() -> S
         var succeedData: S? = null
         var failedData: F? = null
 
-        val json: String = if (onResponse == null) {
-            response.body().string()
-        } else {
-            onResponse?.let { response.it() }!!
-        }
+        val json: String =
+            NetConfig.listener?.parse(response.body().string()) ?: response.body().string()
 
         var code = response.code()
+
         when {
             code in 200..299 -> {
                 try {
@@ -68,7 +65,6 @@ class MoshiConverter(var successCode: Int = 1, var onResponse: (Response.() -> S
                     e.printStackTrace()
                     failedData = "无法解析错误信息" as F
                 }
-
             }
             code in 400..499 -> failedData = "发生异常错误" as F
             code >= 500 -> failedData = "服务器开小差啦" as F

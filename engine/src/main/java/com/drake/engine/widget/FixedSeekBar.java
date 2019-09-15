@@ -14,17 +14,17 @@ import android.view.MotionEvent;
 /**
  * 不支持划动的SeekBar
  */
-public class ProgressSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
+public class FixedSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
 
-  public ProgressSeekBar(Context context) {
+    public FixedSeekBar(Context context) {
     super(context);
   }
 
-  public ProgressSeekBar(Context context, AttributeSet attrs) {
+    public FixedSeekBar(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
 
-  public ProgressSeekBar(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FixedSeekBar(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
   }
 

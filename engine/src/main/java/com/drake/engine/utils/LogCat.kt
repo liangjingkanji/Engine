@@ -1,8 +1,10 @@
 /*
- * Copyright © 文科中的技术宅
- * blog:https://www.townwang.com
+ * Copyright (C) 2018, Umbrella CompanyLimited All rights reserved.
+ * Project：Engine
+ * Author：Drake
+ * Date：9/15/19 3:27 PM
  */
-package com.drake.engine.sample
+package com.drake.engine.utils
 
 import android.text.TextUtils
 
@@ -19,10 +21,6 @@ import org.json.JSONObject
  * @Remarks Log日志封装类
  */
 class LogCat private constructor() {
-
-    init {
-        throw UnsupportedOperationException("不能实例化")
-    }
 
     companion object {
 
@@ -48,8 +46,10 @@ class LogCat private constructor() {
         fun setConfig(TAG: String, isDebug: Boolean) {
             enabled = isDebug
 
-            LogCat.TAG = TAG
+            Companion.TAG = TAG
         }
+
+        // <editor-fold desc="普通日志">
 
         fun i(msg: String) {
             if (enabled)
@@ -91,6 +91,9 @@ class LogCat private constructor() {
                 android.util.Log.i(tag, msg)
         }
 
+        // </editor-fold>
+
+
         /**
          * Json格式输出Log
          *
@@ -99,38 +102,33 @@ class LogCat private constructor() {
          * @param message Json字符串
          */
         fun json(tag: String = TAG, url: String? = null, message: String) {
+
             var jsonObject: JSONObject? = null
+
             try {
                 jsonObject = JSONObject(message)
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
 
-            if (enabled) printJson(tag, url, jsonObject)
-        }
+            if (enabled) {
+                synchronized(LogCat::class.java) {
+                    try {
+                        if (jsonObject is JSONArray) {
+                            isReduce = true
+                            val tempJson = JSONObject()
+                            parseResponse = tempJson.putOpt("", jsonObject)
+                        } else {
+                            isReduce = false
+                            parseResponse = jsonObject
+                        }
+                        synchronized(LogCat::class.java) {
+                            formatJson(tag, url, parseResponse, isReduce)
 
-
-        /***
-         * 功能：线程同步,输出日志
-         * @param response  Json对象
-         * @param TagName 输出台标签名：必传。
-         */
-        fun printJson(TagName: String, url: String?, response: Any?) {
-            synchronized(LogCat::class.java) {
-                try {
-                    if (response is JSONArray) {
-                        isReduce = true
-                        val tempJson = JSONObject()
-                        parseResponse = tempJson.putOpt("", response)
-                    } else {
-                        isReduce = false
-                        parseResponse = response as JSONObject?
+                        }
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
                     }
-                    synchronized(LogCat::class.java) {
-                        printJson(TagName, url, parseResponse, isReduce)
-                    }
-                } catch (e: JSONException) {
-                    e.printStackTrace()
                 }
             }
         }
@@ -138,7 +136,7 @@ class LogCat private constructor() {
         /***
          * 功能：
          */
-        private fun printJson(
+        private fun formatJson(
             TagName: String,
             url: String?,
             response: JSONObject?,
@@ -163,6 +161,7 @@ class LogCat private constructor() {
                     false
                 )
             }
+
             appendSb("{", false)
             printFormatJson(TagName, response!!)
             appendSb("}", false)
@@ -176,7 +175,10 @@ class LogCat private constructor() {
                 )
             }
 
-            logOut(TagName, jsonBuilder.toString())
+            logOut(
+                TagName,
+                jsonBuilder.toString()
+            )
         }
 
         /**
@@ -202,24 +204,43 @@ class LogCat private constructor() {
                     val key = jsonObject.next()
                     when {
                         response.get(key) is JSONObject -> {
-                            appendSb("\"$key\":{", false)
-                            printFormatJson(TagName, response.get(key) as JSONObject)
+                            appendSb(
+                                "\"$key\":{",
+                                false
+                            )
+                            printFormatJson(
+                                TagName,
+                                response.get(key) as JSONObject
+                            )
                             val isEndValue = jsonObject.hasNext()//判断是否还有下一个元素
                             appendSb("  }", isEndValue)
 
                         }
 
                         response.get(key) is JSONArray -> {
-                            appendSb("\"$key\":[", false)
-                            iteratorArray(TagName, response.get(key) as JSONArray)
+                            appendSb(
+                                "\"$key\":[",
+                                false
+                            )
+                            iteratorArray(
+                                TagName,
+                                response.get(key) as JSONArray
+                            )
                             val isEndValue = jsonObject.hasNext()//判断是否还有下一个元素
-                            appendSb(" " + " ]", isEndValue)
+                            appendSb(
+                                " " + " ]",
+                                isEndValue
+                            )
 
                         }
 
                         response.get(key) != null -> {
                             val isEndValue = jsonObject.hasNext()//判断是否还有下一个元素
-                            getTypeData(response, key, !isEndValue)
+                            getTypeData(
+                                response,
+                                key,
+                                !isEndValue
+                            )
                         }
                     }
                 }
@@ -237,7 +258,10 @@ class LogCat private constructor() {
             try {
                 if (response.get(key) is Int) {
                     val value = response.get(key) as Int
-                    appendSb("\t\"$key\":$value", !isEndValue)
+                    appendSb(
+                        "\t\"$key\":$value",
+                        !isEndValue
+                    )
 
                 } else if (response.get(key) is String || null == response.get(key) || TextUtils.equals(
                         "null",
@@ -247,41 +271,71 @@ class LogCat private constructor() {
                     if (response.get(key) is String) {
                         val value = response.get(key) as String
                         if (null == value) {
-                            appendSb("\t\"$key\":null", !isEndValue)
+                            appendSb(
+                                "\t\"$key\":null",
+                                !isEndValue
+                            )
                         } else {
-                            appendSb("\t\"$key\":\"$value\"", !isEndValue)
+                            appendSb(
+                                "\t\"$key\":\"$value\"",
+                                !isEndValue
+                            )
                         }
                     } else if (TextUtils.equals("null", response.get(key).toString())) {
-                        appendSb("\t\"$key\":null", !isEndValue)
+                        appendSb(
+                            "\t\"$key\":null",
+                            !isEndValue
+                        )
 
                     } else {
                         val value = response.get(key) as String
                         if (null == value) {
-                            appendSb("\t\"$key\":null", !isEndValue)
+                            appendSb(
+                                "\t\"$key\":null",
+                                !isEndValue
+                            )
 
                         } else {
-                            appendSb("\t\"$key\":\"$value\"", !isEndValue)
+                            appendSb(
+                                "\t\"$key\":\"$value\"",
+                                !isEndValue
+                            )
                         }
                     }
                 } else if (response.get(key) is Float) {
                     val value = response.get(key) as Float
-                    appendSb("\t\"$key\":\"$value\"", !isEndValue)
+                    appendSb(
+                        "\t\"$key\":\"$value\"",
+                        !isEndValue
+                    )
 
                 } else if (response.get(key) is Double) {
                     val value = response.get(key) as Double
-                    appendSb("\t\"$key\":\"$value\"", !isEndValue)
+                    appendSb(
+                        "\t\"$key\":\"$value\"",
+                        !isEndValue
+                    )
 
                 } else if (response.get(key) is Boolean) {
                     val value = response.get(key) as Boolean
-                    appendSb("\t\"$key\":\"$value\"", !isEndValue)
+                    appendSb(
+                        "\t\"$key\":\"$value\"",
+                        !isEndValue
+                    )
 
                 } else if (response.get(key) is Char) {
                     val value = response.get(key) as Char
-                    appendSb("\t\"$key\":\"$value\"", !isEndValue)
+                    appendSb(
+                        "\t\"$key\":\"$value\"",
+                        !isEndValue
+                    )
 
                 } else if (response.get(key) is Long) {
                     val value = response.get(key) as Long
-                    appendSb("\t\"$key\":\"$value\"", !isEndValue)
+                    appendSb(
+                        "\t\"$key\":\"$value\"",
+                        !isEndValue
+                    )
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()
@@ -302,17 +356,25 @@ class LogCat private constructor() {
                 for (i in 0 until response.length()) {
                     if (response.get(i) is JSONObject) {
                         appendSb("{", false)
-                        printFormatJson(TagName, response.get(i) as JSONObject)
-                        appendSb("  }", response.length() > i + 1)
+                        printFormatJson(
+                            TagName,
+                            response.get(i) as JSONObject
+                        )
+                        appendSb(
+                            "  }",
+                            response.length() > i + 1
+                        )
 
                     } else if (response.get(i) is JSONArray) {
-                        iteratorArray(TagName, response.get(i) as JSONArray)
+                        iteratorArray(
+                            TagName,
+                            response.get(i) as JSONArray
+                        )
                     }
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
-
         }
 
         /**
@@ -338,6 +400,7 @@ class LogCat private constructor() {
             var temp = content
             val max = 3900
             val length = temp.length.toLong()
+
             if (length < max || length == max.toLong()) {
                 i(tagName, temp)
             } else {

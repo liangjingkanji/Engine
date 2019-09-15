@@ -10,7 +10,6 @@ package com.drake.engine.component.net
 import com.drake.engine.base.getApp
 import com.drake.engine.component.net.exception.ResponseException
 import com.yanzhenjie.kalle.Kalle
-import com.yanzhenjie.kalle.KalleConfig
 import com.yanzhenjie.kalle.download.UrlDownload
 import com.yanzhenjie.kalle.simple.SimpleBodyRequest
 import com.yanzhenjie.kalle.simple.SimpleUrlRequest
@@ -34,7 +33,7 @@ inline fun <reified M> get(
 
     return Observable.create<M> {
         try {
-            val get = Kalle.get(if (isAbsolutePath) path else (Net.HOST + path))
+            val get = Kalle.get(if (isAbsolutePath) path else (NetConfig.HOST + path))
             val response = if (block == null) {
                 get.perform(M::class.java, String::class.java)
             } else {
@@ -74,7 +73,7 @@ inline fun <reified M> post(
 
     return Observable.create<M> {
         try {
-            val post = Kalle.post(if (isAbsolutePath) path else (Net.HOST + path))
+            val post = Kalle.post(if (isAbsolutePath) path else (NetConfig.HOST + path))
             val response = if (block == null) {
                 post.perform<M, String>(M::class.java, String::class.java)
             } else {
@@ -117,7 +116,7 @@ fun download(
 
     return Observable.create<String> {
         try {
-            val download = Kalle.Download.get(if (isAbsolutePath) path else (Net.HOST + path))
+            val download = Kalle.Download.get(if (isAbsolutePath) path else (NetConfig.HOST + path))
                 .directory(directory)
 
             val filePath = if (block == null) {
@@ -139,13 +138,3 @@ fun download(
 }
 
 
-object Net {
-
-    var HOST: String = ""
-
-    fun setConfig(block: KalleConfig.Builder.() -> Unit) {
-        val builder = KalleConfig.newBuilder()
-        builder.block()
-        Kalle.setConfig(builder.build())
-    }
-}

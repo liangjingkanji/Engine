@@ -8,15 +8,15 @@
 package com.drake.engine.component.databinding
 
 import android.annotation.SuppressLint
+import android.text.TextUtils
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.drake.engine.utils.DateUtils
 import com.drake.engine.utils.format
 
 
-/**
- * 给TextView设置软妹币
- */
+// <editor-fold desc="人民币">
+
 @SuppressLint("SetTextI18n")
 @BindingAdapter("rmb")
 fun TextView.setRMB(number: String?) {
@@ -48,63 +48,44 @@ fun TextView.setRMB(number: Long) {
         text = format
 }
 
-/**
- * 格式化数字(Ceil)
- * 默认保留两位小数
- */
-@SuppressLint("SetTextI18n")
-@BindingAdapter(value = ["format", "prefix", "postfix"], requireAll = false)
-fun TextView.setFormatNumber(number: Double?, prefix: String = "", postfix: String = "") {
-    val format = "$prefix${number.format()}$postfix"
-    if (format != text.toString())
-        text = format
-}
+// </editor-fold>
 
-@SuppressLint("SetTextI18n")
-@BindingAdapter(value = ["format", "prefix", "postfix"], requireAll = false)
-fun TextView.setFormatNumber(number: Long?, prefix: String = "", postfix: String = "") {
-    val format = "$prefix${number.format()}$postfix"
-    if (format != text.toString())
-        text = format
-}
+// <editor-fold desc="前缀后缀">
 
 /**
  * 格式化数字(Ceil)
  * 默认保留两位小数
  */
+
 @SuppressLint("SetTextI18n")
 @BindingAdapter(value = ["format", "prefix", "postfix"], requireAll = false)
-fun TextView.formatNumber(number: String?, prefix: String = "", postfix: String = "") {
+fun TextView.setPrefixPostFix(number: Double?, prefix: String = "", postfix: String = "") {
     val format = "$prefix${number.format()}$postfix"
     if (format != text.toString())
         text = format
 }
 
-/**
- * 隐藏手机号码
- */
-@BindingAdapter("hiddenTel")
-fun TextView.setHiddenTel(str: String?) {
-    if (str.isNullOrEmpty()) {
-        return
-    }
-    val spitText = str.substring(0, 3) + "****" + str.substring(7)
-    text = spitText
+@SuppressLint("SetTextI18n")
+@BindingAdapter(value = ["format", "prefix", "postfix"], requireAll = false)
+fun TextView.setPrefixPostFix(number: Long?, prefix: String = "", postfix: String = "") {
+    val format = "$prefix${number.format()}$postfix"
+    if (format != text.toString())
+        text = format
 }
 
-/**
- * 隐藏的身份证号码
- */
-@BindingAdapter("hiddenIdCard")
-fun TextView.setHiddenIdCard(str: String?) {
-    if (str.isNullOrEmpty() && text.toString() == str) {
-        return
-    }
 
-    val result = str!!.substring(0, 3) + "********" + text.substring(5)
-    text = result
+@SuppressLint("SetTextI18n")
+@BindingAdapter(value = ["format", "prefix", "postfix"], requireAll = false)
+fun TextView.setPrefixPostFix(number: String?, prefix: String = "", postfix: String = "") {
+    val format = "$prefix${number.format()}$postfix"
+    if (format != text.toString())
+        text = format
 }
 
+// </editor-fold>
+
+
+// <editor-fold desc="时间">
 
 @BindingAdapter(value = ["dateMilli", "dateFormat"], requireAll = false)
 fun TextView.setDateFromMillis(milli: Long, format: String) {
@@ -118,6 +99,7 @@ fun TextView.setDateFromMillis(milli: Long, format: String) {
 
     text = formatText
 }
+
 
 /**
  * 根据毫秒值来显示时间
@@ -134,3 +116,39 @@ fun TextView.setDateFromMillis(milli: String?, format: String) {
 
     text = formatText
 }
+
+@BindingAdapter(value = ["dateSecond", "dateFormat"], requireAll = false)
+fun TextView.setDateFromSecond(second: Long, format: String) {
+    var temp = format
+    if (TextUtils.isEmpty(temp)) {
+        temp = "yyyy-MM-dd"
+    }
+
+    val formatText = DateUtils.formatDate(second * 1000, temp)
+
+    val oldText = text.toString()
+    if (second == 0L || formatText == oldText) {
+        return
+    }
+    text = formatText
+}
+
+@BindingAdapter(value = ["dateSecond", "dateFormat"], requireAll = false)
+fun TextView.setDateFromSecond(second: String, format: String) {
+    var temp = format
+
+    if (TextUtils.isEmpty(temp)) {
+        temp = "yyyy-MM-dd"
+    }
+
+    val formatText = DateUtils.formatDate(java.lang.Long.parseLong(second) * 1000, temp)
+
+    val oldText = text.toString()
+
+    if (TextUtils.isEmpty(second) || formatText == oldText) {
+        return
+    }
+    text = formatText
+}
+
+// </editor-fold>

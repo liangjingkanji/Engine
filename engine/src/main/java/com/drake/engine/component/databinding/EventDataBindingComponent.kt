@@ -10,68 +10,60 @@ package com.drake.engine.component.databinding
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContextWrapper
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
+import android.os.Build
 import android.view.View
-import android.view.View.OnClickListener
 import androidx.databinding.BindingAdapter
+import com.drake.engine.widget.SmoothCheckBox
 import com.jakewharton.rxbinding3.view.clicks
 import java.util.concurrent.TimeUnit
 
-/**
- * 针对事件处理组件
- */
 
 // <editor-fold desc="状态">
 
-/**
- * 设置当前的View不可用状态
- */
 @BindingAdapter("enable")
-fun View.setViewEnable(enable: Boolean) {
+fun View.setEnableBind(enable: Boolean) {
     isEnabled = enable
 }
 
-@BindingAdapter("selected")
-fun View.setViewSelected(selected: Boolean) {
-    isSelected = selected
-}
-
-/**
- * 如果传入对象不为null则激活
- */
 @BindingAdapter("enable")
-fun View.setViewEnable(enable: Any?) {
+fun View.setEnableBind(enable: Any?) {
     isEnabled = enable != null
 }
 
 @BindingAdapter("selected")
-fun View.setViewSelected(selected: Any?) {
+fun View.setSelectedBind(selected: Boolean) {
+    isSelected = selected
+}
+
+@BindingAdapter("selected")
+fun View.setSelectedBind(selected: Any?) {
     isSelected = selected != null
 }
 
 
-/**
- * 设置激活状态
- *
- * @param activated 根据布尔类型来判断是否激活
- */
 @BindingAdapter("activated")
-fun View.setViewActivated(activated: Boolean) {
+fun View.setActivatedBind(activated: Boolean) {
     isActivated = activated
 }
 
-/**
- * 设置激活状态
- *
- * @param activated 如果对象不为null则激活
- */
+
 @BindingAdapter("activated")
-fun View.setViewActivated(activated: Any?) {
+fun View.setActivatedBind(activated: Any?) {
     isActivated = activated != null
 }
 
+@BindingAdapter("checked")
+fun SmoothCheckBox.setCheckedBind(checked: Boolean) {
+    this.isChecked = checked
+}
+
+@BindingAdapter("checked")
+fun SmoothCheckBox.setCheckedBind(checked: Any?) {
+    this.isChecked = checked != null
+}
+
 // </editor-fold>
+
 
 // <editor-fold desc="点击事件">
 
@@ -80,7 +72,7 @@ fun View.setViewActivated(activated: Any?) {
  */
 @SuppressLint("CheckResult")
 @BindingAdapter("click")
-fun View.setPreventClickListener(onClickListener: OnClickListener?) {
+fun View.setPreventClickListener(onClickListener: View.OnClickListener?) {
     if (onClickListener != null) {
         clicks()
             .throttleFirst(500, TimeUnit.MILLISECONDS)
@@ -95,12 +87,12 @@ fun View.setPreventClickListener(onClickListener: OnClickListener?) {
  */
 @SuppressLint("CheckResult")
 @BindingAdapter("hit")
-fun View.hitView(isPrevent: Boolean) {
+fun View.hit(isPrevent: Boolean = true) {
     var context = context
 
     while (context is ContextWrapper) {
-        if (context is OnClickListener) {
-            val clickListener = context as OnClickListener
+        if (context is View.OnClickListener) {
+            val clickListener = context as View.OnClickListener
 
             val observable = clicks()
 
@@ -115,16 +107,15 @@ fun View.hitView(isPrevent: Boolean) {
 }
 
 
-
 /**
  * 关闭当前界面
  *
- * @param isFinish 是否启用
+ * @param enabled 是否启用
  */
 @SuppressLint("CheckResult")
 @BindingAdapter("finish")
-fun View.finishCurrentActivity(isFinish: Boolean) {
-    if (isFinish) {
+fun View.finishActivity(enabled: Boolean = true) {
+    if (enabled) {
         var temp = context
         var activity: Activity? = null
 
@@ -138,7 +129,7 @@ fun View.finishCurrentActivity(isFinish: Boolean) {
         val finalActivity = activity
 
         clicks().throttleFirst(500, TimeUnit.MILLISECONDS).subscribe {
-            if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 finalActivity!!.finishAfterTransition()
             } else {
                 finalActivity!!.finish()
@@ -148,4 +139,5 @@ fun View.finishCurrentActivity(isFinish: Boolean) {
 }
 
 // </editor-fold>
+
 

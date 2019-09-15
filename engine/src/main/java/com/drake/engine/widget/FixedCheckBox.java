@@ -10,21 +10,24 @@ package com.drake.engine.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 
+/**
+ * 不会手势触发选择状态的复选框
+ */
 public class FixedCheckBox extends androidx.appcompat.widget.AppCompatCheckBox {
 
-  public FixedCheckBox(Context context) {
-    super(context);
-  }
+    public FixedCheckBox(Context context) {
+        super(context);
+    }
 
-  public FixedCheckBox(Context context, AttributeSet attrs) {
-    super(context, attrs);
-  }
+    public FixedCheckBox(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
-  public FixedCheckBox(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
-  }
+    public FixedCheckBox(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
 
-  @Override
-  public void toggle() {
-  }
+    @Override
+    public void toggle() {
+    }
 }

@@ -65,12 +65,12 @@ dependencies {
 
     api 'androidx.core:core-ktx:1.2.0-alpha04'
     api 'androidx.appcompat:appcompat:1.1.0'
-
-    api 'org.jetbrains.anko:anko-commons:0.10.8'
     api 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
     api 'androidx.legacy:legacy-support-v4:1.0.0'
     api 'androidx.cardview:cardview:1.0.0'
     api 'com.google.android.material:material:1.0.0'
+
+    api 'org.jetbrains.anko:anko-commons:0.10.8'
     api 'com.youth.banner:banner:1.4.10'
     api 'com.gongwen:marqueelibrary:1.1.3'
     api 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'

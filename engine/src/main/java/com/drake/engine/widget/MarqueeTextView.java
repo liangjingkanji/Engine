@@ -11,31 +11,34 @@ import android.content.Context;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 
+/**
+ * 跑马灯效果
+ */
 public class MarqueeTextView extends androidx.appcompat.widget.AppCompatTextView {
 
-  public MarqueeTextView(Context context) {
-    super(context);
-  }
+    public MarqueeTextView(Context context) {
+        super(context);
+    }
 
-  public MarqueeTextView(Context context, AttributeSet attrs) {
-    super(context, attrs);
-  }
+    public MarqueeTextView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
-  public MarqueeTextView(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
-  }
+    public MarqueeTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
 
-  @Override
-  protected void onFinishInflate() {
-    super.onFinishInflate();
-    setEllipsize(TruncateAt.MARQUEE);
-    setSingleLine(true);
-  }
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        setEllipsize(TruncateAt.MARQUEE);
+        setSingleLine(true);
+    }
 
-  @Override
-  public boolean isFocused() {
-    return true;
-  }
+    @Override
+    public boolean isFocused() {
+        return true;
+    }
 
 
 }
