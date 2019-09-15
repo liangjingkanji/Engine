@@ -94,7 +94,7 @@ fun View.setPreventClickListener(onClickListener: OnClickListener?) {
  * @param isPrevent 是否只支持快速点击
  */
 @SuppressLint("CheckResult")
-@BindingAdapter("app:hit")
+@BindingAdapter("hit")
 fun View.hitView(isPrevent: Boolean) {
     var context = context
 
@@ -114,64 +114,6 @@ fun View.hitView(isPrevent: Boolean) {
     }
 }
 
-
-class EventDataBindingComponent {
-    companion object {
-        /**
-         * 自动将点击事件映射到Activity上
-         *
-         * @param isPrevent 是否只支持快速点击
-         */
-        @JvmStatic
-        @SuppressLint("CheckResult")
-        @BindingAdapter("android:hit")
-        fun View.setHitView(isPrevent: Boolean) {
-            var context = context
-
-            while (context is ContextWrapper) {
-                if (context is OnClickListener) {
-                    val clickListener = context as OnClickListener
-
-                    val observable = clicks()
-
-                    if (isPrevent) {
-                        observable.throttleFirst(500, TimeUnit.MILLISECONDS)
-                    }
-
-                    observable.subscribe { clickListener.onClick(this) }
-                }
-                context = context.baseContext
-            }
-        }
-    }
-}
-
-
-/**
- * 自动将点击事件映射到Activity上
- *
- * @param isPrevent 是否只支持快速点击
- */
-@SuppressLint("CheckResult")
-@BindingAdapter("app:hit")
-fun View.setHitView(isPrevent: Boolean) {
-    var context = context
-
-    while (context is ContextWrapper) {
-        if (context is OnClickListener) {
-            val clickListener = context as OnClickListener
-
-            val observable = clicks()
-
-            if (isPrevent) {
-                observable.throttleFirst(500, TimeUnit.MILLISECONDS)
-            }
-
-            observable.subscribe { clickListener.onClick(this) }
-        }
-        context = context.baseContext
-    }
-}
 
 
 /**
