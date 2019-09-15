@@ -9,12 +9,10 @@ package com.drake.engine.base
 
 import android.app.Dialog
 import android.content.Context
-import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.FragmentActivity
 import com.drake.engine.component.databinding.inflate
 
 abstract class EngineDialog<B : ViewDataBinding>(context: Context) : Dialog(context),
@@ -25,25 +23,19 @@ abstract class EngineDialog<B : ViewDataBinding>(context: Context) : Dialog(cont
     override fun onClick(v: View) {
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        init(savedInstanceState)
-    }
-
-
-    protected abstract fun initView(savedInstanceState: Bundle?)
+    protected abstract fun initView()
 
     protected abstract fun initData()
 
     override fun setContentView(layoutResID: Int) {
-
         binding = context.inflate(layoutResID)
         setContentView(binding.root)
+        init()
     }
 
-    open fun init(savedInstanceState: Bundle?) {
+    open fun init() {
         try {
-            initView(savedInstanceState)
+            initView()
             initData()
         } catch (e: Exception) {
             Log.e("日志", "初始化失败")
