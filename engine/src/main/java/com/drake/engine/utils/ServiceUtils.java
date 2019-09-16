@@ -13,12 +13,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 
-import com.drake.engine.base.Engine;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.drake.engine.base.EngineKt.App;
 
 /**
  * <pre>
@@ -41,8 +41,7 @@ public final class ServiceUtils {
    */
   public static Set getAllRunningServices() {
     ActivityManager am =
-            (ActivityManager) Engine.INSTANCE.App
-                    .getSystemService(Context.ACTIVITY_SERVICE);
+            (ActivityManager) App.getSystemService(Context.ACTIVITY_SERVICE);
     if (am == null) {
       return Collections.emptySet();
     }
@@ -76,9 +75,8 @@ public final class ServiceUtils {
    * @param cls The service class.
    */
   public static void startService(final Class<?> cls) {
-      Intent intent = new Intent(Engine.INSTANCE.App, cls);
-      Engine.INSTANCE.App
-            .startService(intent);
+    Intent intent = new Intent(App, cls);
+    App.startService(intent);
   }
 
   /**
@@ -103,9 +101,8 @@ public final class ServiceUtils {
    * @return {@code true}: success<br>{@code false}: fail
    */
   public static boolean stopService(final Class<?> cls) {
-      Intent intent = new Intent(Engine.INSTANCE.App, cls);
-      return Engine.INSTANCE.App
-            .stopService(intent);
+    Intent intent = new Intent(App, cls);
+    return App.stopService(intent);
   }
 
   /**
@@ -141,9 +138,8 @@ public final class ServiceUtils {
   public static void bindService(final Class<?> cls,
                                  final ServiceConnection conn,
                                  final int flags) {
-      Intent intent = new Intent(Engine.INSTANCE.App, cls);
-      Engine.INSTANCE.App
-            .bindService(intent, conn, flags);
+    Intent intent = new Intent(App, cls);
+    App.bindService(intent, conn, flags);
   }
 
   /**
@@ -152,8 +148,7 @@ public final class ServiceUtils {
    * @param conn The ServiceConnection object.
    */
   public static void unbindService(final ServiceConnection conn) {
-      Engine.INSTANCE.App
-            .unbindService(conn);
+    App.unbindService(conn);
   }
 
   /**
@@ -174,8 +169,7 @@ public final class ServiceUtils {
    */
   public static boolean isServiceRunning(final String className) {
     ActivityManager am =
-            (ActivityManager) Engine.INSTANCE.App
-                    .getSystemService(Context.ACTIVITY_SERVICE);
+            (ActivityManager) App.getSystemService(Context.ACTIVITY_SERVICE);
     if (am == null) {
       return false;
     }

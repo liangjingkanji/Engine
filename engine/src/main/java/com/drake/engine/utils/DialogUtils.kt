@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.drake.brv.BindingAdapter
 import com.drake.brv.utils.setup
-import com.drake.engine.base.getApp
+import com.drake.engine.base.App
 import org.jetbrains.anko.dip
 
 /**

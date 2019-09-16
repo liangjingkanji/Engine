@@ -29,7 +29,6 @@ import android.util.Xml;
 
 import androidx.core.app.ActivityCompat;
 
-import com.drake.engine.base.Engine;
 
 import org.xmlpull.v1.XmlSerializer;
 
@@ -45,6 +44,7 @@ import java.util.List;
 
 import static android.content.Context.TELEPHONY_SERVICE;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.drake.engine.base.EngineKt.App;
 
 public class PhoneUtils {
 
@@ -93,7 +93,7 @@ public class PhoneUtils {
    * 生成设备唯一标识：IMEI、AndroidId、macAddress 三者拼接再 MD5
    */
   public static String getUniqueDeviceID2MD5() {
-      Context context = Engine.INSTANCE.App;
+    Context context = App;
     String imei = "";
     String androidId = "";
     String macAddress = "";
@@ -137,7 +137,7 @@ public class PhoneUtils {
    * 是否联网
    */
   public static boolean isNetworkConnected() {
-      Context context = Engine.INSTANCE.App;
+    Context context = App;
     if (context != null) {
       ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(
               Context.CONNECTIVITY_SERVICE);
@@ -166,8 +166,7 @@ public class PhoneUtils {
    * @return {@code true}: 是<br>{@code false}: 否
    */
   public static boolean isPhone() {
-      TelephonyManager tm = (TelephonyManager) Engine.INSTANCE.App
-            .getSystemService(Context.TELEPHONY_SERVICE);
+    TelephonyManager tm = (TelephonyManager) App.getSystemService(Context.TELEPHONY_SERVICE);
     return tm != null && tm.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE;
   }
 
@@ -179,8 +178,7 @@ public class PhoneUtils {
    */
   @SuppressLint("HardwareIds")
   public static String getIMEI() {
-      TelephonyManager tm = (TelephonyManager) Engine.INSTANCE.App
-            .getSystemService(Context.TELEPHONY_SERVICE);
+    TelephonyManager tm = (TelephonyManager) App.getSystemService(Context.TELEPHONY_SERVICE);
     return tm != null ? tm.getDeviceId() : null;
   }
 
@@ -192,8 +190,7 @@ public class PhoneUtils {
    */
   @SuppressLint("HardwareIds")
   public static String getIMSI() {
-      TelephonyManager tm = (TelephonyManager) Engine.INSTANCE.App
-            .getSystemService(Context.TELEPHONY_SERVICE);
+    TelephonyManager tm = (TelephonyManager) App.getSystemService(Context.TELEPHONY_SERVICE);
     return tm != null ? tm.getSubscriberId() : null;
   }
 
@@ -206,8 +203,7 @@ public class PhoneUtils {
    * TelephonyManager#PHONE_TYPE_SIP  } : 3</li> </ul>
    */
   public static int getPhoneType() {
-      TelephonyManager tm = (TelephonyManager) Engine.INSTANCE.App
-            .getSystemService(Context.TELEPHONY_SERVICE);
+    TelephonyManager tm = (TelephonyManager) App.getSystemService(Context.TELEPHONY_SERVICE);
     return tm != null ? tm.getPhoneType() : -1;
   }
 
@@ -217,8 +213,7 @@ public class PhoneUtils {
    * @return {@code true}: 是<br>{@code false}: 否
    */
   public static boolean isSimCardReady() {
-      TelephonyManager tm = (TelephonyManager) Engine.INSTANCE.App
-            .getSystemService(Context.TELEPHONY_SERVICE);
+    TelephonyManager tm = (TelephonyManager) App.getSystemService(Context.TELEPHONY_SERVICE);
     return tm != null && tm.getSimState() == TelephonyManager.SIM_STATE_READY;
   }
 
@@ -229,8 +224,7 @@ public class PhoneUtils {
    * @return sim卡运营商名称
    */
   public static String getSimOperatorName() {
-      TelephonyManager tm = (TelephonyManager) Engine.INSTANCE.App
-            .getSystemService(Context.TELEPHONY_SERVICE);
+    TelephonyManager tm = (TelephonyManager) App.getSystemService(Context.TELEPHONY_SERVICE);
     return tm != null ? tm.getSimOperatorName() : null;
   }
 
@@ -241,8 +235,7 @@ public class PhoneUtils {
    * @return 移动网络运营商名称
    */
   public static String getSimOperatorByMnc() {
-      TelephonyManager tm = (TelephonyManager) Engine.INSTANCE.App
-            .getSystemService(Context.TELEPHONY_SERVICE);
+    TelephonyManager tm = (TelephonyManager) App.getSystemService(Context.TELEPHONY_SERVICE);
     String operator = tm != null ? tm.getSimOperator() : null;
     if (operator == null) {
       return null;
@@ -272,8 +265,7 @@ public class PhoneUtils {
    * SubscriberId(IMSI) = 460030419724900<br> VoiceMailNumber = *86<br>
    */
   public static String getPhoneStatus() {
-      TelephonyManager tm = (TelephonyManager) Engine.INSTANCE.App
-            .getSystemService(Context.TELEPHONY_SERVICE);
+    TelephonyManager tm = (TelephonyManager) App.getSystemService(Context.TELEPHONY_SERVICE);
     String str = "";
     str += "DeviceId(IMEI) = " + tm.getDeviceId() + "\n";
     str += "DeviceSoftwareVersion = " + tm.getDeviceSoftwareVersion() + "\n";
@@ -299,8 +291,7 @@ public class PhoneUtils {
    * @param phoneNumber 电话号码
    */
   public static void dial(String phoneNumber) {
-      Engine.INSTANCE.App
-            .startActivity(IntentUtils.getDialIntent(phoneNumber).addFlags(FLAG_ACTIVITY_NEW_TASK));
+    App.startActivity(IntentUtils.getDialIntent(phoneNumber).addFlags(FLAG_ACTIVITY_NEW_TASK));
   }
 
   /**
@@ -310,7 +301,7 @@ public class PhoneUtils {
    * @param phoneNumber 电话号码
    */
   public static void call(String phoneNumber) {
-      Engine.INSTANCE.App.startActivity(IntentUtils.getCallIntent(phoneNumber));
+    App.startActivity(IntentUtils.getCallIntent(phoneNumber));
   }
 
   /**
@@ -320,7 +311,7 @@ public class PhoneUtils {
    * @param content     短信内容
    */
   public static void sendSms(String phoneNumber, String content) {
-      Engine.INSTANCE.App.startActivity(IntentUtils.getSendSmsIntent(phoneNumber, content));
+    App.startActivity(IntentUtils.getSendSmsIntent(phoneNumber, content));
   }
 
   /**
@@ -334,7 +325,7 @@ public class PhoneUtils {
     if (TextUtils.isEmpty(content)) {
       return;
     }
-      PendingIntent sentIntent = PendingIntent.getBroadcast(Engine.INSTANCE.App, 0, new Intent(), 0);
+    PendingIntent sentIntent = PendingIntent.getBroadcast(App, 0, new Intent(), 0);
     SmsManager smsManager = SmsManager.getDefault();
     if (content.length() >= 70) {
       List<String> ms = smsManager.divideMessage(content);
@@ -357,7 +348,7 @@ public class PhoneUtils {
     SystemClock.sleep(3000);
     ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
     // 1.获取内容解析者
-      ContentResolver resolver = Engine.INSTANCE.App.getContentResolver();
+    ContentResolver resolver = App.getContentResolver();
     // 2.获取内容提供者的地址:com.android.contacts
     // raw_contacts表的地址 :raw_contacts
     // view_data表的地址 : data
@@ -451,7 +442,7 @@ public class PhoneUtils {
   public static void getAllSMS() {
     // 1.获取短信
     // 1.1获取内容解析者
-      ContentResolver resolver = Engine.INSTANCE.App.getContentResolver();
+    ContentResolver resolver = App.getContentResolver();
     // 1.2获取内容提供者地址   sms,sms表的地址:null  不写
     // 1.3获取查询路径
     Uri uri = Uri.parse("content://sms");

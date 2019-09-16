@@ -86,9 +86,9 @@ dependencies {
     api 'com.jakewharton.rxbinding3:rxbinding-viewpager:3.0.0-alpha2'
     api 'com.jakewharton.rxbinding3:rxbinding-material:3.0.0-alpha2'
     api 'com.hwangjr.rxbus:rxbus:1.0.6'
-    api 'com.uber.autodispose:autodispose-ktx:1.2.0'
-    api 'com.uber.autodispose:autodispose-android-ktx:1.2.0'
-    api 'com.uber.autodispose:autodispose-android-archcomponents-ktx:1.2.0'
+//    api 'com.uber.autodispose:autodispose-ktx:1.2.0'
+//    api 'com.uber.autodispose:autodispose-android-ktx:1.2.0'
+//    api 'com.uber.autodispose:autodispose-android-archcomponents-ktx:1.2.0'
 
     api 'com.github.bumptech.glide:glide:4.9.0'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
@@ -100,7 +100,7 @@ dependencies {
     api 'com.github.liangjingkanji:BRV:1.0.5'
     api 'com.github.liangjingkanji:StatusBar:1.0.2'
     api 'com.github.liangjingkanji:debugkit:1.2.5'
-    api 'com.github.liangjingkanji:Net:1.0'
+    api 'com.github.liangjingkanji:Net:1.1'
 
 
 }

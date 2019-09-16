@@ -9,9 +9,9 @@ package com.drake.engine.utils;
 
 import android.os.Environment;
 
-import com.drake.engine.base.Engine;
-
 import java.io.File;
+
+import static com.drake.engine.base.EngineKt.App;
 
 
 public final class CleanUtils {
@@ -27,8 +27,7 @@ public final class CleanUtils {
    * @return {@code true}: success<br>{@code false}: fail
    */
   public static boolean cleanInternalCache() {
-      return deleteFilesInDir(Engine.INSTANCE.App
-            .getCacheDir());
+    return deleteFilesInDir(App.getCacheDir());
   }
 
   /**
@@ -38,8 +37,7 @@ public final class CleanUtils {
    * @return {@code true}: success<br>{@code false}: fail
    */
   public static boolean cleanInternalFiles() {
-      return deleteFilesInDir(Engine.INSTANCE.App
-            .getFilesDir());
+    return deleteFilesInDir(App.getFilesDir());
   }
 
   /**
@@ -49,8 +47,7 @@ public final class CleanUtils {
    * @return {@code true}: success<br>{@code false}: fail
    */
   public static boolean cleanInternalDbs() {
-      return deleteFilesInDir(new File(Engine.INSTANCE.App
-            .getFilesDir()
+    return deleteFilesInDir(new File(App.getFilesDir()
             .getParent(), "databases"));
   }
 
@@ -62,8 +59,7 @@ public final class CleanUtils {
    * @return {@code true}: success<br>{@code false}: fail
    */
   public static boolean cleanInternalDbByName(final String dbName) {
-      return Engine.INSTANCE.App
-            .deleteDatabase(dbName);
+    return App.deleteDatabase(dbName);
   }
 
   /**
@@ -73,8 +69,7 @@ public final class CleanUtils {
    * @return {@code true}: success<br>{@code false}: fail
    */
   public static boolean cleanInternalSp() {
-      return deleteFilesInDir(new File(Engine.INSTANCE.App
-            .getFilesDir()
+    return deleteFilesInDir(new File(App.getFilesDir()
             .getParent(), "shared_prefs"));
   }
 
@@ -86,8 +81,7 @@ public final class CleanUtils {
    */
   public static boolean cleanExternalCache() {
     return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-            && deleteFilesInDir(Engine.INSTANCE.App
-            .getExternalCacheDir());
+            && deleteFilesInDir(App.getExternalCacheDir());
   }
 
   /**

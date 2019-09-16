@@ -44,8 +44,6 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
-import com.drake.engine.base.Engine;
-
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -55,6 +53,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import static com.drake.engine.base.EngineKt.App;
 
 /**
  * <pre>
@@ -137,8 +137,7 @@ public final class ImageUtils {
    * @return drawable
    */
   public static Drawable bitmap2Drawable(final Bitmap bitmap) {
-      return bitmap == null ? null : new BitmapDrawable(Engine.INSTANCE.App
-            .getResources(), bitmap);
+    return bitmap == null ? null : new BitmapDrawable(App.getResources(), bitmap);
   }
 
   /**
@@ -326,7 +325,7 @@ public final class ImageUtils {
    * @return bitmap
    */
   public static Bitmap getBitmap(@DrawableRes final int resId) {
-      Drawable drawable = ContextCompat.getDrawable(Engine.INSTANCE.App, resId);
+    Drawable drawable = ContextCompat.getDrawable(App, resId);
     Canvas canvas = new Canvas();
     Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
             drawable.getIntrinsicHeight(),
@@ -349,8 +348,7 @@ public final class ImageUtils {
                                  final int maxWidth,
                                  final int maxHeight) {
     BitmapFactory.Options options = new BitmapFactory.Options();
-      final Resources resources = Engine.INSTANCE.App
-            .getResources();
+    final Resources resources = App.getResources();
     options.inJustDecodeBounds = true;
     BitmapFactory.decodeResource(resources, resId, options);
     options.inSampleSize = calculateInSampleSize(options, maxWidth, maxHeight);
@@ -1290,7 +1288,7 @@ public final class ImageUtils {
     RenderScript rs = null;
     Bitmap ret = recycle ? src : src.copy(src.getConfig(), true);
     try {
-        rs = RenderScript.create(Engine.INSTANCE.App);
+      rs = RenderScript.create(App);
       rs.setMessageHandler(new RenderScript.RSMessageHandler());
       Allocation input = Allocation.createFromBitmap(rs,
               ret,

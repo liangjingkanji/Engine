@@ -11,7 +11,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import com.drake.engine.base.getApp
+import com.drake.engine.base.App
 import org.jetbrains.anko.dip
 import java.util.*
 

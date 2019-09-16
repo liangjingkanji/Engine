@@ -17,14 +17,14 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import com.drake.engine.base.Engine;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+
+import static com.drake.engine.base.EngineKt.App;
 
 /**
  * <pre>
@@ -517,8 +517,7 @@ public final class ConvertUtils {
    * @return drawable
    */
   public static Drawable bitmap2Drawable(final Bitmap bitmap) {
-      return bitmap == null ? null : new BitmapDrawable(Engine.INSTANCE.App
-            .getResources(), bitmap);
+    return bitmap == null ? null : new BitmapDrawable(App.getResources(), bitmap);
   }
 
   /**
@@ -573,8 +572,7 @@ public final class ConvertUtils {
    * @return value of px
    */
   public static int dp2px(final float dpValue) {
-      final float scale = Engine.INSTANCE.App
-            .getResources()
+    final float scale = App.getResources()
             .getDisplayMetrics().density;
     return (int) (dpValue * scale + 0.5f);
   }
@@ -586,8 +584,7 @@ public final class ConvertUtils {
    * @return value of dp
    */
   public static int px2dp(final float pxValue) {
-      final float scale = Engine.INSTANCE.App
-            .getResources()
+    final float scale = App.getResources()
             .getDisplayMetrics().density;
     return (int) (pxValue / scale + 0.5f);
   }
@@ -599,8 +596,7 @@ public final class ConvertUtils {
    * @return value of px
    */
   public static int sp2px(final float spValue) {
-      final float fontScale = Engine.INSTANCE.App
-            .getResources()
+    final float fontScale = App.getResources()
             .getDisplayMetrics().scaledDensity;
     return (int) (spValue * fontScale + 0.5f);
   }
@@ -612,8 +608,7 @@ public final class ConvertUtils {
    * @return value of sp
    */
   public static int px2sp(final float pxValue) {
-      final float fontScale = Engine.INSTANCE.App
-            .getResources()
+    final float fontScale = App.getResources()
             .getDisplayMetrics().scaledDensity;
     return (int) (pxValue / fontScale + 0.5f);
   }
