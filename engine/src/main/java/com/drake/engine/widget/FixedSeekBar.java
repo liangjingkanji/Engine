@@ -17,19 +17,19 @@ import android.view.MotionEvent;
 public class FixedSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
 
     public FixedSeekBar(Context context) {
-    super(context);
-  }
+        super(context);
+    }
 
     public FixedSeekBar(Context context, AttributeSet attrs) {
-    super(context, attrs);
-  }
+        super(context, attrs);
+    }
 
     public FixedSeekBar(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
-  }
+        super(context, attrs, defStyleAttr);
+    }
 
-  @Override
-  public boolean onTouchEvent(MotionEvent event) {
-    return false;
-  }
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return false;
+    }
 }

@@ -80,6 +80,16 @@ fun View.setPreventClickListener(onClickListener: View.OnClickListener?) {
     }
 }
 
+@BindingAdapter("fastClick")
+fun View.setFastClickListener(onClickListener: View.OnClickListener?) {
+    if (onClickListener != null) {
+        clicks()
+            .throttleFirst(500, TimeUnit.MILLISECONDS)
+            .subscribe { onClickListener.onClick(this) }
+    }
+}
+
+
 /**
  * 自动将点击事件映射到Activity上
  *
@@ -103,6 +113,25 @@ fun View.hit(isPrevent: Boolean = true) {
             observable.subscribe { clickListener.onClick(this) }
         }
         context = context.baseContext
+    }
+}
+
+
+object EventDataBindingComponent {
+
+    /**
+     * 在绑定视图时可以用于Model来处理UI, 由于破坏视图和逻辑解耦的规则不是很建议使用
+     * 这会导致不方便业务逻辑进行单元测试
+     *
+     * @see OnBindListener 该接口支持泛型定义具体视图
+     *
+     * @receiver View
+     * @param listener OnBindListener<View>
+     */
+    @JvmStatic
+    @BindingAdapter("onBind")
+    fun View.setView(listener: OnBindListener) {
+        listener.onBind(this)
     }
 }
 
@@ -141,3 +170,12 @@ fun View.finishActivity(enabled: Boolean = true) {
 // </editor-fold>
 
 
+/**
+ * 在绑定视图时可以用于Model来处理UI, 由于破坏视图和逻辑解耦的规则不是很建议使用
+ * 这会导致不方便业务逻辑进行单元测试
+ *
+ */
+interface OnBindListener {
+
+    fun onBind(v: View)
+}

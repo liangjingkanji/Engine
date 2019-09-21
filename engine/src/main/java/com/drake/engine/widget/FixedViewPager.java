@@ -18,21 +18,21 @@ import androidx.viewpager.widget.ViewPager;
  */
 public class FixedViewPager extends ViewPager {
 
-  public FixedViewPager(Context context) {
-    super(context);
-  }
+    public FixedViewPager(Context context) {
+        super(context);
+    }
 
-  public FixedViewPager(Context context, AttributeSet attrs) {
-    super(context, attrs);
-  }
+    public FixedViewPager(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
-  @Override
-  public boolean onInterceptTouchEvent(MotionEvent event) {
-    return false;
-  }
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        return false;
+    }
 
-  @Override
-  public boolean onTouchEvent(MotionEvent event) {
-    return false;
-  }
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return false;
+    }
 }

@@ -45,104 +45,104 @@ import com.drake.engine.component.span.lib.LinkTouchMovementMethod;
 public class TouchableSpanTextView extends androidx.appcompat.widget.AppCompatTextView
         implements ISpanTouchFix {
 
-  /**
-   * 记录当前 Touch 事件对应的点是不是点在了 span 上面
-   */
-  private boolean mTouchSpanHit;
+    /**
+     * 记录当前 Touch 事件对应的点是不是点在了 span 上面
+     */
+    private boolean mTouchSpanHit;
 
-  /**
-   * 记录每次真正传入的press，每次更改mTouchSpanHint，需要再调用一次setPressed，确保press状态正确
-   */
-  private boolean mIsPressedRecord = false;
-  /**
-   * TextView是否应该消耗事件
-   */
-  private boolean mNeedForceEventToParent = false;
+    /**
+     * 记录每次真正传入的press，每次更改mTouchSpanHint，需要再调用一次setPressed，确保press状态正确
+     */
+    private boolean mIsPressedRecord = false;
+    /**
+     * TextView是否应该消耗事件
+     */
+    private boolean mNeedForceEventToParent = false;
 
-  public TouchableSpanTextView(Context context) {
-    this(context, null);
-  }
-
-  public TouchableSpanTextView(Context context, AttributeSet attrs) {
-    this(context, attrs, 0);
-  }
-
-  public TouchableSpanTextView(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
-    setHighlightColor(Color.TRANSPARENT);
-  }
-
-  public void setNeedForceEventToParent(boolean needForceEventToParent) {
-    mNeedForceEventToParent = needForceEventToParent;
-    setFocusable(!needForceEventToParent);
-    setClickable(!needForceEventToParent);
-    setLongClickable(!needForceEventToParent);
-  }
-
-  /**
-   * 使用者主动调用
-   */
-  public void setMovementMethodDefault() {
-    setMovementMethodCompat(LinkTouchMovementMethod.getInstance());
-  }
-
-  public void setMovementMethodCompat(MovementMethod movement) {
-    setMovementMethod(movement);
-    if (mNeedForceEventToParent) {
-      setNeedForceEventToParent(true);
+    public TouchableSpanTextView(Context context) {
+        this(context, null);
     }
-  }
 
-  @Override
-  public boolean onTouchEvent(MotionEvent event) {
-    if (!(getText() instanceof Spannable)) {
-      return super.onTouchEvent(event);
+    public TouchableSpanTextView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
     }
-    mTouchSpanHit = true;
-    // 调用super.onTouchEvent,会走到QMUILinkTouchMovementMethod
-    // 会走到QMUILinkTouchMovementMethod#onTouchEvent会修改mTouchSpanHint
-    boolean ret = super.onTouchEvent(event);
-    if (mNeedForceEventToParent) {
-      return mTouchSpanHit;
-    }
-    return ret;
-  }
 
-  @SuppressWarnings("SimplifiableIfStatement")
-  @Override
-  public boolean performLongClick() {
-    if (!mTouchSpanHit && !mNeedForceEventToParent) {
-      return super.performLongClick();
+    public TouchableSpanTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        setHighlightColor(Color.TRANSPARENT);
     }
-    return false;
-  }
 
-  @Override
-  public void setTouchSpanHit(boolean hit) {
-    if (mTouchSpanHit != hit) {
-      mTouchSpanHit = hit;
-      setPressed(mIsPressedRecord);
+    public void setNeedForceEventToParent(boolean needForceEventToParent) {
+        mNeedForceEventToParent = needForceEventToParent;
+        setFocusable(!needForceEventToParent);
+        setClickable(!needForceEventToParent);
+        setLongClickable(!needForceEventToParent);
     }
-  }
 
-  @SuppressWarnings("SimplifiableIfStatement")
-  @Override
-  public boolean performClick() {
-    if (!mTouchSpanHit && !mNeedForceEventToParent) {
-      return super.performClick();
+    /**
+     * 使用者主动调用
+     */
+    public void setMovementMethodDefault() {
+        setMovementMethodCompat(LinkTouchMovementMethod.getInstance());
     }
-    return false;
-  }
 
-  @Override
-  public final void setPressed(boolean pressed) {
-    mIsPressedRecord = pressed;
-    if (!mTouchSpanHit) {
-      onSetPressed(pressed);
+    public void setMovementMethodCompat(MovementMethod movement) {
+        setMovementMethod(movement);
+        if (mNeedForceEventToParent) {
+            setNeedForceEventToParent(true);
+        }
     }
-  }
 
-  protected void onSetPressed(boolean pressed) {
-    super.setPressed(pressed);
-  }
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (!(getText() instanceof Spannable)) {
+            return super.onTouchEvent(event);
+        }
+        mTouchSpanHit = true;
+        // 调用super.onTouchEvent,会走到QMUILinkTouchMovementMethod
+        // 会走到QMUILinkTouchMovementMethod#onTouchEvent会修改mTouchSpanHint
+        boolean ret = super.onTouchEvent(event);
+        if (mNeedForceEventToParent) {
+            return mTouchSpanHit;
+        }
+        return ret;
+    }
+
+    @SuppressWarnings("SimplifiableIfStatement")
+    @Override
+    public boolean performLongClick() {
+        if (!mTouchSpanHit && !mNeedForceEventToParent) {
+            return super.performLongClick();
+        }
+        return false;
+    }
+
+    @Override
+    public void setTouchSpanHit(boolean hit) {
+        if (mTouchSpanHit != hit) {
+            mTouchSpanHit = hit;
+            setPressed(mIsPressedRecord);
+        }
+    }
+
+    @SuppressWarnings("SimplifiableIfStatement")
+    @Override
+    public boolean performClick() {
+        if (!mTouchSpanHit && !mNeedForceEventToParent) {
+            return super.performClick();
+        }
+        return false;
+    }
+
+    @Override
+    public final void setPressed(boolean pressed) {
+        mIsPressedRecord = pressed;
+        if (!mTouchSpanHit) {
+            onSetPressed(pressed);
+        }
+    }
+
+    protected void onSetPressed(boolean pressed) {
+        super.setPressed(pressed);
+    }
 }

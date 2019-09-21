@@ -20,75 +20,75 @@ import java.util.LinkedHashMap;
 
 
 public class AutoHeightViewPager extends ViewPager {
-  private int current;
-  private int height = 0;
-  /**
-   * 保存position与对于的View
-   */
-  private HashMap<Integer, View> mChildrenViews = new LinkedHashMap<Integer, View>();
+    private int current;
+    private int height = 0;
+    /**
+     * 保存position与对于的View
+     */
+    private HashMap<Integer, View> mChildrenViews = new LinkedHashMap<Integer, View>();
 
-  private boolean scrollble = true;
+    private boolean scrollble = true;
 
-  public AutoHeightViewPager(Context context) {
-    super(context);
-  }
-
-  public AutoHeightViewPager(Context context, AttributeSet attrs) {
-    super(context, attrs);
-  }
-
-  @Override
-  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    if (mChildrenViews.size() > current) {
-      View child = mChildrenViews.get(current);
-      if (child != null) {
-        child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-        height = child.getMeasuredHeight();
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
-      }
+    public AutoHeightViewPager(Context context) {
+        super(context);
     }
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-  }
 
-  public void resetHeight(int current) {
-    this.current = current;
-    if (mChildrenViews.size() > current) {
-      ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) getLayoutParams();
-      if (layoutParams == null) {
-        layoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, height);
-      } else {
-        layoutParams.height = height;
-      }
-      setLayoutParams(layoutParams);
+    public AutoHeightViewPager(Context context, AttributeSet attrs) {
+        super(context, attrs);
     }
-  }
 
-  /**
-   * 保存position与对于的View
-   */
-  public void setObjectForPosition(View view, int position) {
-    mChildrenViews.put(position, view);
-  }
-
-  public void clear() {
-    mChildrenViews.clear();
-  }
-
-  @Override
-  public boolean onTouchEvent(MotionEvent ev) {
-    if (!scrollble) {
-      return true;
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (mChildrenViews.size() > current) {
+            View child = mChildrenViews.get(current);
+            if (child != null) {
+                child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+                height = child.getMeasuredHeight();
+                heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+            }
+        }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
-    return super.onTouchEvent(ev);
-  }
+
+    public void resetHeight(int current) {
+        this.current = current;
+        if (mChildrenViews.size() > current) {
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) getLayoutParams();
+            if (layoutParams == null) {
+                layoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, height);
+            } else {
+                layoutParams.height = height;
+            }
+            setLayoutParams(layoutParams);
+        }
+    }
+
+    /**
+     * 保存position与对于的View
+     */
+    public void setObjectForPosition(View view, int position) {
+        mChildrenViews.put(position, view);
+    }
+
+    public void clear() {
+        mChildrenViews.clear();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        if (!scrollble) {
+            return true;
+        }
+        return super.onTouchEvent(ev);
+    }
 
 
-  public boolean isScrollble() {
-    return scrollble;
-  }
+    public boolean isScrollble() {
+        return scrollble;
+    }
 
-  public void setScrollble(boolean scrollble) {
-    this.scrollble = scrollble;
-  }
+    public void setScrollble(boolean scrollble) {
+        this.scrollble = scrollble;
+    }
 
 }

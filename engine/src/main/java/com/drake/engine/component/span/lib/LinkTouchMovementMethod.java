@@ -23,17 +23,17 @@ import android.widget.TextView;
 
 public class LinkTouchMovementMethod extends LinkMovementMethod {
 
-  private static LinkTouchMovementMethod sInstance;
-  private static LinkTouchDecorHelper sHelper = new LinkTouchDecorHelper();
+    private static LinkTouchMovementMethod sInstance;
+    private static LinkTouchDecorHelper sHelper = new LinkTouchDecorHelper();
 
-  public static MovementMethod getInstance() {
-    if (sInstance == null) sInstance = new LinkTouchMovementMethod();
-    return sInstance;
-  }
+    public static MovementMethod getInstance() {
+        if (sInstance == null) sInstance = new LinkTouchMovementMethod();
+        return sInstance;
+    }
 
-  @Override
-  public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
-    return sHelper.onTouchEvent(widget, buffer, event) || Touch.onTouchEvent(widget, buffer, event);
-  }
+    @Override
+    public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
+        return sHelper.onTouchEvent(widget, buffer, event) || Touch.onTouchEvent(widget, buffer, event);
+    }
 
 }

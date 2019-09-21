@@ -232,7 +232,7 @@ class SwipeBackHelper constructor(private val mSwipeBackActivity: Activity) {
         if (mSwipeBackView == null) {
             //使用contentView的父View，可包含ActionBar
             mSwipeBackView =
-                    decorView.findViewById<View>(Window.ID_ANDROID_CONTENT).parent as ViewGroup
+                decorView.findViewById<View>(Window.ID_ANDROID_CONTENT).parent as ViewGroup
         }
         return mSwipeBackView!!
     }

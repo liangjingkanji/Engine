@@ -207,7 +207,7 @@ class DecelerateAnimator
         } else {//终点值在界内
             //校正终点值，计算位移距离和动画时间
             mFinalValue =
-                    if (finalValue * 2 < minFinalValue + maxFinalValue) minFinalValue else maxFinalValue
+                if (finalValue * 2 < minFinalValue + maxFinalValue) minFinalValue else maxFinalValue
             mDistance = mFinalValue - startValue
             mDuration = getDurationByDistance(mDistance)
         }
@@ -400,9 +400,9 @@ class DecelerateAnimator
                 decelMinusOne / DECELERATION_RATE
             )
             velocity =
-                    (l * mFlingFriction.toDouble() * frictionCoeff.toDouble() * mPhysicalCoeff.toDouble() / INFLEXION * 4.0 * Math.signum(
-                        distance
-                    ).toDouble()).toFloat()
+                (l * mFlingFriction.toDouble() * frictionCoeff.toDouble() * mPhysicalCoeff.toDouble() / INFLEXION * 4.0 * Math.signum(
+                    distance
+                ).toDouble()).toFloat()
         }
         return velocity
     }
@@ -423,9 +423,9 @@ class DecelerateAnimator
                 DECELERATION_RATE / decelMinusOne
             )
             distance =
-                    (l * mFlingFriction.toDouble() * frictionCoeff.toDouble() * mPhysicalCoeff.toDouble() * Math.signum(
-                        velocity
-                    ).toDouble()).toFloat()
+                (l * mFlingFriction.toDouble() * frictionCoeff.toDouble() * mPhysicalCoeff.toDouble() * Math.signum(
+                    velocity
+                ).toDouble()).toFloat()
         }
         return distance
     }
@@ -442,7 +442,7 @@ class DecelerateAnimator
         if (duration > 0) {
             val base = Math.pow((duration / 1000f).toDouble(), DECELERATION_RATE.toDouble())
             distance =
-                    (base * mFlingFriction.toDouble() * frictionCoeff.toDouble() * mPhysicalCoeff.toDouble()).toFloat()
+                (base * mFlingFriction.toDouble() * frictionCoeff.toDouble() * mPhysicalCoeff.toDouble()).toFloat()
         }
         return distance
     }

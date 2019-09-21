@@ -7,7 +7,6 @@
 
 package com.drake.engine.sample
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.drake.engine.component.databinding.setContent
@@ -15,8 +14,8 @@ import com.drake.engine.sample.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    var img: Int = 0
-    lateinit var imgDrawable: Drawable
+
+    var model = Model()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,5 +23,16 @@ class MainActivity : AppCompatActivity() {
 
         val binding = setContent<ActivityMainBinding>(R.layout.activity_main)
 
+        binding.v = this
+        binding.m = model
+
+
     }
+
+
 }
+
+
+
+
+

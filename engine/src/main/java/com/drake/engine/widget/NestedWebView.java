@@ -17,26 +17,26 @@ import android.webkit.WebView;
  */
 public class NestedWebView extends WebView {
 
-  @SuppressLint("NewApi")
-  public NestedWebView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-    super(context, attrs, defStyleAttr, defStyleRes);
-  }
+    @SuppressLint("NewApi")
+    public NestedWebView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+    }
 
-  public NestedWebView(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
-  }
+    public NestedWebView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
 
-  public NestedWebView(Context context, AttributeSet attrs) {
-    super(context, attrs);
-  }
+    public NestedWebView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
-  public NestedWebView(Context context) {
-    super(context);
-  }
+    public NestedWebView(Context context) {
+        super(context);
+    }
 
-  @Override
-  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    int mExpandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
-    super.onMeasure(widthMeasureSpec, mExpandSpec);
-  }
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int mExpandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
+        super.onMeasure(widthMeasureSpec, mExpandSpec);
+    }
 }

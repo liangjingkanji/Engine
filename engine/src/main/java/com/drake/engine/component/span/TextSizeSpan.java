@@ -22,33 +22,33 @@ import androidx.annotation.NonNull;
  */
 
 public class TextSizeSpan extends ReplacementSpan {
-  private int mTextSize;
-  private int mVerticalOffset;
-  private Paint mPaint;
+    private int mTextSize;
+    private int mVerticalOffset;
+    private Paint mPaint;
 
-  public TextSizeSpan(int textSize, int verticalOffset) {
-    mTextSize = textSize;
-    mVerticalOffset = verticalOffset;
-  }
-
-  @Override
-  public int getSize(@NonNull Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fm) {
-    mPaint = new Paint(paint);
-    mPaint.setTextSize(mTextSize);
-    if (mTextSize > paint.getTextSize() && fm != null) {
-      Paint.FontMetricsInt newFm = mPaint.getFontMetricsInt();
-      fm.descent = newFm.descent;
-      fm.ascent = newFm.ascent;
-      fm.top = newFm.top;
-      fm.bottom = newFm.bottom;
+    public TextSizeSpan(int textSize, int verticalOffset) {
+        mTextSize = textSize;
+        mVerticalOffset = verticalOffset;
     }
-    return (int) mPaint.measureText(text, start, end);
-  }
 
-  @Override
-  public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top,
-                   int y, int bottom, @NonNull Paint paint) {
-    int baseline = y + mVerticalOffset;
-    canvas.drawText(text, start, end, x, baseline, mPaint);
-  }
+    @Override
+    public int getSize(@NonNull Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fm) {
+        mPaint = new Paint(paint);
+        mPaint.setTextSize(mTextSize);
+        if (mTextSize > paint.getTextSize() && fm != null) {
+            Paint.FontMetricsInt newFm = mPaint.getFontMetricsInt();
+            fm.descent = newFm.descent;
+            fm.ascent = newFm.ascent;
+            fm.top = newFm.top;
+            fm.bottom = newFm.bottom;
+        }
+        return (int) mPaint.measureText(text, start, end);
+    }
+
+    @Override
+    public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top,
+                     int y, int bottom, @NonNull Paint paint) {
+        int baseline = y + mVerticalOffset;
+        canvas.drawText(text, start, end, x, baseline, mPaint);
+    }
 }

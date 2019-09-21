@@ -89,7 +89,6 @@ class DigitsInputFilter(
                             }
                             return content
                         }
-
                         else -> {
                         }
                     }

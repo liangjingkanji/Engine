@@ -13,19 +13,19 @@ package com.drake.engine.component.password;
  * @date 15/3/21 16:20
  */
 interface PasswordView {
-  //void setError(String error);
+    //void setError(String error);
 
-  String getPassWord();
+    String getPassWord();
 
-  void clearPassword();
+    void clearPassword();
 
-  void setPassword(String password);
+    void setPassword(String password);
 
-  void setPasswordVisibility(boolean visible);
+    void setPasswordVisibility(boolean visible);
 
-  void togglePasswordVisibility();
+    void togglePasswordVisibility();
 
-  void setOnPasswordChangedListener(GridPasswordView.OnPasswordChangedListener listener);
+    void setOnPasswordChangedListener(GridPasswordView.OnPasswordChangedListener listener);
 
-  void setPasswordType(PasswordType passwordType);
+    void setPasswordType(PasswordType passwordType);
 }

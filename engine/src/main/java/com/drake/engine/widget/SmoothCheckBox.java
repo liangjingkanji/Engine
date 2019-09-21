@@ -192,6 +192,16 @@ public class SmoothCheckBox extends View implements Checkable {
     }
 
     @Override
+    public void setChecked(boolean checked) {
+        mChecked = checked;
+        reset();
+        invalidate();
+        if (mListener != null) {
+            mListener.onCheckedChanged(SmoothCheckBox.this, mChecked);
+        }
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         drawBorder(canvas);
         drawCenter(canvas);
@@ -254,16 +264,6 @@ public class SmoothCheckBox extends View implements Checkable {
         mPaint.setColor(mUnCheckedColor);
         float radius = (mCenterPoint.x - mStrokeWidth) * mScaleVal;
         canvas.drawCircle(mCenterPoint.x, mCenterPoint.y, radius, mPaint);
-    }
-
-    @Override
-    public void setChecked(boolean checked) {
-        mChecked = checked;
-        reset();
-        invalidate();
-        if (mListener != null) {
-            mListener.onCheckedChanged(SmoothCheckBox.this, mChecked);
-        }
     }
 
     private void drawBorder(Canvas canvas) {

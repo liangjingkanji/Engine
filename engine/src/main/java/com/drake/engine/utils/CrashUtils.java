@@ -45,239 +45,239 @@ import static com.drake.engine.base.EngineKt.App;
  */
 public final class CrashUtils {
 
-  private static final String FILE_SEP = System.getProperty("file.separator");
-  @SuppressLint("SimpleDateFormat")
-  private static final Format FORMAT = new SimpleDateFormat("MM-dd HH-mm-ss");
-  private static final String CRASH_HEAD;
-  private static final UncaughtExceptionHandler DEFAULT_UNCAUGHT_EXCEPTION_HANDLER;
-  private static final UncaughtExceptionHandler UNCAUGHT_EXCEPTION_HANDLER;
-  private static String defaultDir;
-  private static String dir;
-  private static String versionName;
-  private static int versionCode;
-  private static OnCrashListener sOnCrashListener;
+    private static final String FILE_SEP = System.getProperty("file.separator");
+    @SuppressLint("SimpleDateFormat")
+    private static final Format FORMAT = new SimpleDateFormat("MM-dd HH-mm-ss");
+    private static final String CRASH_HEAD;
+    private static final UncaughtExceptionHandler DEFAULT_UNCAUGHT_EXCEPTION_HANDLER;
+    private static final UncaughtExceptionHandler UNCAUGHT_EXCEPTION_HANDLER;
+    private static String defaultDir;
+    private static String dir;
+    private static String versionName;
+    private static int versionCode;
+    private static OnCrashListener sOnCrashListener;
 
-  static {
-    try {
-      PackageInfo pi = App.getPackageManager()
-              .getPackageInfo(App.getPackageName(), 0);
-      if (pi != null) {
-        versionName = pi.versionName;
-        versionCode = pi.versionCode;
-      }
-    } catch (PackageManager.NameNotFoundException e) {
-      e.printStackTrace();
-    }
-    CRASH_HEAD = "************* Crash Log Head ****************" +
-            "\nDevice Manufacturer: " + Build.MANUFACTURER +
-            "\nDevice Model       : " + Build.MODEL +
-            "\nAndroid Version    : " + Build.VERSION.RELEASE +
-            "\nAndroid SDK        : " + Build.VERSION.SDK_INT +
-            "\nApp VersionName    : " + versionName +
-            "\nApp VersionCode    : " + versionCode +
-            "\n************* Crash Log Head ****************\n\n";
-    DEFAULT_UNCAUGHT_EXCEPTION_HANDLER = Thread.getDefaultUncaughtExceptionHandler();
-    UNCAUGHT_EXCEPTION_HANDLER = new UncaughtExceptionHandler() {
-      @Override
-      public void uncaughtException(final Thread t, final Throwable e) {
-        if (e == null) {
-          if (DEFAULT_UNCAUGHT_EXCEPTION_HANDLER != null) {
-            DEFAULT_UNCAUGHT_EXCEPTION_HANDLER.uncaughtException(t, null);
-          } else {
-            android.os.Process.killProcess(android.os.Process.myPid());
-            System.exit(1);
-          }
-          return;
+    static {
+        try {
+            PackageInfo pi = App.getPackageManager()
+                    .getPackageInfo(App.getPackageName(), 0);
+            if (pi != null) {
+                versionName = pi.versionName;
+                versionCode = pi.versionCode;
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
-        StringBuilder sb = new StringBuilder();
-        sb.append(CRASH_HEAD);
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        e.printStackTrace(pw);
-        Throwable cause = e.getCause();
-        while (cause != null) {
-          cause.printStackTrace(pw);
-          cause = cause.getCause();
-        }
-        pw.flush();
-        sb.append(sw.toString());
-        final String crashInfo = sb.toString();
-        Date now = new Date(System.currentTimeMillis());
-        String fileName = FORMAT.format(now) + ".txt";
-        final String fullPath = (dir == null ? defaultDir : dir) + fileName;
-        if (createOrExistsFile(fullPath)) {
-          input2File(crashInfo, fullPath);
-        } else {
-          Log.e("CrashUtils", "create " + fullPath + " failed!");
-        }
-        if (sOnCrashListener != null) {
-          sOnCrashListener.onCrash(crashInfo, e);
-        }
-        if (DEFAULT_UNCAUGHT_EXCEPTION_HANDLER != null) {
-          DEFAULT_UNCAUGHT_EXCEPTION_HANDLER.uncaughtException(t, e);
-        }
-      }
-    };
-  }
-
-  private CrashUtils() {
-    throw new UnsupportedOperationException("u can't instantiate me...");
-  }
-
-  /**
-   * Initialization.
-   * <p>Must hold
-   * {@code <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />}</p>
-   */
-  @RequiresPermission(WRITE_EXTERNAL_STORAGE)
-  public static void init() {
-    init("");
-  }
-
-  /**
-   * Initialization
-   * <p>Must hold
-   * {@code <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />}</p>
-   *
-   * @param crashDir The directory of saving crash information.
-   */
-  @RequiresPermission(WRITE_EXTERNAL_STORAGE)
-  public static void init(@NonNull final File crashDir) {
-    init(crashDir.getAbsolutePath(), null);
-  }
-
-  /**
-   * Initialization
-   * <p>Must hold
-   * {@code <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />}</p>
-   *
-   * @param crashDirPath The directory's path of saving crash information.
-   */
-  @RequiresPermission(WRITE_EXTERNAL_STORAGE)
-  public static void init(final String crashDirPath) {
-    init(crashDirPath, null);
-  }
-
-  /**
-   * Initialization
-   * <p>Must hold
-   * {@code <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />}</p>
-   *
-   * @param onCrashListener The crash listener.
-   */
-  @RequiresPermission(WRITE_EXTERNAL_STORAGE)
-  public static void init(final OnCrashListener onCrashListener) {
-    init("", onCrashListener);
-  }
-
-  /**
-   * Initialization
-   * <p>Must hold
-   * {@code <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />}</p>
-   *
-   * @param crashDir        The directory of saving crash information.
-   * @param onCrashListener The crash listener.
-   */
-  @RequiresPermission(WRITE_EXTERNAL_STORAGE)
-  public static void init(@NonNull final File crashDir, final OnCrashListener onCrashListener) {
-    init(crashDir.getAbsolutePath(), onCrashListener);
-  }
-
-  /**
-   * Initialization
-   * <p>Must hold
-   * {@code <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />}</p>
-   *
-   * @param crashDirPath    The directory's path of saving crash information.
-   * @param onCrashListener The crash listener.
-   */
-  @RequiresPermission(WRITE_EXTERNAL_STORAGE)
-  public static void init(final String crashDirPath, final OnCrashListener onCrashListener) {
-    if (isSpace(crashDirPath)) {
-      dir = null;
-    } else {
-      dir = crashDirPath.endsWith(FILE_SEP) ? crashDirPath : crashDirPath + FILE_SEP;
-    }
-    if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-            && App.getExternalCacheDir() != null) {
-      defaultDir = App.getExternalCacheDir() + FILE_SEP + "crash" + FILE_SEP;
-    } else {
-      defaultDir = App.getCacheDir() + FILE_SEP + "crash" + FILE_SEP;
-    }
-    sOnCrashListener = onCrashListener;
-    Thread.setDefaultUncaughtExceptionHandler(UNCAUGHT_EXCEPTION_HANDLER);
-  }
-
-  private static void input2File(final String input, final String filePath) {
-    Future<Boolean> submit = Executors.newSingleThreadExecutor()
-            .submit(new Callable<Boolean>() {
-              @Override
-              public Boolean call() {
-                BufferedWriter bw = null;
-                try {
-                  bw = new BufferedWriter(new FileWriter(filePath, true));
-                  bw.write(input);
-                  return true;
-                } catch (IOException e) {
-                  e.printStackTrace();
-                  return false;
-                } finally {
-                  try {
-                    if (bw != null) {
-                      bw.close();
+        CRASH_HEAD = "************* Crash Log Head ****************" +
+                "\nDevice Manufacturer: " + Build.MANUFACTURER +
+                "\nDevice Model       : " + Build.MODEL +
+                "\nAndroid Version    : " + Build.VERSION.RELEASE +
+                "\nAndroid SDK        : " + Build.VERSION.SDK_INT +
+                "\nApp VersionName    : " + versionName +
+                "\nApp VersionCode    : " + versionCode +
+                "\n************* Crash Log Head ****************\n\n";
+        DEFAULT_UNCAUGHT_EXCEPTION_HANDLER = Thread.getDefaultUncaughtExceptionHandler();
+        UNCAUGHT_EXCEPTION_HANDLER = new UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(final Thread t, final Throwable e) {
+                if (e == null) {
+                    if (DEFAULT_UNCAUGHT_EXCEPTION_HANDLER != null) {
+                        DEFAULT_UNCAUGHT_EXCEPTION_HANDLER.uncaughtException(t, null);
+                    } else {
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                        System.exit(1);
                     }
-                  } catch (IOException e) {
-                    e.printStackTrace();
-                  }
+                    return;
                 }
-              }
-            });
-    try {
-      if (submit.get()) {
-        return;
-      }
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
+                StringBuilder sb = new StringBuilder();
+                sb.append(CRASH_HEAD);
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw);
+                e.printStackTrace(pw);
+                Throwable cause = e.getCause();
+                while (cause != null) {
+                    cause.printStackTrace(pw);
+                    cause = cause.getCause();
+                }
+                pw.flush();
+                sb.append(sw.toString());
+                final String crashInfo = sb.toString();
+                Date now = new Date(System.currentTimeMillis());
+                String fileName = FORMAT.format(now) + ".txt";
+                final String fullPath = (dir == null ? defaultDir : dir) + fileName;
+                if (createOrExistsFile(fullPath)) {
+                    input2File(crashInfo, fullPath);
+                } else {
+                    Log.e("CrashUtils", "create " + fullPath + " failed!");
+                }
+                if (sOnCrashListener != null) {
+                    sOnCrashListener.onCrash(crashInfo, e);
+                }
+                if (DEFAULT_UNCAUGHT_EXCEPTION_HANDLER != null) {
+                    DEFAULT_UNCAUGHT_EXCEPTION_HANDLER.uncaughtException(t, e);
+                }
+            }
+        };
     }
-    Log.e("CrashUtils", "write crash info to " + filePath + " failed!");
-  }
 
-  private static boolean createOrExistsFile(final String filePath) {
-    File file = new File(filePath);
-    if (file.exists()) {
-      return file.isFile();
+    private CrashUtils() {
+        throw new UnsupportedOperationException("u can't instantiate me...");
     }
-    if (!createOrExistsDir(file.getParentFile())) {
-      return false;
-    }
-    try {
-      return file.createNewFile();
-    } catch (IOException e) {
-      e.printStackTrace();
-      return false;
-    }
-  }
 
-  private static boolean createOrExistsDir(final File file) {
-    return file != null && (file.exists() ? file.isDirectory() : file.mkdirs());
-  }
-
-  private static boolean isSpace(final String s) {
-    if (s == null) {
-      return true;
+    /**
+     * Initialization.
+     * <p>Must hold
+     * {@code <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />}</p>
+     */
+    @RequiresPermission(WRITE_EXTERNAL_STORAGE)
+    public static void init() {
+        init("");
     }
-    for (int i = 0, len = s.length(); i < len; ++i) {
-      if (!Character.isWhitespace(s.charAt(i))) {
-        return false;
-      }
+
+    /**
+     * Initialization
+     * <p>Must hold
+     * {@code <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />}</p>
+     *
+     * @param crashDir The directory of saving crash information.
+     */
+    @RequiresPermission(WRITE_EXTERNAL_STORAGE)
+    public static void init(@NonNull final File crashDir) {
+        init(crashDir.getAbsolutePath(), null);
     }
-    return true;
-  }
 
-  public interface OnCrashListener {
+    /**
+     * Initialization
+     * <p>Must hold
+     * {@code <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />}</p>
+     *
+     * @param crashDirPath The directory's path of saving crash information.
+     */
+    @RequiresPermission(WRITE_EXTERNAL_STORAGE)
+    public static void init(final String crashDirPath) {
+        init(crashDirPath, null);
+    }
 
-    void onCrash(String crashInfo, Throwable e);
-  }
+    /**
+     * Initialization
+     * <p>Must hold
+     * {@code <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />}</p>
+     *
+     * @param onCrashListener The crash listener.
+     */
+    @RequiresPermission(WRITE_EXTERNAL_STORAGE)
+    public static void init(final OnCrashListener onCrashListener) {
+        init("", onCrashListener);
+    }
+
+    /**
+     * Initialization
+     * <p>Must hold
+     * {@code <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />}</p>
+     *
+     * @param crashDir        The directory of saving crash information.
+     * @param onCrashListener The crash listener.
+     */
+    @RequiresPermission(WRITE_EXTERNAL_STORAGE)
+    public static void init(@NonNull final File crashDir, final OnCrashListener onCrashListener) {
+        init(crashDir.getAbsolutePath(), onCrashListener);
+    }
+
+    /**
+     * Initialization
+     * <p>Must hold
+     * {@code <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />}</p>
+     *
+     * @param crashDirPath    The directory's path of saving crash information.
+     * @param onCrashListener The crash listener.
+     */
+    @RequiresPermission(WRITE_EXTERNAL_STORAGE)
+    public static void init(final String crashDirPath, final OnCrashListener onCrashListener) {
+        if (isSpace(crashDirPath)) {
+            dir = null;
+        } else {
+            dir = crashDirPath.endsWith(FILE_SEP) ? crashDirPath : crashDirPath + FILE_SEP;
+        }
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                && App.getExternalCacheDir() != null) {
+            defaultDir = App.getExternalCacheDir() + FILE_SEP + "crash" + FILE_SEP;
+        } else {
+            defaultDir = App.getCacheDir() + FILE_SEP + "crash" + FILE_SEP;
+        }
+        sOnCrashListener = onCrashListener;
+        Thread.setDefaultUncaughtExceptionHandler(UNCAUGHT_EXCEPTION_HANDLER);
+    }
+
+    private static void input2File(final String input, final String filePath) {
+        Future<Boolean> submit = Executors.newSingleThreadExecutor()
+                .submit(new Callable<Boolean>() {
+                    @Override
+                    public Boolean call() {
+                        BufferedWriter bw = null;
+                        try {
+                            bw = new BufferedWriter(new FileWriter(filePath, true));
+                            bw.write(input);
+                            return true;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            return false;
+                        } finally {
+                            try {
+                                if (bw != null) {
+                                    bw.close();
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+        try {
+            if (submit.get()) {
+                return;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        Log.e("CrashUtils", "write crash info to " + filePath + " failed!");
+    }
+
+    private static boolean createOrExistsFile(final String filePath) {
+        File file = new File(filePath);
+        if (file.exists()) {
+            return file.isFile();
+        }
+        if (!createOrExistsDir(file.getParentFile())) {
+            return false;
+        }
+        try {
+            return file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private static boolean createOrExistsDir(final File file) {
+        return file != null && (file.exists() ? file.isDirectory() : file.mkdirs());
+    }
+
+    private static boolean isSpace(final String s) {
+        if (s == null) {
+            return true;
+        }
+        for (int i = 0, len = s.length(); i < len; ++i) {
+            if (!Character.isWhitespace(s.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public interface OnCrashListener {
+
+        void onCrash(String crashInfo, Throwable e);
+    }
 }
