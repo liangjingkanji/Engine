@@ -13,9 +13,26 @@ import android.content.ContextWrapper
 import android.os.Build
 import android.view.View
 import androidx.databinding.BindingAdapter
+import com.drake.brv.listener.throttleClick
 import com.drake.engine.widget.SmoothCheckBox
-import com.jakewharton.rxbinding3.view.clicks
-import java.util.concurrent.TimeUnit
+
+object EventDataBindingComponent {
+
+    /**
+     * 在绑定视图时可以用于Model来处理UI, 由于破坏视图和逻辑解耦的规则不是很建议使用
+     * 这会导致不方便业务逻辑进行单元测试
+     *
+     * @see OnBindListener 该接口支持泛型定义具体视图
+     *
+     * @receiver View
+     * @param listener OnBindListener<View>
+     */
+    @JvmStatic
+    @BindingAdapter("onBind")
+    fun View.setView(listener: OnBindListener) {
+        listener.onBind(this)
+    }
+}
 
 
 // <editor-fold desc="状态">
@@ -74,18 +91,7 @@ fun SmoothCheckBox.setCheckedBind(checked: Any?) {
 @BindingAdapter("click")
 fun View.setPreventClickListener(onClickListener: View.OnClickListener?) {
     if (onClickListener != null) {
-        clicks()
-            .throttleFirst(500, TimeUnit.MILLISECONDS)
-            .subscribe { onClickListener.onClick(this) }
-    }
-}
-
-@BindingAdapter("fastClick")
-fun View.setFastClickListener(onClickListener: View.OnClickListener?) {
-    if (onClickListener != null) {
-        clicks()
-            .throttleFirst(500, TimeUnit.MILLISECONDS)
-            .subscribe { onClickListener.onClick(this) }
+        throttleClick { onClickListener.onClick(this) }
     }
 }
 
@@ -104,34 +110,11 @@ fun View.hit(isPrevent: Boolean = true) {
         if (context is View.OnClickListener) {
             val clickListener = context as View.OnClickListener
 
-            val observable = clicks()
-
             if (isPrevent) {
-                observable.throttleFirst(500, TimeUnit.MILLISECONDS)
-            }
-
-            observable.subscribe { clickListener.onClick(this) }
+                throttleClick { clickListener.onClick(this) }
+            } else setOnClickListener(clickListener)
         }
         context = context.baseContext
-    }
-}
-
-
-object EventDataBindingComponent {
-
-    /**
-     * 在绑定视图时可以用于Model来处理UI, 由于破坏视图和逻辑解耦的规则不是很建议使用
-     * 这会导致不方便业务逻辑进行单元测试
-     *
-     * @see OnBindListener 该接口支持泛型定义具体视图
-     *
-     * @receiver View
-     * @param listener OnBindListener<View>
-     */
-    @JvmStatic
-    @BindingAdapter("onBind")
-    fun View.setView(listener: OnBindListener) {
-        listener.onBind(this)
     }
 }
 
@@ -157,7 +140,7 @@ fun View.finishActivity(enabled: Boolean = true) {
 
         val finalActivity = activity
 
-        clicks().throttleFirst(500, TimeUnit.MILLISECONDS).subscribe {
+        throttleClick {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 finalActivity!!.finishAfterTransition()
             } else {

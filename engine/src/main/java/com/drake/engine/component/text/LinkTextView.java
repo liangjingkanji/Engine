@@ -5,7 +5,7 @@
  * Date：9/11/19 7:25 PM
  */
 
-package com.drake.engine.component.span;
+package com.drake.engine.component.text;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -27,10 +27,10 @@ import android.view.ViewConfiguration;
 import androidx.core.content.ContextCompat;
 
 import com.drake.engine.R;
-import com.drake.engine.component.span.lib.ISpanTouchFix;
-import com.drake.engine.component.span.lib.LinkTouchMovementMethod;
-import com.drake.engine.component.span.lib.Linkify;
-import com.drake.engine.component.span.lib.OnSpanClickListener;
+import com.drake.engine.component.text.lib.ISpanTouchFix;
+import com.drake.engine.component.text.lib.LinkTouchMovementMethod;
+import com.drake.engine.component.text.lib.Linkify;
+import com.drake.engine.component.text.lib.OnSpanClickListener;
 
 import java.util.HashSet;
 import java.util.Set;

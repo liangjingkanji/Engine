@@ -5,7 +5,7 @@
  * Date：9/11/19 7:25 PM
  */
 
-package com.drake.engine.component.span;
+package com.drake.engine.component.text.span;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

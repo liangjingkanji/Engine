@@ -5,7 +5,7 @@
  * Date：9/11/19 7:25 PM
  */
 
-package com.drake.engine.component.span;
+package com.drake.engine.component.text.span;
 
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
@@ -14,7 +14,7 @@ import android.view.View;
 import androidx.annotation.ColorInt;
 import androidx.core.view.ViewCompat;
 
-import com.drake.engine.component.span.lib.ITouchableSpan;
+import com.drake.engine.component.text.lib.ITouchableSpan;
 
 /**
  * 可 Touch 的 Span，在 {@link #setPressed(boolean)} 后根据是否 pressed 来触发不同的UI状态

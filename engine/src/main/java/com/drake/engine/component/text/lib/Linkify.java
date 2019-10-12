@@ -5,7 +5,7 @@
  * Date：9/11/19 7:25 PM
  */
 
-package com.drake.engine.component.span.lib;
+package com.drake.engine.component.text.lib;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;

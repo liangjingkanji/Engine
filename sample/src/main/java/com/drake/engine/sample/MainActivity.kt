@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         binding.m = model
 
 
+//        tv.text = SpanUtils().append("吴彦祖").appendImage(R.drawable.ic_success).create()
     }
 
 

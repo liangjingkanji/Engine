@@ -1,11 +1,5 @@
-/*
- * Copyright (C) 2018, Umbrella CompanyLimited All rights reserved.
- * Project：Engine
- * Author：Drake
- * Date：9/11/19 7:25 PM
- */
 
-package com.drake.engine.component.span;
+package com.drake.engine.component.text.span;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -13,33 +7,30 @@ import android.graphics.drawable.Drawable;
 
 /**
  * 支持设置图片左右间距的 ImageSpan
- *
- * @author chantchen
- * @date 2015-12-16
  */
 public class MarginImageSpan extends AlignImageSpan {
 
-    private int mSpanMarginLeft = 0;
-    private int mSpanMarginRight = 0;
-    private int mOffsetY = 0;
+    private int spanMarginLeft = 0;
+    private int spanMarginRight = 0;
+    private int offsetY = 0;
 
     public MarginImageSpan(Drawable d, int verticalAlignment, int marginLeft, int marginRight) {
         super(d, verticalAlignment);
-        mSpanMarginLeft = marginLeft;
-        mSpanMarginRight = marginRight;
+        spanMarginLeft = marginLeft;
+        spanMarginRight = marginRight;
     }
 
     public MarginImageSpan(Drawable d, int verticalAlignment, int marginLeft, int marginRight, int offsetY) {
         this(d, verticalAlignment, marginLeft, marginRight);
-        mOffsetY = offsetY;
+        this.offsetY = offsetY;
     }
 
     @Override
     public int getSize(Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fm) {
-        if (mSpanMarginLeft != 0 || mSpanMarginRight != 0) {
+        if (spanMarginLeft != 0 || spanMarginRight != 0) {
             super.getSize(paint, text, start, end, fm);
             Drawable d = getDrawable();
-            return d.getIntrinsicWidth() + mSpanMarginLeft + mSpanMarginRight;
+            return d.getIntrinsicWidth() + spanMarginLeft + spanMarginRight;
         } else {
             return super.getSize(paint, text, start, end, fm);
         }
@@ -49,9 +40,9 @@ public class MarginImageSpan extends AlignImageSpan {
     public void draw(Canvas canvas, CharSequence text, int start, int end,
                      float x, int top, int y, int bottom, Paint paint) {
         canvas.save();
-        canvas.translate(0, mOffsetY);
+        canvas.translate(0, offsetY);
         // marginRight不用专门处理，只靠getSize()中改变即可
-        super.draw(canvas, text, start, end, x + mSpanMarginLeft, top, y, bottom, paint);
+        super.draw(canvas, text, start, end, x + spanMarginLeft, top, y, bottom, paint);
         canvas.restore();
     }
 }

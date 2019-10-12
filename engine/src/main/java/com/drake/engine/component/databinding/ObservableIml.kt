@@ -12,7 +12,6 @@ import androidx.databinding.PropertyChangeRegistry
 
 interface ObservableIml : Observable {
 
-    // 要求初始化
     val registry: PropertyChangeRegistry
 
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback) {

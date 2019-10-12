@@ -58,26 +58,24 @@ object UnitUtils {
 }
 
 
-/*
- * 判断是否为浮点数，包括double和float
- * @param str 传入的字符串
- * @return 是浮点数返回true,否则返回false
+/**
+ * 是否为浮点数, 无论Float或者Double
+ * @receiver String
+ * @return Boolean
  */
 fun String.isDouble(): Boolean {
     val pattern = Pattern.compile("^[-\\+]?[.\\d]*$")
-    return pattern.matcher(this)
-        .matches()
+    return pattern.matcher(this).matches()
 }
 
-/*
- * 判断是否为整数
- * @param str 传入的字符串
- * @return 是整数返回true,否则返回false
+/**
+ * 是否为整数
+ * @receiver String
+ * @return Boolean
  */
 fun String.isInteger(): Boolean {
     val pattern = Pattern.compile("^[-\\+]?[\\d]*$")
-    return pattern.matcher(this)
-        .matches()
+    return pattern.matcher(this).matches()
 }
 
 
@@ -120,14 +118,22 @@ fun Float.m2(): String {
     }
 }
 
-// 屏幕宽度（像素）
+/**
+ * 屏幕宽度
+ * @receiver Activity
+ * @return Int 像素单位
+ */
 fun Activity.getWith(): Int {
     val metric = DisplayMetrics()
     windowManager.defaultDisplay.getMetrics(metric)
     return metric.widthPixels
 }
 
-// 屏幕高度（像素）
+/**
+ * 屏幕高度
+ * @receiver Activity
+ * @return Int 像素单位
+ */
 fun Activity.getHeight(): Int {
     val metric = DisplayMetrics()
     windowManager.defaultDisplay.getMetrics(metric)

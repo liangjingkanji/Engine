@@ -5,7 +5,7 @@
  * Date：9/11/19 7:25 PM
  */
 
-package com.drake.engine.component.span
+package com.drake.engine.component.inputFilter
 
 import android.text.InputFilter
 import android.text.Spanned

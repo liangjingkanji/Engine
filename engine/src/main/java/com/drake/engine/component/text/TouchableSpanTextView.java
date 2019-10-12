@@ -5,7 +5,7 @@
  * Date：9/11/19 7:25 PM
  */
 
-package com.drake.engine.component.span;
+package com.drake.engine.component.text;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -15,8 +15,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
-import com.drake.engine.component.span.lib.ISpanTouchFix;
-import com.drake.engine.component.span.lib.LinkTouchMovementMethod;
+import com.drake.engine.component.text.lib.ISpanTouchFix;
+import com.drake.engine.component.text.lib.LinkTouchMovementMethod;
+import com.drake.engine.component.text.span.TouchableSpan;
 
 /**
  * <p>
