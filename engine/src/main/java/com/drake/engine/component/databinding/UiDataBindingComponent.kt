@@ -7,6 +7,7 @@
 
 package com.drake.engine.component.databinding
 
+
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Paint
@@ -26,9 +27,8 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.drake.brv.DefaultDecoration
-import com.drake.engine.base.App
+import com.drake.engine.utils.px
 import com.google.android.material.button.MaterialButton
-import org.jetbrains.anko.dip
 
 
 // <editor-fold desc="图片">
@@ -115,7 +115,7 @@ fun ImageView.loadImgCorner(
     if (corner == 0) {
         requestOptions.circleCrop()
     } else {
-        requestOptions.transforms(CenterCrop(), RoundedCorners(App.dip(corner)))
+        requestOptions.transforms(CenterCrop(), RoundedCorners(corner.px()))
     }
 
     if (holder == null && drawable != null) {
@@ -234,7 +234,7 @@ fun View.setGone(visibilityVar: Any?) {
 
 @BindingAdapter("elevation")
 fun View.setElevationDp(dp: Int) {
-    ViewCompat.setElevation(this, App.dip(dp).toFloat())
+    ViewCompat.setElevation(this, dp.px().toFloat())
 }
 
 @BindingAdapter("elevation")

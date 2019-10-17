@@ -49,11 +49,6 @@ abstract class EngineBottomSheetDialogFragment<B : ViewDataBinding> : BottomShee
 
     }
 
-    fun setArgument(bundle: Bundle): EngineBottomSheetDialogFragment<B> {
-        super.setArguments(bundle)
-        return this
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         RxBus.get().unregister(this)

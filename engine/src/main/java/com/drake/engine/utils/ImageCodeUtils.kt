@@ -11,8 +11,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import com.drake.engine.base.App
-import org.jetbrains.anko.dip
 import java.util.*
 
 /**
@@ -35,8 +33,8 @@ class ImageCodeUtils {
     fun createBitmap(): Bitmap {
         mPaddingLeft = 0 //每次生成验证码图片时初始化
         mPaddingTop = 0
-        DEFAULT_WIDTH = App.dip(100f)
-        DEFAULT_HEIGHT = App.dip(40)
+        DEFAULT_WIDTH = 100f.px()
+        DEFAULT_HEIGHT = 40.px()
         val bitmap = Bitmap.createBitmap(DEFAULT_WIDTH, DEFAULT_HEIGHT, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
 

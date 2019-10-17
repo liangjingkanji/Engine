@@ -11,9 +11,9 @@ package com.drake.engine.utils
 
 import android.app.Activity
 import android.text.TextUtils
+import com.drake.engine.component.dialog.alert
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.Permission
-import org.jetbrains.anko.alert
 
 fun Activity.permission(
     vararg permission: String,
@@ -32,16 +32,18 @@ fun Activity.permission(
                 val msg = function + "需要以下权限才能正常工作\n\n" + permissionString + "\n\n" +
                         "但是您已经拒绝过权限申请\n所以现在需要进入设置界面手动勾选权限"
 
+
                 alert {
-                    message = msg
-                    negativeButton("仍然拒绝") {}
-                    positiveButton("手动开启") {
+                    setMessage(msg)
+
+                    setNegativeButton("仍然拒绝") { dialogInterface, i -> }
+                    setPositiveButton("手动开启") { dialogInterface, i ->
                         AndPermission.with(this@permission)
                             .runtime()
                             .setting()
                             .start()
                     }
-                }.show()
+                }
             }
 
         }

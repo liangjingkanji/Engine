@@ -1,8 +1,11 @@
-package com.drake.engine.component.dialogs
+package com.drake.engine.component.dialog
 
 import android.widget.Toast
 import com.drake.engine.base.App
 
+object Toasts {
+
+}
 
 fun toast(message: Int): Toast = Toast
     .makeText(App, message, Toast.LENGTH_SHORT)
@@ -22,7 +25,6 @@ fun longToast(message: Int): Toast = Toast
     .apply {
         show()
     }
-
 
 fun longToast(message: CharSequence): Toast = Toast
     .makeText(App, message, Toast.LENGTH_LONG)

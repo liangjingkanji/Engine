@@ -4,6 +4,8 @@
  * Author：Drake
  * Date：9/15/19 3:27 PM
  */
+@file:Suppress("SENSELESS_COMPARISON")
+
 package com.drake.engine.utils
 
 import android.text.TextUtils

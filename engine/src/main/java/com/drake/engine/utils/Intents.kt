@@ -31,6 +31,8 @@ import androidx.fragment.app.Fragment
 import com.drake.engine.base.App
 import java.io.Serializable
 
+// <editor-fold desc="跳转">
+
 inline fun <reified T : Activity> startActivity(vararg params: Pair<String, Any?>) =
     App.startActivity(createIntent(T::class.java, params))
 
@@ -54,6 +56,9 @@ inline fun <reified T : Service> stopService(vararg params: Pair<String, Any?>) 
 inline fun <reified T : Any> intentFor(vararg params: Pair<String, Any?>): Intent =
     createIntent(T::class.java, params)
 
+// </editor-fold>
+
+// <editor-fold desc="回退栈">
 /**
  * Add the [Intent.FLAG_ACTIVITY_CLEAR_TASK] flag to the [Intent].
  *
@@ -67,18 +72,6 @@ fun Intent.clearTask(): Intent = apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TAS
  * @return the same intent with the flag applied.
  */
 fun Intent.clearTop(): Intent = apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }
-
-/**
- * Add the [Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET] flag to the [Intent].
- *
- * @return the same intent with the flag applied.
- */
-@Deprecated(
-    message = "Deprecated in Android",
-    replaceWith = ReplaceWith("org.jetbrains.anko.newDocument")
-)
-fun Intent.clearWhenTaskReset(): Intent =
-    apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET) }
 
 /**
  * Add the [Intent.FLAG_ACTIVITY_NEW_DOCUMENT] flag to the [Intent].
@@ -136,6 +129,11 @@ fun Intent.noHistory(): Intent = apply { addFlags(Intent.FLAG_ACTIVITY_NO_HISTOR
  * @return the same intent with the flag applied.
  */
 fun Intent.singleTop(): Intent = apply { addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP) }
+
+// </editor-fold>
+
+
+// <editor-fold desc="意图">
 
 fun Fragment.browse(url: String, newTask: Boolean = false) = activity?.browse(url, newTask)
 
@@ -195,13 +193,13 @@ fun Context.email(email: String, subject: String = "", text: String = ""): Boole
 fun Fragment.makeCall(number: String): Boolean = activity?.makeCall(number) ?: false
 
 fun Context.makeCall(number: String): Boolean {
-    try {
+    return try {
         val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$number"))
         startActivity(intent)
-        return true
+        true
     } catch (e: Exception) {
         e.printStackTrace()
-        return false
+        false
     }
 }
 
@@ -220,9 +218,17 @@ fun Context.sendSMS(number: String, text: String = ""): Boolean {
     }
 }
 
+// </editor-fold>
+
 
 object IntentKt {
 
+    /**
+     * 创建意图
+     * @param clazz Class<out T>
+     * @param params Array<out Pair<String, Any?>>
+     * @return Intent
+     */
     @JvmStatic
     fun <T> createIntent(clazz: Class<out T>, params: Array<out Pair<String, Any?>>): Intent {
         val intent = Intent(App, clazz)
@@ -231,6 +237,11 @@ object IntentKt {
     }
 
 
+    /**
+     * 意图添加数据
+     * @param intent Intent
+     * @param params Array<out Pair<String, Any?>>
+     */
     @JvmStatic
     private fun fillIntentArguments(intent: Intent, params: Array<out Pair<String, Any?>>) {
         params.forEach {

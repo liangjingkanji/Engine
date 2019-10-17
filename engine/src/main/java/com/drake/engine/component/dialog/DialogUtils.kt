@@ -5,26 +5,25 @@
  * Date：9/11/19 7:25 PM
  */
 
-package com.drake.engine.utils
+@file:Suppress("DEPRECATION", "unused")
 
-import android.app.AlertDialog
+package com.drake.engine.component.dialog
+
+import android.app.Activity
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
-import android.view.ViewGroup.LayoutParams
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ArrayAdapter
 import android.widget.ListPopupWindow
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.drake.brv.BindingAdapter
-import com.drake.brv.utils.setup
 import com.drake.engine.base.App
-import org.jetbrains.anko.dip
+import com.drake.engine.utils.px
 
 /**
  * 解决常见的MaterialDesignDialog需求
@@ -36,7 +35,7 @@ import org.jetbrains.anko.dip
  */
 fun Dialog.setWidth(withDipValue: Int) {
     val window = window
-    window?.setLayout(App.dip(withDipValue.toFloat()), WRAP_CONTENT)
+    window?.setLayout(withDipValue.px(), WRAP_CONTENT)
 }
 
 
@@ -46,7 +45,7 @@ fun Dialog.setWidth(withDipValue: Int) {
  */
 fun Dialog.setHeight(heightDipValue: Int) {
     val window = window
-    window?.setLayout(WRAP_CONTENT, App.dip(heightDipValue.toFloat()))
+    window?.setLayout(WRAP_CONTENT, heightDipValue.px())
 }
 
 /**
@@ -55,7 +54,7 @@ fun Dialog.setHeight(heightDipValue: Int) {
  */
 fun Dialog.setSize(withDipValue: Int, heightDipValue: Int) {
     val window = window
-    window?.setLayout(App.dip(withDipValue.toFloat()), App.dip(heightDipValue.toFloat()))
+    window?.setLayout(withDipValue.px(), heightDipValue.px())
 }
 
 /**
@@ -66,20 +65,6 @@ fun Dialog.setTransparent() {
     window?.setBackgroundDrawableResource(android.R.color.transparent)
 }
 
-
-/**
- * 设置适配器
- *
- */
-fun Dialog.setAdapter(block: BindingAdapter.(RecyclerView) -> Unit): Dialog {
-    val context = context
-    val recyclerView = RecyclerView(context)
-    recyclerView.setup(block)
-    recyclerView.layoutManager = LinearLayoutManager(context)
-    recyclerView.layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
-    setContentView(recyclerView)
-    return this
-}
 
 /**
  * 设置列表对话框的分割线
@@ -119,4 +104,67 @@ fun androidx.fragment.app.DialogFragment.setWidthNoLimit() {
         androidx.fragment.app.DialogFragment.STYLE_NO_TITLE,
         android.R.style.Theme_Material_Light_Dialog_MinWidth
     )
+}
+
+/**
+ * 警告对话框
+ * @receiver Activity
+ * @param block [@kotlin.ExtensionFunctionType] Function1<Builder, Unit>
+ */
+fun Activity.alert(block: AlertDialog.Builder.() -> Unit): AlertDialog {
+    val builder = AlertDialog.Builder(this)
+    builder.block()
+    return builder.show()
+}
+
+fun AlertDialog.Builder.yes(
+    text: String,
+    block: AlertDialog.() -> Unit = {}
+) {
+    setPositiveButton(text) { dialogInterface, _ -> (dialogInterface as AlertDialog).block() }
+}
+
+
+fun AlertDialog.Builder.yes(@StringRes text: Int, block: AlertDialog.() -> Unit = {}) {
+    setPositiveButton(text) { dialogInterface, _ -> (dialogInterface as AlertDialog).block() }
+}
+
+
+fun AlertDialog.Builder.medium(
+    text: String,
+    block: AlertDialog.() -> Unit = {}
+) {
+    setNeutralButton(text) { dialogInterface, _ -> (dialogInterface as AlertDialog).block() }
+}
+
+fun AlertDialog.Builder.medium(@StringRes text: Int, block: AlertDialog.() -> Unit = {}) {
+    setNeutralButton(text) { dialogInterface, _ -> (dialogInterface as AlertDialog).block() }
+}
+
+
+fun AlertDialog.Builder.no(
+    text: String,
+    block: AlertDialog.() -> Unit = {}
+) {
+    setNegativeButton(text) { dialogInterface, _ -> (dialogInterface as AlertDialog).block() }
+}
+
+
+fun AlertDialog.Builder.no(@StringRes text: Int, block: AlertDialog.() -> Unit = {}) {
+    setNegativeButton(text) { dialogInterface, _ -> (dialogInterface as AlertDialog).block() }
+}
+
+
+/**
+ * 进度对话框
+ * @receiver Activity
+ * @param msg String?
+ * @param block [@kotlin.ExtensionFunctionType] Function1<ProgressDialog, Unit>
+ */
+fun Activity.progress(msg: String? = null, block: ProgressDialog.() -> Unit = {}): ProgressDialog {
+    return ProgressDialog(this).apply {
+        setMessage(msg)
+        block()
+        show()
+    }
 }

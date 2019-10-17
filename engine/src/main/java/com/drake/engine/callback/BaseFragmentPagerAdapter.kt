@@ -8,10 +8,30 @@
 package com.drake.engine.callback
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
+
+fun FragmentActivity.FragmentPagerAdapter(
+    fragments: Array<Fragment>,
+    titles: Array<String>? = null
+): BaseFragmentPagerAdapter {
+    return BaseFragmentPagerAdapter(supportFragmentManager, fragments, titles)
+}
+
+
+fun Fragment.FragmentPagerAdapter(
+    fragments: Array<Fragment>,
+    titles: Array<String>? = null
+): BaseFragmentPagerAdapter {
+    return BaseFragmentPagerAdapter(childFragmentManager, fragments, titles)
+}
+
+
 /**
+ *
+ *
  * 基础的ViewPager的FragmentPagerAdapter
  */
 class BaseFragmentPagerAdapter(
@@ -19,7 +39,7 @@ class BaseFragmentPagerAdapter(
     private val fragments: Array<Fragment>,
     private val titles: Array<String>? = null
 ) :
-    FragmentPagerAdapter(fragmentManager) {
+    FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
 
     override fun getItem(position: Int): Fragment {
