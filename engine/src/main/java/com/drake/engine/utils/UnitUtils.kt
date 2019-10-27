@@ -17,6 +17,8 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.regex.Pattern
 
 /*
@@ -49,7 +51,7 @@ object UnitUtils {
      *
      * @param distance 单位/m
      */
-    fun distance(distance: Float): String {
+    fun toKM(distance: Float): String {
 
         return if (distance >= 1000) {
             val format = DecimalFormat("#.##")
@@ -57,6 +59,45 @@ object UnitUtils {
         } else {
             distance.toInt().toString() + "m"
         }
+    }
+
+    /**
+     * 判断目标时间是否大于当前时间
+     *
+     * @param dateStr 目标时间
+     */
+    fun greaterThanCurDate(dateStr: String): Boolean {
+        val time = System.currentTimeMillis()
+        val format = SimpleDateFormat("yyyy.MM.dd hh:mm:ss", Locale.CHINA)
+        try {
+            val date = format.parse(dateStr)
+            return time < date!!.time
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return false
+    }
+
+    /**
+     * 格式化毫秒
+     */
+    fun formatDate(millis: Long, format: String = "yyyy-MM-dd"): String {
+        val date = Date(millis)
+        val sf = SimpleDateFormat(format, Locale.CHINA)
+        return sf.format(date)
+    }
+
+    /**
+     * 格式化毫秒
+     */
+    fun formatDate(millis: String?, format: String = "yyyy-MM-dd"): String {
+        if (millis.isNullOrEmpty()) {
+            return ""
+        }
+        val date = Date(java.lang.Long.parseLong(millis))
+        val sf = SimpleDateFormat(format, Locale.CHINA)
+        return sf.format(date)
     }
 }
 
@@ -262,3 +303,6 @@ fun BigDecimal.format(
 ): String {
     return setScale(2, roundingMode).toPlainString()
 }
+
+
+

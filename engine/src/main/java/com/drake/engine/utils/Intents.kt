@@ -33,15 +33,15 @@ import java.io.Serializable
 
 // <editor-fold desc="跳转">
 
-inline fun <reified T : Activity> startActivity(vararg params: Pair<String, Any?>) =
+inline fun <reified T : Activity> openActivity(vararg params: Pair<String, Any?>) =
     App.startActivity(createIntent(T::class.java, params))
 
-inline fun <reified T : Activity> Activity.startActivityForResult(
+inline fun <reified T : Activity> Activity.openActivityForResult(
     requestCode: Int,
     vararg params: Pair<String, Any?>
 ) = startActivityForResult(createIntent(T::class.java, params), requestCode)
 
-inline fun <reified T : Activity> Fragment.startActivityForResult(
+inline fun <reified T : Activity> Fragment.openActivityForResult(
     requestCode: Int,
     vararg params: Pair<String, Any?>
 ) = startActivityForResult(createIntent(T::class.java, params), requestCode)

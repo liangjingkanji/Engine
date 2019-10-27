@@ -10,7 +10,7 @@ package com.drake.engine.base
 import android.graphics.Color
 import android.view.MotionEvent
 import androidx.databinding.ViewDataBinding
-import com.drake.engine.component.swipeback.SwipeBackHelper
+import com.drake.engine.swipeback.SwipeBackHelper
 
 abstract class EngineSwipeActivity<B : ViewDataBinding> : EngineActivity<B>() {
 

@@ -20,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.hwangjr.rxbus.RxBus
 
 abstract class EngineActivity<B : ViewDataBinding> : AppCompatActivity(), OnClickListener {
 
@@ -36,7 +35,7 @@ abstract class EngineActivity<B : ViewDataBinding> : AppCompatActivity(), OnClic
     }
 
     override fun onDestroy() {
-        RxBus.get().unregister(this)
+//        RxBus.get().unregister(this)
         unregisterBroadcast()
         super.onDestroy()
     }
@@ -47,7 +46,7 @@ abstract class EngineActivity<B : ViewDataBinding> : AppCompatActivity(), OnClic
 
     open fun init() {
         registerBroadcast()
-        RxBus.get().register(this)
+//        RxBus.get().register(this)
         try {
             initView()
             initData()

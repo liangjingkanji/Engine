@@ -5,6 +5,8 @@
  * Date：9/11/19 7:25 PM
  */
 
+@file:Suppress("unused")
+
 package com.drake.engine.utils
 
 import android.content.Context
@@ -17,9 +19,7 @@ import java.io.File
 /**
  * 使用Glide加载图片
  */
-
-
-fun Context.downloadImage(url: String, with: Int = 0, height: Int = 0): Observable<File> {
+fun Context.downloadImg(url: String, with: Int = 0, height: Int = 0): Observable<File> {
     return Observable.create<File> {
         val download = Glide.with(this).download(url)
         val futureTarget = if (with == 0 && height == 0) {

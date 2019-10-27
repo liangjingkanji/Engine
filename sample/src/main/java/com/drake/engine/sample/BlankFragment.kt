@@ -21,6 +21,7 @@ class BlankFragment : EngineNavFragment<FragmentBlankBinding>() {
         savedInstanceState: Bundle?
     ): View? {
 
+
         return inflater.inflate(R.layout.fragment_blank, container, false)
     }
 

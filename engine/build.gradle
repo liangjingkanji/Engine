@@ -8,11 +8,11 @@ group = 'com.gitlab.liangjingkanji'
 
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -29,10 +29,6 @@ android {
 
     dataBinding {
         enabled = true
-    }
-
-    lintOptions {
-        ignore 'AutoDispose', 'CheckResult', 'UNUSED_ANONYMOUS_PARAMETER'
     }
 
     aaptOptions {
@@ -64,32 +60,18 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
-    compileOnly 'androidx.legacy:legacy-support-v4:1.0.0'
-    compileOnly 'androidx.cardview:cardview:1.0.0'
-    compileOnly 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.core:core-ktx:1.2.0-beta01'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
 
-    api 'androidx.core:core-ktx:1.2.0-alpha04'
-    api 'io.reactivex.rxjava2:rxkotlin:2.3.0'
-    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    api 'com.hwangjr.rxbus:rxbus:1.0.6'
-    api 'com.github.bumptech.glide:glide:4.9.0'
+    compileOnly 'io.reactivex.rxjava2:rxkotlin:2.3.0'
+    compileOnly 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    implementation 'com.github.liangjingkanji:StatusBar:1.0.2'
+
+    compileOnly 'com.github.bumptech.glide:glide:4.9.0'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
-    kapt 'com.github.bumptech.glide:compiler:4.9.0'
-    api 'jp.wasabeef:glide-transformations:3.0.1'
-    api 'androidx.navigation:navigation-fragment-ktx:2.1.0'
-    api 'androidx.navigation:navigation-ui-ktx:2.1.0'
-
-
-    api 'com.youth.banner:banner:1.4.10'
-    api 'com.gongwen:marqueelibrary:1.1.3'
-    api 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
-    api 'com.yanzhenjie:permission:2.0.0-rc10'
-    api 'com.king.zxing:zxing-lite:1.0.3'
-
-    api 'com.github.liangjingkanji:BRV:1.0.6'
-    api 'com.github.liangjingkanji:StatusBar:1.0.2'
-    api 'com.github.liangjingkanji:debugkit:1.2.8'
-    api 'com.github.liangjingkanji:Net:1.1.4'
-
+    compileOnly 'jp.wasabeef:glide-transformations:3.0.1'
 }

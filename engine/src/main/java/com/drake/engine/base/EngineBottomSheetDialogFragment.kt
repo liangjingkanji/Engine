@@ -16,7 +16,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.hwangjr.rxbus.RxBus
 
 abstract class EngineBottomSheetDialogFragment<B : ViewDataBinding> : BottomSheetDialogFragment(),
     OnClickListener {
@@ -28,9 +27,9 @@ abstract class EngineBottomSheetDialogFragment<B : ViewDataBinding> : BottomShee
         super.onActivityCreated(savedInstanceState)
         binding = DataBindingUtil.bind(view!!)!!
         @Suppress("DEPRECATION")
-        if (!RxBus.get().hasRegistered(this)) {
-            RxBus.get().register(this)
-        }
+//        if (!RxBus.get().hasRegistered(this)) {
+//            RxBus.get().register(this)
+//        }
 
         val frameLayout =
             dialog!!.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
@@ -51,7 +50,7 @@ abstract class EngineBottomSheetDialogFragment<B : ViewDataBinding> : BottomShee
 
     override fun onDestroy() {
         super.onDestroy()
-        RxBus.get().unregister(this)
+//        RxBus.get().unregister(this)
     }
 
     abstract fun initData()

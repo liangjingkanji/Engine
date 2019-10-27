@@ -13,7 +13,7 @@ import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.databinding.ViewDataBinding
-import com.drake.engine.component.databinding.inflate
+import com.drake.engine.databinding.inflate
 
 abstract class EngineDialog<B : ViewDataBinding>(context: Context) : Dialog(context),
     OnClickListener {

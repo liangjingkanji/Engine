@@ -14,7 +14,6 @@ import android.view.View.OnClickListener
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
-import com.hwangjr.rxbus.RxBus
 
 abstract class EngineDialogFragment<B : ViewDataBinding> : DialogFragment(), OnClickListener {
 
@@ -24,9 +23,9 @@ abstract class EngineDialogFragment<B : ViewDataBinding> : DialogFragment(), OnC
         super.onActivityCreated(savedInstanceState)
         binding = DataBindingUtil.bind(view!!)!!
         @Suppress("DEPRECATION")
-        if (!RxBus.get().hasRegistered(this)) {
-            RxBus.get().register(this)
-        }
+//        if (!RxBus.get().hasRegistered(this)) {
+//            RxBus.get().register(this)
+//        }
         try {
             initView()
             initData()
@@ -42,7 +41,7 @@ abstract class EngineDialogFragment<B : ViewDataBinding> : DialogFragment(), OnC
 
     override fun onDestroy() {
         super.onDestroy()
-        RxBus.get().unregister(this)
+//        RxBus.get().unregister(this)
     }
 
     abstract fun initData()

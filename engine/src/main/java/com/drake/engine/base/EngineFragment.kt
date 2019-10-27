@@ -14,7 +14,6 @@ import android.view.View.OnClickListener
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.hwangjr.rxbus.RxBus
 
 abstract class EngineFragment<B : ViewDataBinding> : Fragment(), OnClickListener {
 
@@ -49,13 +48,13 @@ abstract class EngineFragment<B : ViewDataBinding> : Fragment(), OnClickListener
         binding = DataBindingUtil.bind(view!!)!!
 
         if (!isCreated) {
-            RxBus.get().register(this)
+//            RxBus.get().register(this)
             isCreated = true
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        RxBus.get().unregister(this)
+//        RxBus.get().unregister(this)
     }
 }
