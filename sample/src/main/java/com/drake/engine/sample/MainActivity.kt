@@ -11,13 +11,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.drake.engine.databinding.setContent
 import com.drake.engine.sample.databinding.ActivityMainBinding
-import com.hulab.debugkit.dev
 
 
 class MainActivity : AppCompatActivity() {
 
 
-    var model = Model()
+    var model = Model(26)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,13 +24,8 @@ class MainActivity : AppCompatActivity() {
         val binding = setContent<ActivityMainBinding>(R.layout.activity_main)
 
         binding.v = this
-//      binding.m = model
+        binding.m = model
 
-
-        dev {
-            function {
-            }
-        }
 
     }
 }

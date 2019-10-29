@@ -18,8 +18,6 @@ import androidx.fragment.app.Fragment
 abstract class EngineFragment<B : ViewDataBinding> : Fragment(), OnClickListener {
 
     lateinit var binding: B
-    protected var isCreated: Boolean = false
-
 
     override fun onClick(v: View) {
     }
@@ -46,15 +44,5 @@ abstract class EngineFragment<B : ViewDataBinding> : Fragment(), OnClickListener
         super.onActivityCreated(savedInstanceState)
 
         binding = DataBindingUtil.bind(view!!)!!
-
-        if (!isCreated) {
-//            RxBus.get().register(this)
-            isCreated = true
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-//        RxBus.get().unregister(this)
     }
 }

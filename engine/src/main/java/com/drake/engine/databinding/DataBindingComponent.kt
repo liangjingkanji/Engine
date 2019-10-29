@@ -29,7 +29,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.drake.engine.reactive.throttleClick
+import com.drake.engine.reactive.throttle
 import com.drake.engine.utils.UnitUtils
 import com.drake.engine.utils.format
 import com.drake.engine.utils.px
@@ -330,7 +330,7 @@ fun View.setActivatedBind(activated: Any?) {
 @BindingAdapter("click")
 fun View.setPreventClickListener(onClickListener: View.OnClickListener?) {
     if (onClickListener != null) {
-        throttleClick { onClickListener.onClick(this) }
+        throttle().subscribe { onClickListener.onClick(this) }
     }
 }
 
@@ -350,7 +350,7 @@ fun View.hit(isPrevent: Boolean = true) {
             val clickListener = context as View.OnClickListener
 
             if (isPrevent) {
-                throttleClick { clickListener.onClick(this) }
+                throttle().subscribe { clickListener.onClick(this) }
             } else setOnClickListener(clickListener)
         }
         context = context.baseContext
@@ -379,7 +379,7 @@ fun View.finishActivity(enabled: Boolean = true) {
 
         val finalActivity = activity
 
-        throttleClick {
+        throttle().subscribe {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 finalActivity!!.finishAfterTransition()
             } else {

@@ -64,9 +64,10 @@ dependencies {
 
 
 //    我的其他库
-    implementation 'com.github.liangjingkanji:BRV:1.0.6'
+    implementation 'com.github.liangjingkanji:BRV:1.0.8'
     implementation 'com.github.liangjingkanji:debugkit:1.2.9'
-    implementation 'com.github.liangjingkanji:Net:1.1.4'
+    implementation 'com.github.liangjingkanji:Net:1.1.6'
+    implementation 'com.github.liangjingkanji:RxBus:1.0'
 
 
     implementation 'com.yanzhenjie:permission:2.0.0-rc10'

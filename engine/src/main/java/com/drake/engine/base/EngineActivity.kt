@@ -35,7 +35,6 @@ abstract class EngineActivity<B : ViewDataBinding> : AppCompatActivity(), OnClic
     }
 
     override fun onDestroy() {
-//        RxBus.get().unregister(this)
         unregisterBroadcast()
         super.onDestroy()
     }
@@ -46,7 +45,6 @@ abstract class EngineActivity<B : ViewDataBinding> : AppCompatActivity(), OnClic
 
     open fun init() {
         registerBroadcast()
-//        RxBus.get().register(this)
         try {
             initView()
             initData()

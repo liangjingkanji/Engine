@@ -23,9 +23,6 @@ abstract class EngineDialogFragment<B : ViewDataBinding> : DialogFragment(), OnC
         super.onActivityCreated(savedInstanceState)
         binding = DataBindingUtil.bind(view!!)!!
         @Suppress("DEPRECATION")
-//        if (!RxBus.get().hasRegistered(this)) {
-//            RxBus.get().register(this)
-//        }
         try {
             initView()
             initData()
@@ -37,11 +34,6 @@ abstract class EngineDialogFragment<B : ViewDataBinding> : DialogFragment(), OnC
 
     override fun onClick(v: View) {
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-//        RxBus.get().unregister(this)
     }
 
     abstract fun initData()

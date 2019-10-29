@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.drake.engine.base.EngineNavFragment
 import com.drake.engine.sample.databinding.FragmentBlankBinding
+import openActivity
 
 
 class BlankFragment : EngineNavFragment<FragmentBlankBinding>() {

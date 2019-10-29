@@ -28,33 +28,47 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.fragment.app.Fragment
-import com.drake.engine.base.App
 import java.io.Serializable
 
 // <editor-fold desc="跳转">
 
-inline fun <reified T : Activity> openActivity(vararg params: Pair<String, Any?>) =
-    App.startActivity(createIntent(T::class.java, params))
+inline fun <reified T : Activity> Context.openActivity(vararg params: Pair<String, Any?>) =
+    startActivity(createIntent(T::class.java, params))
+
+inline fun <reified T : Activity> Fragment.openActivity(vararg params: Pair<String, Any?>) =
+    context?.openActivity<T>(*params)
+
 
 inline fun <reified T : Activity> Activity.openActivityForResult(
     requestCode: Int,
     vararg params: Pair<String, Any?>
 ) = startActivityForResult(createIntent(T::class.java, params), requestCode)
 
+
 inline fun <reified T : Activity> Fragment.openActivityForResult(
     requestCode: Int,
     vararg params: Pair<String, Any?>
-) = startActivityForResult(createIntent(T::class.java, params), requestCode)
+) = activity?.openActivityForResult<T>(requestCode, *params)
 
 
-inline fun <reified T : Service> startService(vararg params: Pair<String, Any?>) =
-    App.startService(createIntent(T::class.java, params))
+inline fun <reified T : Service> Context.startService(vararg params: Pair<String, Any?>) =
+    startService(createIntent(T::class.java, params))
 
-inline fun <reified T : Service> stopService(vararg params: Pair<String, Any?>) =
-    App.stopService(createIntent(T::class.java, params))
+inline fun <reified T : Service> Context.stopService(vararg params: Pair<String, Any?>) =
+    stopService(createIntent(T::class.java, params))
 
-inline fun <reified T : Any> intentFor(vararg params: Pair<String, Any?>): Intent =
+inline fun <reified T : Service> Fragment.startService(vararg params: Pair<String, Any?>) =
+    context?.startService<T>(*params)
+
+inline fun <reified T : Service> Fragment.stopService(vararg params: Pair<String, Any?>) =
+    context?.stopService<T>(*params)
+
+inline fun <reified T : Any> Context.intentFor(vararg params: Pair<String, Any?>): Intent =
     createIntent(T::class.java, params)
+
+
+inline fun <reified T : Any> Fragment.intentFor(vararg params: Pair<String, Any?>): Intent =
+    context?.createIntent(T::class.java, params) ?: Intent()
 
 // </editor-fold>
 
@@ -230,8 +244,11 @@ object IntentKt {
      * @return Intent
      */
     @JvmStatic
-    fun <T> createIntent(clazz: Class<out T>, params: Array<out Pair<String, Any?>>): Intent {
-        val intent = Intent(App, clazz)
+    fun <T> Context.createIntent(
+        clazz: Class<out T>,
+        params: Array<out Pair<String, Any?>>
+    ): Intent {
+        val intent = Intent(this, clazz)
         if (params.isNotEmpty()) fillIntentArguments(intent, params)
         return intent
     }

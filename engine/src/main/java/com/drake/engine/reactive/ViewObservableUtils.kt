@@ -17,8 +17,11 @@ import java.util.concurrent.TimeUnit
  * @param interval Long
  * @param block [@kotlin.ExtensionFunctionType] Function1<View, Unit>
  */
-fun View.throttle(interval: Long = 500, timeUnit: TimeUnit = TimeUnit.MILLISECONDS) {
-    Observable.create<View> { emitter ->
+fun View.throttle(
+    interval: Long = 500,
+    timeUnit: TimeUnit = TimeUnit.MILLISECONDS
+): Observable<View> {
+    return Observable.create<View> { emitter ->
         setOnClickListener { emitter.onNext(it) }
     }.throttleFirst(interval, timeUnit)
 }
