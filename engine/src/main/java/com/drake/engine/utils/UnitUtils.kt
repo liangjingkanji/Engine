@@ -12,7 +12,7 @@ import android.app.Activity
 import android.util.DisplayMetrics
 import androidx.annotation.DimenRes
 import androidx.annotation.IntDef
-import com.drake.engine.base.App
+import com.drake.engine.base.getApp
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -103,26 +103,26 @@ object UnitUtils {
 
 
 // converts dp value into px
-fun Int.px(): Int = (this * App.resources.displayMetrics.density).toInt()
+fun Int.px(): Int = (this * getApp().resources.displayMetrics.density).toInt()
 
-fun Float.px(): Int = (this * App.resources.displayMetrics.density).toInt()
+fun Float.px(): Int = (this * getApp().resources.displayMetrics.density).toInt()
 
 // converts sp value into px
-fun Int.sp2px(): Int = (this * App.resources.displayMetrics.scaledDensity).toInt()
+fun Int.sp2px(): Int = (this * getApp().resources.displayMetrics.scaledDensity).toInt()
 
-fun Float.sp2px(): Int = (this * App.resources.displayMetrics.scaledDensity).toInt()
+fun Float.sp2px(): Int = (this * getApp().resources.displayMetrics.scaledDensity).toInt()
 
 // converts px value into dp
-fun Int.dp(): Float = this.toFloat() / App.resources.displayMetrics.density
+fun Int.dp(): Float = this.toFloat() / getApp().resources.displayMetrics.density
 
-fun Float.dp(): Float = this.toFloat() / App.resources.displayMetrics.density
+fun Float.dp(): Float = this.toFloat() / getApp().resources.displayMetrics.density
 
 // converts px value into sp
-fun Int.sp(): Float = this / App.resources.displayMetrics.scaledDensity
+fun Int.sp(): Float = this / getApp().resources.displayMetrics.scaledDensity
 
-fun Float.sp(): Float = this / App.resources.displayMetrics.scaledDensity
+fun Float.sp(): Float = this / getApp().resources.displayMetrics.scaledDensity
 
-fun dimen(@DimenRes resource: Int): Int = App.resources.getDimensionPixelSize(resource)
+fun dimen(@DimenRes resource: Int): Int = getApp().resources.getDimensionPixelSize(resource)
 
 
 /**

@@ -12,7 +12,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
-import static com.drake.engine.base.EngineKt.App;
+import static com.drake.engine.base.EngineKt.getApp;
 
 /**
  * <pre>
@@ -35,7 +35,7 @@ public final class SizeUtils {
      * @return value of px
      */
     public static int dp2px(final float dpValue) {
-        final float scale = App.getResources()
+        final float scale = getApp().getResources()
                 .getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
@@ -47,7 +47,7 @@ public final class SizeUtils {
      * @return value of dp
      */
     public static int px2dp(final float pxValue) {
-        final float scale = App.getResources()
+        final float scale = getApp().getResources()
                 .getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
@@ -59,7 +59,7 @@ public final class SizeUtils {
      * @return value of px
      */
     public static int sp2px(final float spValue) {
-        final float fontScale = App.getResources()
+        final float fontScale = getApp().getResources()
                 .getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
@@ -71,7 +71,7 @@ public final class SizeUtils {
      * @return value of sp
      */
     public static int px2sp(final float pxValue) {
-        final float fontScale = App.getResources()
+        final float fontScale = getApp().getResources()
                 .getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
     }
@@ -87,7 +87,7 @@ public final class SizeUtils {
      * unit.
      */
     public static float applyDimension(final float value, final int unit) {
-        DisplayMetrics metrics = App.getResources()
+        DisplayMetrics metrics = getApp().getResources()
                 .getDisplayMetrics();
         switch (unit) {
             case TypedValue.COMPLEX_UNIT_PX:

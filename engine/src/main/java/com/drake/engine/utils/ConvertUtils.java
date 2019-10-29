@@ -24,7 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
-import static com.drake.engine.base.EngineKt.App;
+import static com.drake.engine.base.EngineKt.getApp;
 
 /**
  * <pre>
@@ -517,7 +517,7 @@ public final class ConvertUtils {
      * @return drawable
      */
     public static Drawable bitmap2Drawable(final Bitmap bitmap) {
-        return bitmap == null ? null : new BitmapDrawable(App.getResources(), bitmap);
+        return bitmap == null ? null : new BitmapDrawable(getApp().getResources(), bitmap);
     }
 
     /**

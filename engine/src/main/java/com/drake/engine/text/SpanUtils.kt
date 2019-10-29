@@ -20,7 +20,7 @@ import android.widget.TextView
 import androidx.annotation.*
 import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
-import com.drake.engine.base.App
+import com.drake.engine.base.getApp
 import java.io.Serializable
 import java.lang.ref.WeakReference
 
@@ -1196,7 +1196,7 @@ class SpanUtils() {
         private var resourceId: Int = 0
 
         constructor(b: Bitmap, verticalAlignment: Int) : super(verticalAlignment) {
-            drawable = BitmapDrawable(App.resources, b)
+            drawable = BitmapDrawable(getApp().resources, b)
             drawable!!.setBounds(
                 0, 0, drawable!!.intrinsicWidth, drawable!!.intrinsicHeight
             )
@@ -1225,10 +1225,10 @@ class SpanUtils() {
                     val bitmap: Bitmap
 
                     try {
-                        val inputStream = App.contentResolver.openInputStream(contentUri!!)
+                        val inputStream = getApp().contentResolver.openInputStream(contentUri!!)
                         bitmap = BitmapFactory.decodeStream(inputStream)
                         inputStream?.close()
-                        BitmapDrawable(App.resources, bitmap).apply {
+                        BitmapDrawable(getApp().resources, bitmap).apply {
                             setBounds(
                                 0, 0, intrinsicWidth, intrinsicHeight
                             )
@@ -1239,7 +1239,7 @@ class SpanUtils() {
                     }
                 }
                 else -> {
-                    ContextCompat.getDrawable(App, resourceId).apply {
+                    ContextCompat.getDrawable(getApp(), resourceId).apply {
                         this?.setBounds(0, 0, intrinsicWidth, intrinsicHeight)
                     }
                 }

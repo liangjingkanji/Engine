@@ -10,10 +10,13 @@ package com.drake.engine.base
 import android.app.Application
 
 
-lateinit var App: Application
-
+private lateinit var application: Application
 
 fun Application.initEngine() {
-    App = this
+    application = this
+}
+
+fun getApp(): Application {
+    return application
 }
 

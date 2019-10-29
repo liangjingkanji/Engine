@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Set;
 
 import static android.Manifest.permission.KILL_BACKGROUND_PROCESSES;
-import static com.drake.engine.base.EngineKt.App;
+import static com.drake.engine.base.EngineKt.getApp;
 
 
 public final class ProcessUtils {
@@ -47,7 +47,7 @@ public final class ProcessUtils {
      */
     public static String getForegroundProcessName() {
         ActivityManager am =
-                (ActivityManager) App.getSystemService(Context.ACTIVITY_SERVICE);
+                (ActivityManager) getApp().getSystemService(Context.ACTIVITY_SERVICE);
         if (am == null) {
             return null;
         }
@@ -61,7 +61,7 @@ public final class ProcessUtils {
             }
         }
         if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.LOLLIPOP) {
-            PackageManager pm = App.getPackageManager();
+            PackageManager pm = getApp().getPackageManager();
             Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
             List<ResolveInfo> list =
                     pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
@@ -73,15 +73,15 @@ public final class ProcessUtils {
             }
             try {// Access to usage information.
                 ApplicationInfo info =
-                        pm.getApplicationInfo(App.getPackageName(), 0);
+                        pm.getApplicationInfo(getApp().getPackageName(), 0);
                 AppOpsManager aom =
-                        (AppOpsManager) App.getSystemService(Context.APP_OPS_SERVICE);
+                        (AppOpsManager) getApp().getSystemService(Context.APP_OPS_SERVICE);
                 if (aom != null) {
                     if (aom.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
                             info.uid,
                             info.packageName) != AppOpsManager.MODE_ALLOWED) {
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        App.startActivity(intent);
+                        getApp().startActivity(intent);
                     }
                     if (aom.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
                             info.uid,
@@ -91,7 +91,7 @@ public final class ProcessUtils {
                         return null;
                     }
                 }
-                UsageStatsManager usageStatsManager = (UsageStatsManager) App.getSystemService(Context.USAGE_STATS_SERVICE);
+                UsageStatsManager usageStatsManager = (UsageStatsManager) getApp().getSystemService(Context.USAGE_STATS_SERVICE);
                 List<UsageStats> usageStatsList = null;
                 if (usageStatsManager != null) {
                     long endTime = System.currentTimeMillis();
@@ -128,7 +128,7 @@ public final class ProcessUtils {
     @RequiresPermission(KILL_BACKGROUND_PROCESSES)
     public static Set<String> getAllBackgroundProcesses() {
         ActivityManager am =
-                (ActivityManager) App.getSystemService(Context.ACTIVITY_SERVICE);
+                (ActivityManager) getApp().getSystemService(Context.ACTIVITY_SERVICE);
         if (am == null) {
             return Collections.emptySet();
         }
@@ -152,7 +152,7 @@ public final class ProcessUtils {
     @RequiresPermission(KILL_BACKGROUND_PROCESSES)
     public static Set<String> killAllBackgroundProcesses() {
         ActivityManager am =
-                (ActivityManager) App.getSystemService(Context.ACTIVITY_SERVICE);
+                (ActivityManager) getApp().getSystemService(Context.ACTIVITY_SERVICE);
         if (am == null) {
             return Collections.emptySet();
         }
@@ -184,7 +184,7 @@ public final class ProcessUtils {
     @RequiresPermission(KILL_BACKGROUND_PROCESSES)
     public static boolean killBackgroundProcesses(@NonNull final String packageName) {
         ActivityManager am =
-                (ActivityManager) App.getSystemService(Context.ACTIVITY_SERVICE);
+                (ActivityManager) getApp().getSystemService(Context.ACTIVITY_SERVICE);
         if (am == null) {
             return false;
         }

@@ -28,7 +28,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.drake.engine.base.EngineKt.App;
+import static com.drake.engine.base.EngineKt.getApp;
 
 
 public final class AppUtils {
@@ -66,7 +66,7 @@ public final class AppUtils {
         if (!isFileExists(file)) {
             return;
         }
-        App.startActivity(
+        getApp().startActivity(
                 IntentUtils.getInstallAppIntent(file,
                         authority, true));
     }
@@ -190,7 +190,7 @@ public final class AppUtils {
         if (isSpace(packageName)) {
             return;
         }
-        App.startActivity(
+        getApp().startActivity(
                 IntentUtils.getUninstallAppIntent(packageName,
                         true));
     }
@@ -267,7 +267,7 @@ public final class AppUtils {
                                          @NonNull final String category) {
         Intent intent = new Intent(action);
         intent.addCategory(category);
-        PackageManager pm = App.getPackageManager();
+        PackageManager pm = getApp().getPackageManager();
         ResolveInfo info = pm.resolveActivity(intent, 0);
         return info != null;
     }
@@ -306,7 +306,7 @@ public final class AppUtils {
      * @return {@code true}: yes<br>{@code false}: no
      */
     public static boolean isAppDebug() {
-        return isAppDebug(App.getPackageName());
+        return isAppDebug(getApp().getPackageName());
     }
 
     /**
@@ -320,7 +320,7 @@ public final class AppUtils {
             return false;
         }
         try {
-            PackageManager pm = App.getPackageManager();
+            PackageManager pm = getApp().getPackageManager();
             ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
             return ai != null && (ai.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
         } catch (PackageManager.NameNotFoundException e) {
@@ -335,7 +335,7 @@ public final class AppUtils {
      * @return {@code true}: yes<br>{@code false}: no
      */
     public static boolean isAppSystem() {
-        return isAppSystem(App.getPackageName());
+        return isAppSystem(getApp().getPackageName());
     }
 
     /**
@@ -349,7 +349,7 @@ public final class AppUtils {
             return false;
         }
         try {
-            PackageManager pm = App.getPackageManager();
+            PackageManager pm = getApp().getPackageManager();
             ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
             return ai != null && (ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
         } catch (PackageManager.NameNotFoundException e) {
@@ -364,7 +364,7 @@ public final class AppUtils {
      * @return {@code true}: yes<br>{@code false}: no
      */
     public static boolean isAppForeground() {
-        ActivityManager am = (ActivityManager) App.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager am = (ActivityManager) getApp().getSystemService(Context.ACTIVITY_SERVICE);
         if (am == null) {
             return false;
         }
@@ -374,7 +374,7 @@ public final class AppUtils {
         }
         for (ActivityManager.RunningAppProcessInfo aInfo : info) {
             if (aInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                return aInfo.processName.equals(App.getPackageName());
+                return aInfo.processName.equals(getApp().getPackageName());
             }
         }
         return false;
@@ -401,7 +401,7 @@ public final class AppUtils {
         if (isSpace(packageName)) {
             return;
         }
-        App.startActivity(
+        getApp().startActivity(
                 IntentUtils.getLaunchAppIntent(packageName,
                         true));
     }
@@ -429,7 +429,7 @@ public final class AppUtils {
      * Launch the application's details settings.
      */
     public static void launchAppDetailsSettings() {
-        launchAppDetailsSettings(App.getPackageName());
+        launchAppDetailsSettings(getApp().getPackageName());
     }
 
     /**
@@ -441,7 +441,7 @@ public final class AppUtils {
         if (isSpace(packageName)) {
             return;
         }
-        App.startActivity(
+        getApp().startActivity(
                 IntentUtils.getLaunchAppDetailsSettingsIntent(
                         packageName, true)
         );
@@ -453,7 +453,7 @@ public final class AppUtils {
      * @return the application's icon
      */
     public static Drawable getAppIcon() {
-        return getAppIcon(App.getPackageName());
+        return getAppIcon(getApp().getPackageName());
     }
 
     /**
@@ -467,7 +467,7 @@ public final class AppUtils {
             return null;
         }
         try {
-            PackageManager pm = App.getPackageManager();
+            PackageManager pm = getApp().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.applicationInfo.loadIcon(pm);
         } catch (PackageManager.NameNotFoundException e) {
@@ -482,7 +482,7 @@ public final class AppUtils {
      * @return the application's package name
      */
     public static String getAppPackageName() {
-        return App.getPackageName();
+        return getApp().getPackageName();
     }
 
     /**
@@ -491,7 +491,7 @@ public final class AppUtils {
      * @return the application's name
      */
     public static String getAppName() {
-        return getAppName(App.getPackageName());
+        return getAppName(getApp().getPackageName());
     }
 
     /**
@@ -505,7 +505,7 @@ public final class AppUtils {
             return null;
         }
         try {
-            PackageManager pm = App.getPackageManager();
+            PackageManager pm = getApp().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.applicationInfo.loadLabel(pm)
                     .toString();
@@ -521,7 +521,7 @@ public final class AppUtils {
      * @return the application's path
      */
     public static String getAppPath() {
-        return getAppPath(App.getPackageName());
+        return getAppPath(getApp().getPackageName());
     }
 
     /**
@@ -535,7 +535,7 @@ public final class AppUtils {
             return null;
         }
         try {
-            PackageManager pm = App.getPackageManager();
+            PackageManager pm = getApp().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.applicationInfo.sourceDir;
         } catch (PackageManager.NameNotFoundException e) {
@@ -550,7 +550,7 @@ public final class AppUtils {
      * @return the application's version name
      */
     public static String getAppVersionName() {
-        return getAppVersionName(App.getPackageName());
+        return getAppVersionName(getApp().getPackageName());
     }
 
     /**
@@ -564,7 +564,7 @@ public final class AppUtils {
             return null;
         }
         try {
-            PackageManager pm = App.getPackageManager();
+            PackageManager pm = getApp().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? null : pi.versionName;
         } catch (PackageManager.NameNotFoundException e) {
@@ -579,7 +579,7 @@ public final class AppUtils {
      * @return the application's version code
      */
     public static int getAppVersionCode() {
-        return getAppVersionCode(App.getPackageName());
+        return getAppVersionCode(getApp().getPackageName());
     }
 
     /**
@@ -593,7 +593,7 @@ public final class AppUtils {
             return -1;
         }
         try {
-            PackageManager pm = App.getPackageManager();
+            PackageManager pm = getApp().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return pi == null ? -1 : pi.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
@@ -608,7 +608,7 @@ public final class AppUtils {
      * @return the application's signature
      */
     public static Signature[] getAppSignature() {
-        return getAppSignature(App.getPackageName());
+        return getAppSignature(getApp().getPackageName());
     }
 
     /**
@@ -622,7 +622,7 @@ public final class AppUtils {
             return null;
         }
         try {
-            PackageManager pm = App.getPackageManager();
+            PackageManager pm = getApp().getPackageManager();
             @SuppressLint("PackageManagerGetSignatures")
             PackageInfo pi = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
             return pi == null ? null : pi.signatures;
@@ -638,7 +638,7 @@ public final class AppUtils {
      * @return the application's signature for SHA1 value
      */
     public static String getAppSignatureSHA1() {
-        return getAppSignatureSHA1(App.getPackageName());
+        return getAppSignatureSHA1(getApp().getPackageName());
     }
 
     /**
@@ -671,7 +671,7 @@ public final class AppUtils {
      * @return the application's information
      */
     public static AppInfo getAppInfo() {
-        return getAppInfo(App.getPackageName());
+        return getAppInfo(getApp().getPackageName());
     }
 
     /**
@@ -691,7 +691,7 @@ public final class AppUtils {
      */
     public static AppInfo getAppInfo(final String packageName) {
         try {
-            PackageManager pm = App.getPackageManager();
+            PackageManager pm = getApp().getPackageManager();
             PackageInfo pi = pm.getPackageInfo(packageName, 0);
             return getBean(pm, pi);
         } catch (PackageManager.NameNotFoundException e) {
@@ -707,7 +707,7 @@ public final class AppUtils {
      */
     public static List<AppInfo> getAppsInfo() {
         List<AppInfo> list = new ArrayList<>();
-        PackageManager pm = App.getPackageManager();
+        PackageManager pm = getApp().getPackageManager();
         List<PackageInfo> installedPackages = pm.getInstalledPackages(0);
         for (PackageInfo pi : installedPackages) {
             AppInfo ai = getBean(pm, pi);

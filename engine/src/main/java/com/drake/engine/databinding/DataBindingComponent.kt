@@ -127,6 +127,7 @@ fun ImageView.setImageRes(drawableId: Int) {
  * @param holder           占位图, 如果不设置且存在 android:src 则为占位图
  * @param corner 设置圆角, 默认为圆
  */
+@Suppress("DEPRECATION")
 @SuppressLint("CheckResult")
 @BindingAdapter(value = ["imgCorner", "holder", "corner"], requireAll = false)
 fun ImageView.loadImgCorner(

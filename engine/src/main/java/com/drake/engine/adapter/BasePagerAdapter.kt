@@ -15,7 +15,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.viewpager.widget.PagerAdapter
-import com.drake.engine.base.App
+import com.drake.engine.base.getApp
 
 class BasePagerAdapter(layoutIds: ArrayList<Int>, val titles: ArrayList<String>? = null) :
     PagerAdapter() {
@@ -26,7 +26,7 @@ class BasePagerAdapter(layoutIds: ArrayList<Int>, val titles: ArrayList<String>?
 
         for (layoutId in layoutIds) {
             val viewDataBinding = DataBindingUtil.inflate<ViewDataBinding>(
-                LayoutInflater.from(App),
+                LayoutInflater.from(getApp()),
                 layoutId,
                 null,
                 false
@@ -68,7 +68,7 @@ class BasePagerAdapter(layoutIds: ArrayList<Int>, val titles: ArrayList<String>?
      */
     fun <B : ViewDataBinding> add(layoutId: Int): B {
         val viewDataBinding = DataBindingUtil.inflate<ViewDataBinding>(
-            LayoutInflater.from(App),
+            LayoutInflater.from(getApp()),
             layoutId,
             null,
             false
@@ -80,7 +80,7 @@ class BasePagerAdapter(layoutIds: ArrayList<Int>, val titles: ArrayList<String>?
     fun <B : ViewDataBinding> add(layoutId: Int, title: String? = null): B {
 
         val viewDataBinding = DataBindingUtil.inflate<ViewDataBinding>(
-            LayoutInflater.from(App),
+            LayoutInflater.from(getApp()),
             layoutId,
             null,
             false

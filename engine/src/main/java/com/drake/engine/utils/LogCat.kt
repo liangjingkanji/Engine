@@ -103,7 +103,7 @@ class LogCat private constructor() {
          * @param url     请求Url
          * @param message Json字符串
          */
-        fun json(tag: String = TAG, url: String? = null, message: String) {
+        fun json(message: String, tag: String = TAG, url: String? = null) {
 
             var jsonObject: JSONObject? = null
 

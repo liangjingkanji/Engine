@@ -24,6 +24,7 @@ public final class CloneUtils {
      * @param <T>  The value type.
      * @return The object of cloned
      */
+    @SuppressWarnings("unchecked")
     public static <T> T deepClone(final Serializable data) {
         if (data == null) {
             return null;
