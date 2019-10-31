@@ -6,7 +6,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.drake.engine"
+        applicationId "com.drake.engine.sample"
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
