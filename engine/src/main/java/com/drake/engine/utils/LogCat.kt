@@ -26,7 +26,7 @@ class LogCat private constructor() {
 
     companion object {
 
-        private var TAG = "日志"
+        private var tag = "日志"
 
         private var enabled = true
 
@@ -43,52 +43,31 @@ class LogCat private constructor() {
          * 设置日志配置
          *
          * @param TAG     过滤TAG
-         * @param isDebug 是否打印
+         * @param enabled 是否打印
          */
-        fun setConfig(TAG: String, isDebug: Boolean) {
-            enabled = isDebug
-
-            Companion.TAG = TAG
+        fun setConfig(tag: String = "日志", enabled: Boolean = true) {
+            this.enabled = enabled
+            this.tag = tag
         }
 
         // <editor-fold desc="普通日志">
 
-        fun i(msg: String) {
-            if (enabled)
-                android.util.Log.i(TAG, msg)
-        }
-
-        fun d(msg: String) {
-            if (enabled)
-                android.util.Log.d(TAG, msg)
-        }
-
-        fun e(msg: String) {
-            if (enabled)
-                android.util.Log.e(TAG, msg)
-        }
-
-        fun v(msg: String) {
-            if (enabled)
-                android.util.Log.v(TAG, msg)
-        }
-
-        fun i(tag: String, msg: String) {
+        fun i(msg: String, tag: String = this.tag) {
             if (enabled)
                 android.util.Log.i(tag, msg)
         }
 
-        fun d(tag: String, msg: String) {
+        fun d(msg: String, tag: String = this.tag) {
             if (enabled)
                 android.util.Log.i(tag, msg)
         }
 
-        fun e(tag: String, msg: String) {
+        fun e(msg: String, tag: String = this.tag) {
             if (enabled)
                 android.util.Log.i(tag, msg)
         }
 
-        fun v(tag: String, msg: String) {
+        fun v(msg: String, tag: String = this.tag) {
             if (enabled)
                 android.util.Log.i(tag, msg)
         }
@@ -103,7 +82,7 @@ class LogCat private constructor() {
          * @param url     请求Url
          * @param message Json字符串
          */
-        fun json(message: String, tag: String = TAG, url: String? = null) {
+        fun json(message: String, tag: String = this.tag, url: String? = null) {
 
             var jsonObject: JSONObject? = null
 
@@ -150,7 +129,6 @@ class LogCat private constructor() {
             jsonBuilder.setLength(0)
 
 //            START
-            appendSb(TagName, false)
 
             if (url != null) {
                 appendSb(

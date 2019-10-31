@@ -4,7 +4,7 @@ import android.widget.Toast
 import com.drake.engine.base.getApp
 
 object Toasts {
-
+    val toast = Toast(getApp())
 }
 
 fun toast(message: Int): Toast = Toast
