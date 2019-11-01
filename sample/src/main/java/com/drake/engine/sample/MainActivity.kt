@@ -11,6 +11,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.drake.engine.databinding.setContent
 import com.drake.engine.sample.databinding.ActivityMainBinding
+import com.hulab.debugkit.dev
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +27,12 @@ class MainActivity : AppCompatActivity() {
         binding.v = this
         binding.m = model
 
+
+        dev {
+            /*function {
+                openActivity<Main2Activity>()
+            }*/
+        }
     }
 }
 

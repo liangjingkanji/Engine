@@ -3,8 +3,10 @@ package com.drake.engine.utils
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Base64
 import androidx.fragment.app.Fragment
 import com.drake.engine.base.getApp
+import java.io.*
 
 
 fun getPreferences(name: String = getApp().packageName): Preferences {
@@ -20,17 +22,50 @@ fun Fragment.getCurrentPreferences(): Preferences {
     return getPreferences(activity!!.localClassName)
 }
 
+
+fun Fragment.getCurentEdit(
+    name: String = activity!!.localClassName,
+    commit: Boolean = false,
+    block: SharedPreferences.Editor.() -> Unit
+) {
+    getEdit(name, commit, block)
+}
+
+
+fun Activity.getCurrentEdit(
+    name: String = localClassName,
+    commit: Boolean = false,
+    block: SharedPreferences.Editor.() -> Unit
+) {
+    getEdit(name, commit, block)
+}
+
 inline fun getEdit(
     name: String = getApp().packageName,
     commit: Boolean = false,
     block: SharedPreferences.Editor.() -> Unit
 ) {
     val editor = Preferences(name).edit()
+
     block(editor)
     if (commit) {
         editor.commit()
     } else {
         editor.apply()
+    }
+}
+
+fun SharedPreferences.Editor.putAny(key: String, any: Serializable) {
+    try {
+        val byteOutput = ByteArrayOutputStream()
+        val objOutput = ObjectOutputStream(byteOutput)
+        objOutput.writeObject(any)
+
+        val str = Base64.encodeToString(byteOutput.toByteArray(), Base64.DEFAULT)
+        putString(key, str)
+
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
 }
 
@@ -40,40 +75,55 @@ class Preferences(name: String = getApp().packageName) {
     // <editor-fold desc="设置值">
 
     fun clear() {
-        edit().clear().commit()
+        edit().clear().apply()
     }
 
     fun putLong(key: String?, value: Long = 0) {
-        edit().putLong(key, value).commit()
+        edit().putLong(key, value).apply()
     }
 
     fun putInt(key: String?, value: Int = 0) {
-        edit().putInt(key, value).commit()
+        edit().putInt(key, value).apply()
     }
 
     fun remove(key: String?) {
-        edit().remove(key).commit()
+        edit().remove(key).apply()
     }
 
     fun putBoolean(key: String?, value: Boolean = false) {
-        edit().putBoolean(key, value).commit()
+        edit().putBoolean(key, value).apply()
     }
 
-    fun putStringSet(key: String?, values: Set<String>? = setOf()) {
-        edit().putStringSet(key, values).commit()
+    fun putStringSet(key: String?, values: MutableSet<String>? = mutableSetOf()) {
+        edit().putStringSet(key, values).apply()
     }
 
     fun putFloat(key: String?, value: Float = 0F) {
-        edit().putFloat(key, value).commit()
+        edit().putFloat(key, value).apply()
     }
 
     fun putString(key: String?, value: String? = null) {
-        edit().putString(key, value).commit()
+        edit().putString(key, value).apply()
+    }
+
+
+    fun putAny(key: String, any: Serializable) {
+        try {
+            val byteOutput = ByteArrayOutputStream()
+            val objOutput = ObjectOutputStream(byteOutput)
+            objOutput.writeObject(any)
+
+            val str = Base64.encodeToString(byteOutput.toByteArray(), Base64.DEFAULT)
+            putString(key, str)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     // </editor-fold>
 
-    private var sp = getApp().getSharedPreferences(name, Context.MODE_PRIVATE)
+    var sp = getApp().getSharedPreferences(name, Context.MODE_PRIVATE)
 
 
     // <editor-fold desc="访问值">
@@ -98,13 +148,42 @@ class Preferences(name: String = getApp().packageName) {
         return sp.getFloat(key, defValue)
     }
 
-    fun getStringSet(key: String?, defValues: Set<String>? = setOf()): MutableSet<String>? {
+    fun getStringSet(
+        key: String?,
+        defValues: MutableSet<String>? = mutableSetOf()
+    ): MutableSet<String>? {
         return sp.getStringSet(key, defValues)
     }
 
 
     fun getString(key: String?, defValue: String? = ""): String? {
         return sp.getString(key, defValue)
+    }
+
+    /**
+     * 读取本地已存储对象
+     *
+     * @param key String
+     * @return T?
+     */
+    inline fun <reified T : Serializable> getAny(key: String): T? {
+        return try {
+            val any = sp.getString(key, null) ?: return null
+
+            val base64 = Base64.decode(any, Base64.DEFAULT)
+            val byteInput = ByteArrayInputStream(base64)
+            val objInput = ObjectInputStream(byteInput)
+
+            val readObject = objInput.readObject()
+
+            if (readObject is T) {
+                readObject
+            } else null
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 
     // </editor-fold>
