@@ -8,6 +8,7 @@
 package com.drake.engine.sample
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.drake.engine.databinding.setContent
 import com.drake.engine.sample.databinding.ActivityMainBinding
@@ -19,6 +20,8 @@ class MainActivity : AppCompatActivity() {
 
     var model = Model(26)
 
+    lateinit var toast: Toast
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -28,10 +31,12 @@ class MainActivity : AppCompatActivity() {
         binding.m = model
 
 
+
         dev {
-            /*function {
-                openActivity<Main2Activity>()
-            }*/
+
+
+            function {
+            }
         }
     }
 }

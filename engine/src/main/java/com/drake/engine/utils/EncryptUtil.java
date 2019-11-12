@@ -211,8 +211,6 @@ public class EncryptUtil {
         } catch (NoSuchAlgorithmException | IOException e) {
             e.printStackTrace();
             return null;
-        } finally {
-            CloseUtils.closeIO(fis);
         }
     }
 

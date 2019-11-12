@@ -93,9 +93,8 @@ public final class FileIOUtils {
         if (!createOrExistsFile(file) || is == null) {
             return false;
         }
-        OutputStream os = null;
         try {
-            os = new BufferedOutputStream(new FileOutputStream(file, append));
+            OutputStream os = new BufferedOutputStream(new FileOutputStream(file, append));
             byte[] data = new byte[sBufferSize];
             int len;
             while ((len = is.read(data, 0, sBufferSize)) != -1) {
@@ -106,7 +105,11 @@ public final class FileIOUtils {
             e.printStackTrace();
             return false;
         } finally {
-            CloseUtils.closeIO(is, os);
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -160,16 +163,13 @@ public final class FileIOUtils {
         if (bytes == null || !createOrExistsFile(file)) {
             return false;
         }
-        BufferedOutputStream bos = null;
         try {
-            bos = new BufferedOutputStream(new FileOutputStream(file, append));
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file, append));
             bos.write(bytes);
             return true;
         } catch (IOException e) {
             e.printStackTrace();
             return false;
-        } finally {
-            CloseUtils.closeIO(bos);
         }
     }
 
@@ -233,9 +233,8 @@ public final class FileIOUtils {
         if (bytes == null) {
             return false;
         }
-        FileChannel fc = null;
         try {
-            fc = new FileOutputStream(file, append).getChannel();
+            FileChannel fc = new FileOutputStream(file, append).getChannel();
             fc.position(fc.size());
             fc.write(ByteBuffer.wrap(bytes));
             if (isForce) {
@@ -245,8 +244,6 @@ public final class FileIOUtils {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
-        } finally {
-            CloseUtils.closeIO(fc);
         }
     }
 
@@ -310,9 +307,8 @@ public final class FileIOUtils {
         if (bytes == null || !createOrExistsFile(file)) {
             return false;
         }
-        FileChannel fc = null;
         try {
-            fc = new FileOutputStream(file, append).getChannel();
+            FileChannel fc = new FileOutputStream(file, append).getChannel();
             MappedByteBuffer mbb = fc.map(FileChannel.MapMode.READ_WRITE, fc.size(), bytes.length);
             mbb.put(bytes);
             if (isForce) {
@@ -322,8 +318,6 @@ public final class FileIOUtils {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
-        } finally {
-            CloseUtils.closeIO(fc);
         }
     }
 
@@ -380,16 +374,13 @@ public final class FileIOUtils {
         if (!createOrExistsFile(file)) {
             return false;
         }
-        BufferedWriter bw = null;
         try {
-            bw = new BufferedWriter(new FileWriter(file, append));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file, append));
             bw.write(content);
             return true;
         } catch (IOException e) {
             e.printStackTrace();
             return false;
-        } finally {
-            CloseUtils.closeIO(bw);
         }
     }
     ///////////////////////////////////////////////////////////////////////////
@@ -497,8 +488,8 @@ public final class FileIOUtils {
         if (st > end) {
             return null;
         }
-        BufferedReader reader = null;
         try {
+            BufferedReader reader;
             String line;
             int curLine = 1;
             List<String> list = new ArrayList<>();
@@ -522,8 +513,6 @@ public final class FileIOUtils {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
-        } finally {
-            CloseUtils.closeIO(reader);
         }
     }
 
@@ -569,8 +558,8 @@ public final class FileIOUtils {
         if (!isFileExists(file)) {
             return null;
         }
-        BufferedReader reader = null;
         try {
+            BufferedReader reader;
             StringBuilder sb = new StringBuilder();
             if (isSpace(charsetName)) {
                 reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
@@ -591,8 +580,6 @@ public final class FileIOUtils {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
-        } finally {
-            CloseUtils.closeIO(reader);
         }
     }
 
@@ -616,11 +603,9 @@ public final class FileIOUtils {
         if (!isFileExists(file)) {
             return null;
         }
-        FileInputStream fis = null;
-        ByteArrayOutputStream os = null;
         try {
-            fis = new FileInputStream(file);
-            os = new ByteArrayOutputStream();
+            FileInputStream fis = new FileInputStream(file);
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
             byte[] b = new byte[sBufferSize];
             int len;
             while ((len = fis.read(b, 0, sBufferSize)) != -1) {
@@ -630,8 +615,6 @@ public final class FileIOUtils {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
-        } finally {
-            CloseUtils.closeIO(fis, os);
         }
     }
 
@@ -655,9 +638,8 @@ public final class FileIOUtils {
         if (!isFileExists(file)) {
             return null;
         }
-        FileChannel fc = null;
         try {
-            fc = new RandomAccessFile(file, "r").getChannel();
+            FileChannel fc = new RandomAccessFile(file, "r").getChannel();
             ByteBuffer byteBuffer = ByteBuffer.allocate((int) fc.size());
             while (true) {
                 if (!((fc.read(byteBuffer)) > 0)) {
@@ -668,8 +650,6 @@ public final class FileIOUtils {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
-        } finally {
-            CloseUtils.closeIO(fc);
         }
     }
 
@@ -693,9 +673,8 @@ public final class FileIOUtils {
         if (!isFileExists(file)) {
             return null;
         }
-        FileChannel fc = null;
         try {
-            fc = new RandomAccessFile(file, "r").getChannel();
+            FileChannel fc = new RandomAccessFile(file, "r").getChannel();
             int size = (int) fc.size();
             MappedByteBuffer mbb = fc.map(FileChannel.MapMode.READ_ONLY, 0, size)
                     .load();
@@ -705,8 +684,6 @@ public final class FileIOUtils {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
-        } finally {
-            CloseUtils.closeIO(fc);
         }
     }
 

@@ -789,14 +789,11 @@ public final class FileUtils {
      */
     public static String getFileCharsetSimple(final File file) {
         int p = 0;
-        InputStream is = null;
         try {
-            is = new BufferedInputStream(new FileInputStream(file));
+            InputStream is = new BufferedInputStream(new FileInputStream(file));
             p = (is.read() << 8) + is.read();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            CloseUtils.closeIO(is);
         }
         switch (p) {
             case 0xefbb:
@@ -828,9 +825,8 @@ public final class FileUtils {
      */
     public static int getFileLines(final File file) {
         int count = 1;
-        InputStream is = null;
         try {
-            is = new BufferedInputStream(new FileInputStream(file));
+            InputStream is = new BufferedInputStream(new FileInputStream(file));
             byte[] buffer = new byte[1024];
             int readChars;
             if (LINE_SEP.endsWith("\n")) {
@@ -852,8 +848,6 @@ public final class FileUtils {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            CloseUtils.closeIO(is);
         }
         return count;
     }
@@ -1013,11 +1007,10 @@ public final class FileUtils {
         if (file == null) {
             return null;
         }
-        DigestInputStream dis = null;
         try {
             FileInputStream fis = new FileInputStream(file);
             MessageDigest md = MessageDigest.getInstance("MD5");
-            dis = new DigestInputStream(fis, md);
+            DigestInputStream dis = new DigestInputStream(fis, md);
             byte[] buffer = new byte[1024 * 256];
             while (true) {
                 if (!(dis.read(buffer) > 0)) {
@@ -1028,8 +1021,6 @@ public final class FileUtils {
             return md.digest();
         } catch (NoSuchAlgorithmException | IOException e) {
             e.printStackTrace();
-        } finally {
-            CloseUtils.closeIO(dis);
         }
         return null;
     }

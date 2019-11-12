@@ -74,7 +74,6 @@ public final class ZipUtils {
         } finally {
             if (zos != null) {
                 zos.finish();
-                CloseUtils.closeIO(zos);
             }
         }
     }
@@ -120,7 +119,6 @@ public final class ZipUtils {
         } finally {
             if (zos != null) {
                 zos.finish();
-                CloseUtils.closeIO(zos);
             }
         }
     }
@@ -180,19 +178,18 @@ public final class ZipUtils {
      */
     public static boolean zipFile(final File srcFile,
                                   final File zipFile,
-                                  final String comment)
-            throws IOException {
+                                  final String comment) throws IOException {
         if (srcFile == null || zipFile == null) {
             return false;
         }
         ZipOutputStream zos = null;
+
         try {
             zos = new ZipOutputStream(new FileOutputStream(zipFile));
             return zipFile(srcFile, "", zos, comment);
-        } finally {
-            if (zos != null) {
-                CloseUtils.closeIO(zos);
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -229,10 +226,11 @@ public final class ZipUtils {
                     zos.write(buffer, 0, len);
                 }
                 zos.closeEntry();
-            } finally {
-                CloseUtils.closeIO(is);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
+
         return true;
     }
 
@@ -335,18 +333,17 @@ public final class ZipUtils {
             if (!createOrExistsFile(file)) {
                 return false;
             }
-            InputStream in = null;
-            OutputStream out = null;
+
             try {
-                in = new BufferedInputStream(zf.getInputStream(entry));
-                out = new BufferedOutputStream(new FileOutputStream(file));
+                InputStream in = new BufferedInputStream(zf.getInputStream(entry));
+                OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
                 byte[] buffer = new byte[BUFFER_LEN];
                 int len;
                 while ((len = in.read(buffer)) != -1) {
                     out.write(buffer, 0, len);
                 }
-            } finally {
-                CloseUtils.closeIO(in, out);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
         return true;

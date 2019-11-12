@@ -37,7 +37,7 @@ import static com.drake.engine.base.EngineKt.getApp;
 public final class ConvertUtils {
 
     private static final char[] hexDigits =
-          {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+            {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
     private ConvertUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
@@ -307,8 +307,6 @@ public final class ConvertUtils {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
-        } finally {
-            CloseUtils.closeIO(is);
         }
     }
 
@@ -361,16 +359,13 @@ public final class ConvertUtils {
         if (bytes == null || bytes.length <= 0) {
             return null;
         }
-        ByteArrayOutputStream os = null;
         try {
-            os = new ByteArrayOutputStream();
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
             os.write(bytes);
             return os;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
-        } finally {
-            CloseUtils.closeIO(os);
         }
     }
 

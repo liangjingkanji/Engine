@@ -10,6 +10,13 @@ package com.drake.engine.keyboard
 import android.text.InputFilter
 import android.text.Spanned
 
+/**
+ * 限制数字输入
+ * @property decimalDigits Int 小数位数
+ * @property integerDigits Int 整数位数
+ * @property totalDigits Int 全部位数
+ * @property pasteEnable Boolean 是否允许复制粘贴
+ */
 class DigitsInputFilter(
     var decimalDigits: Int = 2,
     var integerDigits: Int = Int.MAX_VALUE,

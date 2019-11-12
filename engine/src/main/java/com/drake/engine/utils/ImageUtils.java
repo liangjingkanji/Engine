@@ -1545,19 +1545,18 @@ public final class ImageUtils {
         if (isEmptyBitmap(src) || !createFileByDeleteOldFile(file)) {
             return false;
         }
-        OutputStream os = null;
         boolean ret = false;
+
         try {
-            os = new BufferedOutputStream(new FileOutputStream(file));
+            OutputStream os = new BufferedOutputStream(new FileOutputStream(file));
             ret = src.compress(format, 100, os);
             if (recycle && !src.isRecycled()) {
                 src.recycle();
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            CloseUtils.closeIO(os);
         }
+
         return ret;
     }
 
@@ -1604,17 +1603,14 @@ public final class ImageUtils {
         if (file == null) {
             return null;
         }
-        InputStream is = null;
         try {
-            is = new FileInputStream(file);
+            InputStream is = new FileInputStream(file);
             String type = getImageType(is);
             if (type != null) {
                 return type;
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            CloseUtils.closeIO(is);
         }
         return getFileExtension(file.getAbsolutePath()).toUpperCase();
     }
@@ -2008,7 +2004,11 @@ public final class ImageUtils {
             e.printStackTrace();
             return null;
         } finally {
-            CloseUtils.closeIO(is);
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -695,8 +695,6 @@ public final class CacheUtils {
                 fc.force(true);
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                CloseUtils.closeIO(fc);
             }
         }
 
@@ -713,8 +711,6 @@ public final class CacheUtils {
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
-            } finally {
-                CloseUtils.closeIO(fc);
             }
         }
 
@@ -809,8 +805,6 @@ public final class CacheUtils {
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
-            } finally {
-                CloseUtils.closeIO(oos);
             }
         }
 
@@ -825,8 +819,6 @@ public final class CacheUtils {
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
-            } finally {
-                CloseUtils.closeIO(ois);
             }
         }
 

@@ -48,7 +48,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.core:core-ktx:1.2.0-beta01'
+    implementation 'androidx.core:core-ktx:1.2.0-beta02'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
 
@@ -64,9 +64,9 @@ dependencies {
 
 
 //    我的其他库
-    implementation 'com.github.liangjingkanji:BRV:1.1.0'
+    implementation 'com.github.liangjingkanji:BRV:1.1.1'
     implementation 'com.github.liangjingkanji:debugkit:1.2.9'
-    implementation 'com.github.liangjingkanji:Net:1.1.8'
+    implementation 'com.github.liangjingkanji:Net:1.2.0'
     implementation 'com.github.liangjingkanji:RxBus:1.0'
 
 

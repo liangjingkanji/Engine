@@ -100,13 +100,17 @@ public final class ShellUtils {
         if (commands == null || commands.length == 0) {
             return new CommandResult(result, null, null);
         }
+
         Process process = null;
-        BufferedReader successResult = null;
-        BufferedReader errorResult = null;
         StringBuilder successMsg = null;
         StringBuilder errorMsg = null;
-        DataOutputStream os = null;
+
         try {
+
+            BufferedReader successResult;
+            BufferedReader errorResult;
+            DataOutputStream os;
+
             process = Runtime.getRuntime()
                     .exec(isRoot ? "su" : "sh");
             os = new DataOutputStream(process.getOutputStream());
@@ -147,11 +151,13 @@ public final class ShellUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            CloseUtils.closeIO(os, successResult, errorResult);
+
+
             if (process != null) {
                 process.destroy();
             }
         }
+
         return new CommandResult(
                 result,
                 successMsg == null ? null : successMsg.toString(),
