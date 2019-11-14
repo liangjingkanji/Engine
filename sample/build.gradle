@@ -60,14 +60,15 @@ dependencies {
 //    Glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
-    implementation 'jp.wasabeef:glide-transformations:3.0.1'
+    implementation 'jp.wasabeef:glide-transformations:3.1.1'
 
 
 //    我的其他库
     implementation 'com.github.liangjingkanji:BRV:1.1.1'
     implementation 'com.github.liangjingkanji:debugkit:1.2.9'
     implementation 'com.github.liangjingkanji:Net:1.2.0'
-    implementation 'com.github.liangjingkanji:RxBus:1.0'
+    implementation 'com.github.liangjingkanji:RxBus:1.0.2'
+    implementation 'com.github.liangjingkanji:LogCat:1.0'
 
 
     implementation 'com.yanzhenjie:permission:2.0.0-rc10'
