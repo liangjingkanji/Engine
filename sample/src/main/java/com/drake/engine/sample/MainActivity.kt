@@ -10,6 +10,7 @@ package com.drake.engine.sample
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import com.drake.engine.databinding.setContent
 import com.drake.engine.sample.databinding.ActivityMainBinding
 import com.hulab.debugkit.dev
@@ -29,8 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.v = this
         binding.m = model
-
-
+        bundleOf()
 
         dev {
 

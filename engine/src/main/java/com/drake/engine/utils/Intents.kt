@@ -17,7 +17,6 @@
 
 @file:Suppress("unused")
 
-import IntentKt.createIntent
 import android.app.Activity
 import android.app.Service
 import android.content.ActivityNotFoundException
@@ -27,13 +26,14 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import java.io.Serializable
 
 // <editor-fold desc="跳转">
 
 inline fun <reified T : Activity> Context.openActivity(vararg params: Pair<String, Any?>) =
-    startActivity(createIntent(T::class.java, params))
+    startActivity(createIntent<T>(params))
 
 inline fun <reified T : Activity> Fragment.openActivity(vararg params: Pair<String, Any?>) =
     context?.openActivity<T>(*params)
@@ -42,7 +42,7 @@ inline fun <reified T : Activity> Fragment.openActivity(vararg params: Pair<Stri
 inline fun <reified T : Activity> Activity.openActivityForResult(
     requestCode: Int,
     vararg params: Pair<String, Any?>
-) = startActivityForResult(createIntent(T::class.java, params), requestCode)
+) = startActivityForResult(createIntent<T>(params), requestCode)
 
 
 inline fun <reified T : Activity> Fragment.openActivityForResult(
@@ -52,10 +52,10 @@ inline fun <reified T : Activity> Fragment.openActivityForResult(
 
 
 inline fun <reified T : Service> Context.startService(vararg params: Pair<String, Any?>) =
-    startService(createIntent(T::class.java, params))
+    startService(createIntent<T>(params))
 
 inline fun <reified T : Service> Context.stopService(vararg params: Pair<String, Any?>) =
-    stopService(createIntent(T::class.java, params))
+    stopService(createIntent<T>(params))
 
 inline fun <reified T : Service> Fragment.startService(vararg params: Pair<String, Any?>) =
     context?.startService<T>(*params)
@@ -64,11 +64,11 @@ inline fun <reified T : Service> Fragment.stopService(vararg params: Pair<String
     context?.stopService<T>(*params)
 
 inline fun <reified T : Any> Context.intentFor(vararg params: Pair<String, Any?>): Intent =
-    createIntent(T::class.java, params)
+    createIntent<T>(params)
 
 
 inline fun <reified T : Any> Fragment.intentFor(vararg params: Pair<String, Any?>): Intent =
-    context?.createIntent(T::class.java, params) ?: Intent()
+    context?.createIntent<T>(params) ?: Intent()
 
 // </editor-fold>
 
@@ -232,67 +232,62 @@ fun Context.sendSMS(number: String, text: String = ""): Boolean {
     }
 }
 
-// </editor-fold>
+fun <T : Fragment> T.withArguments(vararg params: Pair<String, Any?>): T {
+    arguments = bundleOf(*params)
+    return this
+}
 
+/**
+ * 创建意图
+ * @param clazz Class<out T>
+ * @param params Array<out Pair<String, Any?>>
+ * @return Intent
+ */
+inline fun <reified T> Context.createIntent(params: Array<out Pair<String, Any?>>): Intent {
+    val intent = Intent(this, T::class.java)
+    if (params.isNotEmpty()) intent.withArguments(params)
+    return intent
+}
 
-object IntentKt {
-
-    /**
-     * 创建意图
-     * @param clazz Class<out T>
-     * @param params Array<out Pair<String, Any?>>
-     * @return Intent
-     */
-    @JvmStatic
-    fun <T> Context.createIntent(
-        clazz: Class<out T>,
-        params: Array<out Pair<String, Any?>>
-    ): Intent {
-        val intent = Intent(this, clazz)
-        if (params.isNotEmpty()) fillIntentArguments(intent, params)
-        return intent
-    }
-
-
-    /**
-     * 意图添加数据
-     * @param intent Intent
-     * @param params Array<out Pair<String, Any?>>
-     */
-    @JvmStatic
-    private fun fillIntentArguments(intent: Intent, params: Array<out Pair<String, Any?>>) {
-        params.forEach {
-            when (val value = it.second) {
-                null -> intent.putExtra(it.first, null as Serializable?)
-                is Int -> intent.putExtra(it.first, value)
-                is Long -> intent.putExtra(it.first, value)
-                is CharSequence -> intent.putExtra(it.first, value)
-                is String -> intent.putExtra(it.first, value)
-                is Float -> intent.putExtra(it.first, value)
-                is Double -> intent.putExtra(it.first, value)
-                is Char -> intent.putExtra(it.first, value)
-                is Short -> intent.putExtra(it.first, value)
-                is Boolean -> intent.putExtra(it.first, value)
-                is Serializable -> intent.putExtra(it.first, value)
-                is Bundle -> intent.putExtra(it.first, value)
-                is Parcelable -> intent.putExtra(it.first, value)
-                is Array<*> -> when {
-                    value.isArrayOf<CharSequence>() -> intent.putExtra(it.first, value)
-                    value.isArrayOf<String>() -> intent.putExtra(it.first, value)
-                    value.isArrayOf<Parcelable>() -> intent.putExtra(it.first, value)
-                    else -> throw IllegalArgumentException("Intent extra ${it.first} has wrong type ${value.javaClass.name}")
-                }
-                is IntArray -> intent.putExtra(it.first, value)
-                is LongArray -> intent.putExtra(it.first, value)
-                is FloatArray -> intent.putExtra(it.first, value)
-                is DoubleArray -> intent.putExtra(it.first, value)
-                is CharArray -> intent.putExtra(it.first, value)
-                is ShortArray -> intent.putExtra(it.first, value)
-                is BooleanArray -> intent.putExtra(it.first, value)
+/**
+ * 意图添加数据
+ * @param intent Intent
+ * @param params Array<out Pair<String, Any?>>
+ */
+fun Intent.withArguments(params: Array<out Pair<String, Any?>>) {
+    params.forEach {
+        when (val value = it.second) {
+            null -> putExtra(it.first, null as Serializable?)
+            is Int -> putExtra(it.first, value)
+            is Long -> putExtra(it.first, value)
+            is CharSequence -> putExtra(it.first, value)
+            is String -> putExtra(it.first, value)
+            is Float -> putExtra(it.first, value)
+            is Double -> putExtra(it.first, value)
+            is Char -> putExtra(it.first, value)
+            is Short -> putExtra(it.first, value)
+            is Boolean -> putExtra(it.first, value)
+            is Serializable -> putExtra(it.first, value)
+            is Bundle -> putExtra(it.first, value)
+            is Parcelable -> putExtra(it.first, value)
+            is Array<*> -> when {
+                value.isArrayOf<CharSequence>() -> putExtra(it.first, value)
+                value.isArrayOf<String>() -> putExtra(it.first, value)
+                value.isArrayOf<Parcelable>() -> putExtra(it.first, value)
                 else -> throw IllegalArgumentException("Intent extra ${it.first} has wrong type ${value.javaClass.name}")
             }
-            return@forEach
+            is IntArray -> putExtra(it.first, value)
+            is LongArray -> putExtra(it.first, value)
+            is FloatArray -> putExtra(it.first, value)
+            is DoubleArray -> putExtra(it.first, value)
+            is CharArray -> putExtra(it.first, value)
+            is ShortArray -> putExtra(it.first, value)
+            is BooleanArray -> putExtra(it.first, value)
+            else -> throw IllegalArgumentException("Intent extra ${it.first} has wrong type ${value.javaClass.name}")
         }
+        return@forEach
     }
 }
+
+// </editor-fold>
 
