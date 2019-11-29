@@ -1,43 +1,14 @@
 package com.drake.engine.utils
 
-import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Base64
-import androidx.fragment.app.Fragment
 import com.drake.engine.base.getApp
 import java.io.*
 
 
 fun getPreferences(name: String = getApp().packageName): Preferences {
     return Preferences(name)
-}
-
-fun Activity.getCurrentPreferences(): Preferences {
-    return getPreferences(localClassName)
-}
-
-
-fun Fragment.getCurrentPreferences(): Preferences {
-    return getPreferences(activity!!.localClassName)
-}
-
-
-fun Fragment.getCurentEdit(
-    name: String = activity!!.localClassName,
-    commit: Boolean = false,
-    block: SharedPreferences.Editor.() -> Unit
-) {
-    getEdit(name, commit, block)
-}
-
-
-fun Activity.getCurrentEdit(
-    name: String = localClassName,
-    commit: Boolean = false,
-    block: SharedPreferences.Editor.() -> Unit
-) {
-    getEdit(name, commit, block)
 }
 
 inline fun getEdit(
