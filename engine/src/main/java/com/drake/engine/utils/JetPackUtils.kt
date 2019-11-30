@@ -6,11 +6,11 @@ import androidx.lifecycle.*
 
 open class SaveViewModel(var saved: SavedStateHandle) : ViewModel()
 
-inline fun <reified M : ViewModel> ViewModelStoreOwner.getViewModel(): M {
+inline fun <reified M : ViewModel> ViewModelStoreOwner.getVM(): M {
     return ViewModelProvider(this).get(M::class.java)
 }
 
-inline fun <reified M : ViewModel> FragmentActivity.getSaveViewModel(): M {
+inline fun <reified M : ViewModel> FragmentActivity.getSaved(): M {
     return ViewModelProvider(
         this,
         SavedStateViewModelFactory(application, this)
@@ -18,7 +18,7 @@ inline fun <reified M : ViewModel> FragmentActivity.getSaveViewModel(): M {
 }
 
 
-inline fun <reified M : ViewModel> Fragment.getSaveViewModel(): M {
+inline fun <reified M : ViewModel> Fragment.getSaved(): M {
 
     return ViewModelProvider(
         this,
