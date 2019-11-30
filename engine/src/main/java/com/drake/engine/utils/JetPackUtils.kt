@@ -1,4 +1,4 @@
-package com.drake.engine.databinding
+package com.drake.engine.utils
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -24,4 +24,9 @@ inline fun <reified M : ViewModel> Fragment.getSaveViewModel(): M {
         this,
         SavedStateViewModelFactory(activity!!.application, this)
     ).get(M::class.java)
+}
+
+
+fun <M> LifecycleOwner.observe(liveData: LiveData<M>?, block: M?.() -> Unit) {
+    liveData?.observe(this, Observer { it.block() })
 }
