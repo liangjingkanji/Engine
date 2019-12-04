@@ -91,7 +91,7 @@ import java.lang.reflect.Proxy
  * @createdTime 2018-06-19
  */
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-class SwipeBackHelper constructor(private val mSwipeBackActivity: Activity) {
+class SwipeBackHelper constructor(private val activity: Activity) {
 
     /**
      * 根视图
@@ -214,15 +214,15 @@ class SwipeBackHelper constructor(private val mSwipeBackActivity: Activity) {
 
 
     init {
-        this.mOrientation = mSwipeBackActivity.resources.configuration.orientation
+        this.mOrientation = activity.resources.configuration.orientation
         //获取根View
-        this.mDecorView = mSwipeBackActivity.window.decorView as ViewGroup
+        this.mDecorView = activity.window.decorView as ViewGroup
         //判断滑动事件的最小距离
-        this.mTouchSlop = ViewConfiguration.get(mSwipeBackActivity).scaledTouchSlop
+        this.mTouchSlop = ViewConfiguration.get(activity).scaledTouchSlop
         //左侧拦截滑动事件的区域
-        this.mInterceptRect = 18 * mSwipeBackActivity.resources.displayMetrics.density//18dp
+        this.mInterceptRect = 18 * activity.resources.displayMetrics.density//18dp
         //设置Activity不透明
-        convertFromTranslucent(mSwipeBackActivity)
+        convertFromTranslucent(activity)
     }// 目标Activity
 
     /**
@@ -245,7 +245,7 @@ class SwipeBackHelper constructor(private val mSwipeBackActivity: Activity) {
      */
     fun getShadowView(swipeBackView: ViewGroup?): View {
         if (mShadowView == null) {
-            mShadowView = ShadowView(mSwipeBackActivity)
+            mShadowView = ShadowView(activity)
             mShadowView!!.translationX = (-swipeBackView!!.width).toFloat()
             (swipeBackView.parent as ViewGroup).addView(
                 mShadowView,
@@ -267,7 +267,7 @@ class SwipeBackHelper constructor(private val mSwipeBackActivity: Activity) {
      */
     fun getWindowBackGroundView(decorView: ViewGroup): View? {
         if (mWindowBackGroundView == null && mWindowBackgroundColor.ushr(24) > 0) {
-            mWindowBackGroundView = View(mSwipeBackActivity)
+            mWindowBackGroundView = View(activity)
             mWindowBackGroundView!!.translationY = decorView.height.toFloat()
             mWindowBackGroundView!!.setBackgroundColor(mWindowBackgroundColor)
             decorView.addView(
@@ -301,7 +301,7 @@ class SwipeBackHelper constructor(private val mSwipeBackActivity: Activity) {
      * Activity触摸事件分发，当横向滑动时触发侧滑返回，同时触摸事件改变为取消下发给childView
      */
     fun dispatchTouchEvent(event: MotionEvent) {
-        if (!isSwipeBackEnabled || mSwipeBackActivity.isTaskRoot) {
+        if (!isSwipeBackEnabled || activity.isTaskRoot) {
             return
         }
         this.mSwipeBackView = getSwipeBackView(mDecorView)
@@ -326,7 +326,7 @@ class SwipeBackHelper constructor(private val mSwipeBackActivity: Activity) {
                     //重置拖动方向
                     mDragDirection = 0
                     if (mStartX <= mInterceptRect) {
-                        convertToTranslucent(mSwipeBackActivity)
+                        convertToTranslucent(activity)
                     }
                 }
             }
@@ -392,7 +392,7 @@ class SwipeBackHelper constructor(private val mSwipeBackActivity: Activity) {
                     }
                     startSwipeAnimator(offsetX, 0f, mShadowView!!.width.toFloat(), velocityX)
                 } else {
-                    convertFromTranslucent(mSwipeBackActivity)
+                    convertFromTranslucent(activity)
                 }
                 if (mVelocityTracker != null) {
                     mVelocityTracker!!.recycle()
@@ -408,13 +408,13 @@ class SwipeBackHelper constructor(private val mSwipeBackActivity: Activity) {
      * Activity触摸事件，当子View未消费时进行滑动方向判断
      */
     fun onTouchEvent(event: MotionEvent) {
-        if (!isSwipeBackEnabled || mSwipeBackActivity.isTaskRoot) {
+        if (!isSwipeBackEnabled || activity.isTaskRoot) {
             return
         }
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 if (mDragDirection == 0 && mStartX > mInterceptRect) {
-                    convertToTranslucent(mSwipeBackActivity)
+                    convertToTranslucent(activity)
                 }
             }
             MotionEvent.ACTION_MOVE -> {
@@ -528,13 +528,13 @@ class SwipeBackHelper constructor(private val mSwipeBackActivity: Activity) {
      * 隐藏输入法
      */
     fun hideInputSoft() {
-        val view = mSwipeBackActivity.currentFocus
+        val view = activity.currentFocus
         if (view != null) {
             if (view is EditText) {
                 view.clearFocus()
             }
             val inputMethodManager =
-                mSwipeBackActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
@@ -555,11 +555,11 @@ class SwipeBackHelper constructor(private val mSwipeBackActivity: Activity) {
     ) {
         if (maxFinalValue <= minFinalValue) {
             swipeBackEvent(0)
-            convertFromTranslucent(mSwipeBackActivity)
+            convertFromTranslucent(activity)
             return
         }
         if (mSwipeAnimator == null) {
-            mSwipeAnimator = DecelerateAnimator(mSwipeBackActivity, false)
+            mSwipeAnimator = DecelerateAnimator(activity, false)
             mSwipeAnimator!!.addListener(mPrivateListener)
             mSwipeAnimator!!.addUpdateListener(mPrivateListener)
         }
@@ -655,12 +655,12 @@ class SwipeBackHelper constructor(private val mSwipeBackActivity: Activity) {
                 //最终移动距离位置超过半宽，结束当前Activity
                 if (mShadowView!!.width + 2 * mShadowView!!.translationX >= 0) {
                     mShadowView!!.visibility = View.GONE
-                    mSwipeBackActivity.finish()
-                    mSwipeBackActivity.overridePendingTransition(-1, -1)//取消返回动画
+                    activity.finish()
+                    activity.overridePendingTransition(-1, -1)//取消返回动画
                 } else {
                     mShadowView!!.translationX = (-mShadowView!!.width).toFloat()
                     mSwipeBackView!!.translationX = 0f
-                    convertFromTranslucent(mSwipeBackActivity)
+                    convertFromTranslucent(activity)
                 }
             }
         }

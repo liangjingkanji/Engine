@@ -29,13 +29,13 @@ abstract class EngineSwipeActivity<B : ViewDataBinding> : EngineActivity<B>() {
 
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        swipeBackHelper?.dispatchTouchEvent(ev!!)
-        return super.dispatchTouchEvent(ev)
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        swipeBackHelper?.dispatchTouchEvent(event)
+        return super.dispatchTouchEvent(event)
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        swipeBackHelper?.onTouchEvent(event!!)
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        swipeBackHelper?.onTouchEvent(event)
         return super.onTouchEvent(event)
     }
 

@@ -8,26 +8,30 @@
 package com.drake.engine.sample
 
 import android.os.Bundle
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.drake.engine.databinding.setContent
+import com.drake.engine.base.EngineActivity
 import com.drake.engine.sample.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : EngineActivity<ActivityMainBinding>() {
 
 
     var model = Model(26)
 
-    lateinit var toast: Toast
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val binding = setContent<ActivityMainBinding>(R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
         binding.v = this
         binding.m = model
+    }
+
+    override fun initView() {
+
+
+    }
+
+    override fun initData() {
+
     }
 }
 

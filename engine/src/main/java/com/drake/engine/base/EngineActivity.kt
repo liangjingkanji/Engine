@@ -1,8 +1,8 @@
 /*
- * Copyright (C) 2018, Umbrella CompanyLimited All rights reserved.
- * Project：Engine
+ * Copyright (C) 2018, HB CompanyLimited All rights reserved.
+ * Project：App
  * Author：Drake
- * Date：9/11/19 7:25 PM
+ * Date：12/4/19 11:20 PM
  */
 
 package com.drake.engine.base
@@ -14,6 +14,7 @@ import android.content.IntentFilter
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.appcompat.app.AppCompatActivity
@@ -25,7 +26,10 @@ abstract class EngineActivity<B : ViewDataBinding> : AppCompatActivity(), OnClic
 
     lateinit var binding: B
     lateinit var rootView: View
+
     private var finishBroadcastReceiver: BroadcastReceiver? = null
+    private var onBackPress: (() -> Boolean)? = null
+    private var onTouchEvent: (MotionEvent.() -> Boolean)? = null
 
     override fun setContentView(layoutResID: Int) {
         rootView = layoutInflater.inflate(layoutResID, null)
@@ -34,17 +38,9 @@ abstract class EngineActivity<B : ViewDataBinding> : AppCompatActivity(), OnClic
         init()
     }
 
-    override fun onDestroy() {
-        unregisterBroadcast()
-        super.onDestroy()
-    }
-
-    override fun onClick(v: View) {
-
-    }
-
     open fun init() {
         registerBroadcast()
+
         try {
             initView()
             initData()
@@ -54,8 +50,62 @@ abstract class EngineActivity<B : ViewDataBinding> : AppCompatActivity(), OnClic
         }
     }
 
+
+    protected abstract fun initView()
+
+    protected abstract fun initData()
+
+
+    override fun onClick(v: View) {
+
+    }
+
+
+    // <editor-fold desc="生命周期">
+
+    fun onTouchEvent(block: MotionEvent.() -> Boolean) {
+        onTouchEvent = block
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        return onTouchEvent?.invoke(event) ?: super.dispatchTouchEvent(event)
+    }
+
+
+    fun onBackPressed(block: () -> Boolean) {
+        onBackPress = block
+    }
+
+    override fun onBackPressed() {
+        if (onBackPress == null || onBackPress?.invoke() == false) {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onDestroy() {
+        unregisterBroadcast()
+        super.onDestroy()
+    }
+
+    // </editor-fold>
+
+
+    // <editor-fold desc="界面关闭">
+
     /**
-     * 注册销毁事件
+     * 关闭界面
+     */
+    fun finishTransition() {
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            finishAfterTransition()
+        } else {
+            super.finish()
+        }
+    }
+
+
+    /**
+     * 注册广播
      */
     private fun registerBroadcast() {
         val intentFilter = IntentFilter()
@@ -75,6 +125,9 @@ abstract class EngineActivity<B : ViewDataBinding> : AppCompatActivity(), OnClic
             .registerReceiver(finishBroadcastReceiver!!, intentFilter)
     }
 
+    /**
+     * 注销广播
+     */
     protected fun unregisterBroadcast() {
         finishBroadcastReceiver?.let {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(it)
@@ -82,30 +135,21 @@ abstract class EngineActivity<B : ViewDataBinding> : AppCompatActivity(), OnClic
         finishBroadcastReceiver = null
     }
 
-    protected abstract fun initView()
-
-    protected abstract fun initData()
-
-    fun finishTransition() {
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            finishAfterTransition()
-        } else {
-            super.finish()
-        }
-    }
-
     companion object {
 
         /**
          * 发送关闭全部界面的广播
+         * @param ignoreActivity 被忽略的界面
          */
         @JvmOverloads
-        fun finishAll(skipActivity: String? = null) {
+        fun finishAll(ignoreActivity: String? = null) {
             val intent = Intent().setAction("activity_event")
-            skipActivity?.let {
-                intent.putExtra("skip_activity", skipActivity)
+            ignoreActivity?.let {
+                intent.putExtra("skip_activity", ignoreActivity)
             }
             LocalBroadcastManager.getInstance(getApp()).sendBroadcast(intent)
         }
     }
+
+    // </editor-fold>
 }
