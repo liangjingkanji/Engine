@@ -68,7 +68,8 @@ abstract class EngineActivity<B : ViewDataBinding> : AppCompatActivity(), OnClic
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        return onTouchEvent?.invoke(event) ?: super.dispatchTouchEvent(event)
+        val b = super.dispatchTouchEvent(event)
+        return onTouchEvent?.invoke(event) ?: b
     }
 
 
@@ -83,8 +84,8 @@ abstract class EngineActivity<B : ViewDataBinding> : AppCompatActivity(), OnClic
     }
 
     override fun onDestroy() {
-        unregisterBroadcast()
         super.onDestroy()
+        unregisterBroadcast()
     }
 
     // </editor-fold>
