@@ -13,18 +13,16 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 
-
 fun FragmentActivity.FragmentPagerAdapter(
-    fragments: ArrayList<Fragment>,
-    titles: ArrayList<String>? = null
+    titles: MutableList<String>? = null,
+    fragments: MutableList<Fragment>
 ): BaseFragmentPagerAdapter {
     return BaseFragmentPagerAdapter(supportFragmentManager, fragments, titles)
 }
 
-
 fun Fragment.FragmentPagerAdapter(
-    fragments: ArrayList<Fragment>,
-    titles: ArrayList<String>? = null
+    fragments: MutableList<Fragment>,
+    titles: MutableList<String>? = null
 ): BaseFragmentPagerAdapter {
     return BaseFragmentPagerAdapter(childFragmentManager, fragments, titles)
 }
@@ -32,10 +30,9 @@ fun Fragment.FragmentPagerAdapter(
 
 class BaseFragmentPagerAdapter(
     fragmentManager: FragmentManager,
-    var fragments: ArrayList<Fragment>,
-    var titles: ArrayList<String>? = null
+    var fragments: MutableList<Fragment>,
+    var titles: MutableList<String>? = null
 ) : FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-
 
     override fun getItem(position: Int): Fragment {
         return fragments[position]

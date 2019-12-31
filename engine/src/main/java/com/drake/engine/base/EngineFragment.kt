@@ -26,7 +26,10 @@ abstract class EngineFragment<B : ViewDataBinding> : Fragment(), OnClickListener
 
     protected abstract fun initData()
 
-    override fun onResume() {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        binding = DataBindingUtil.bind(view!!)!!
 
         try {
             initView()
@@ -36,13 +39,5 @@ abstract class EngineFragment<B : ViewDataBinding> : Fragment(), OnClickListener
             e.printStackTrace()
         }
 
-        super.onResume()
-    }
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        binding = DataBindingUtil.bind(view!!)!!
     }
 }

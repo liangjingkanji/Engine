@@ -1,17 +1,17 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-android-extensions"
+apply plugin: "kotlin-kapt"
 
-apply plugin: 'com.github.dcendents.android-maven'
-group = 'com.gitlab.liangjingkanji'
+apply plugin: "com.github.dcendents.android-maven"
+group = "com.gitlab.liangjingkanji"
 
 
 android {
     compileSdkVersion 29
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -23,7 +23,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
 
@@ -41,35 +41,32 @@ android {
         maxProcessCount 8
         javaMaxHeapSize "4g"
     }
+
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
 }
 
-repositories {
-    flatDir {
-        dirs 'libs'
-    }
-    mavenCentral()
-}
+
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    testImplementation 'junit:junit:4.12'
+    implementation fileTree(include: ["*.jar"], dir: "libs")
+    testImplementation "junit:junit:4.12"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.2.0-beta02'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:1.0.0-rc02'
+    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "androidx.core:core-ktx:1.2.0-rc01"
+    implementation "androidx.constraintlayout:constraintlayout:2.0.0-beta4"
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation "com.google.android.material:material:1.0.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:1.0.0-rc03"
 
-    compileOnly 'io.reactivex.rxjava2:rxkotlin:2.3.0'
-    compileOnly 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
-    compileOnly 'com.github.bumptech.glide:glide:4.9.0'
-    kapt 'com.github.bumptech.glide:compiler:4.9.0'
+    compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
+    compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+
+    compileOnly "com.github.bumptech.glide:glide:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
 }
