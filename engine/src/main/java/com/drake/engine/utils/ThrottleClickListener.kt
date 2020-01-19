@@ -1,4 +1,4 @@
-package com.drake.engine.reactive
+package com.drake.engine.utils
 
 import android.view.View
 import java.util.concurrent.TimeUnit
@@ -8,7 +8,13 @@ internal fun View.throttleClick(
     unit: TimeUnit = TimeUnit.MILLISECONDS,
     block: View.() -> Unit
 ) {
-    setOnClickListener(ThrottleClickListener(interval, unit, block))
+    setOnClickListener(
+        ThrottleClickListener(
+            interval,
+            unit,
+            block
+        )
+    )
 }
 
 internal class ThrottleClickListener(

@@ -36,7 +36,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 
-    testImplementation "junit:junit:4.12"
+    testImplementation "junit:junit:4.13"
     androidTestImplementation "androidx.test:runner:1.2.0"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"
     implementation project(path: ":engine")
@@ -61,11 +61,12 @@ dependencies {
 
 
 //    我的其他库
-    implementation "com.github.liangjingkanji:BRV:1.2.5"
+    implementation "com.github.liangjingkanji:BRV:1.2.12"
     implementation "com.github.liangjingkanji:debugkit:1.2.9"
-    implementation "com.github.liangjingkanji:Net:2.0.10"
+    implementation "com.github.liangjingkanji:Net:2.1.5"
     implementation "com.github.liangjingkanji:LogCat:1.0"
     implementation 'com.github.liangjingkanji:Channel:1.0'
+    implementation 'com.github.liangjingkanji:Tooltip:1.0.4'
 
 
     implementation "com.yanzhenjie:permission:2.0.0-rc10"

@@ -22,7 +22,7 @@ class MarqueeTextView @JvmOverloads constructor(
     override fun onFinishInflate() {
         super.onFinishInflate()
         ellipsize = TextUtils.TruncateAt.MARQUEE
-        setSingleLine(true)
+        isSingleLine = true
     }
 
     override fun isFocused(): Boolean {

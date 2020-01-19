@@ -1,4 +1,3 @@
-
 package com.drake.engine.text.span;
 
 import android.graphics.Canvas;
