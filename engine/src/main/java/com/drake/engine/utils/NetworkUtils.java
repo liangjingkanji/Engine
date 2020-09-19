@@ -38,7 +38,7 @@ import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 import static android.Manifest.permission.ACCESS_WIFI_STATE;
 import static android.Manifest.permission.INTERNET;
 import static android.Manifest.permission.MODIFY_PHONE_STATE;
-import static com.drake.engine.base.EngineKt.getApp;
+import static com.drake.engine.base.EngineKt.app;
 
 
 public final class NetworkUtils {
@@ -55,7 +55,7 @@ public final class NetworkUtils {
      * Open the settings of wireless.
      */
     public static void openWirelessSettings() {
-        getApp().startActivity(
+        app.startActivity(
                 new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS)
                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         );
@@ -118,7 +118,7 @@ public final class NetworkUtils {
     public static boolean getMobileDataEnabled() {
         try {
             TelephonyManager tm =
-                    (TelephonyManager) getApp().getSystemService(Context.TELEPHONY_SERVICE);
+                    (TelephonyManager) app.getSystemService(Context.TELEPHONY_SERVICE);
             if (tm == null) {
                 return false;
             }
@@ -145,7 +145,7 @@ public final class NetworkUtils {
     public static void setMobileDataEnabled(final boolean enabled) {
         try {
             TelephonyManager tm =
-                    (TelephonyManager) getApp().getSystemService(Context.TELEPHONY_SERVICE);
+                    (TelephonyManager) app.getSystemService(Context.TELEPHONY_SERVICE);
             if (tm == null) {
                 return;
             }
@@ -200,7 +200,7 @@ public final class NetworkUtils {
     @RequiresPermission(ACCESS_WIFI_STATE)
     public static boolean getWifiEnabled() {
         @SuppressLint("WifiManagerLeak")
-        WifiManager manager = (WifiManager) getApp().getSystemService(Context.WIFI_SERVICE);
+        WifiManager manager = (WifiManager) app.getSystemService(Context.WIFI_SERVICE);
         return manager != null && manager.isWifiEnabled();
     }
 
@@ -214,7 +214,7 @@ public final class NetworkUtils {
     @SuppressLint("MissingPermission")
     public static void setWifiEnabled(final boolean enabled) {
         @SuppressLint("WifiManagerLeak")
-        WifiManager manager = (WifiManager) getApp().getSystemService(Context.WIFI_SERVICE);
+        WifiManager manager = (WifiManager) app.getSystemService(Context.WIFI_SERVICE);
         if (manager == null) {
             return;
         }
@@ -239,7 +239,7 @@ public final class NetworkUtils {
     @SuppressLint("MissingPermission")
     public static boolean isWifiConnected() {
         ConnectivityManager cm =
-                (ConnectivityManager) getApp().getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm != null
                 && cm.getActiveNetworkInfo() != null
                 && cm.getActiveNetworkInfo()
@@ -266,7 +266,7 @@ public final class NetworkUtils {
      */
     public static String getNetworkOperatorName() {
         TelephonyManager tm =
-                (TelephonyManager) getApp().getSystemService(Context.TELEPHONY_SERVICE);
+                (TelephonyManager) app.getSystemService(Context.TELEPHONY_SERVICE);
         return tm != null ? tm.getNetworkOperatorName() : null;
     }
 
@@ -334,7 +334,7 @@ public final class NetworkUtils {
     @RequiresPermission(ACCESS_NETWORK_STATE)
     private static NetworkInfo getActiveNetworkInfo() {
         ConnectivityManager manager =
-                (ConnectivityManager) getApp().getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (manager == null) {
             return null;
         }

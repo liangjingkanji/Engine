@@ -35,7 +35,7 @@ import java.util.Enumeration;
 
 import static android.Manifest.permission.ACCESS_WIFI_STATE;
 import static android.Manifest.permission.INTERNET;
-import static com.drake.engine.base.EngineKt.getApp;
+import static com.drake.engine.base.EngineKt.app;
 
 /**
  * <pre>
@@ -95,7 +95,7 @@ public final class DeviceUtils {
     @SuppressLint("HardwareIds")
     public static String getAndroidID() {
         return Settings.Secure.getString(
-                getApp().getContentResolver(),
+                app.getContentResolver(),
                 Settings.Secure.ANDROID_ID
         );
     }
@@ -132,7 +132,7 @@ public final class DeviceUtils {
     @SuppressLint({"HardwareIds", "MissingPermission"})
     private static String getMacAddressByWifiInfo() {
         try {
-            Context context = getApp().getApplicationContext();
+            Context context = app.getApplicationContext();
             WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
             if (wifi != null) {
                 WifiInfo info = wifi.getConnectionInfo();
@@ -273,7 +273,7 @@ public final class DeviceUtils {
         ShellUtils.execCmd("reboot -p", true);
         Intent intent = new Intent("android.intent.action.ACTION_REQUEST_SHUTDOWN");
         intent.putExtra("android.intent.extra.KEY_CONFIRM", false);
-        getApp().startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        app.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     /**
@@ -287,7 +287,7 @@ public final class DeviceUtils {
         intent.putExtra("nowait", 1);
         intent.putExtra("interval", 1);
         intent.putExtra("window", 0);
-        getApp().sendBroadcast(intent);
+        app.sendBroadcast(intent);
     }
 
     /**
@@ -301,7 +301,7 @@ public final class DeviceUtils {
      */
     public static void reboot(final String reason) {
         PowerManager mPowerManager =
-                (PowerManager) getApp().getSystemService(Context.POWER_SERVICE);
+                (PowerManager) app.getSystemService(Context.POWER_SERVICE);
         try {
             if (mPowerManager == null) {
                 return;

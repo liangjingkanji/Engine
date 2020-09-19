@@ -27,7 +27,7 @@ import android.view.WindowManager;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
-import static com.drake.engine.base.EngineKt.getApp;
+import static com.drake.engine.base.EngineKt.app;
 
 
 public final class BrightnessUtils {
@@ -44,7 +44,7 @@ public final class BrightnessUtils {
     public static boolean isAutoBrightnessEnabled() {
         try {
             int mode = Settings.System.getInt(
-                    getApp().getContentResolver(),
+                    app.getContentResolver(),
                     Settings.System.SCREEN_BRIGHTNESS_MODE
             );
             return mode == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
@@ -64,15 +64,15 @@ public final class BrightnessUtils {
      */
     public static boolean setAutoBrightnessEnabled(final boolean enabled) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && !Settings.System.canWrite(getApp())) {
+                && !Settings.System.canWrite(app)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-            intent.setData(Uri.parse("package:" + getApp().getPackageName()));
+            intent.setData(Uri.parse("package:" + app.getPackageName()));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getApp().startActivity(intent);
+            app.startActivity(intent);
             return false;
         }
         return Settings.System.putInt(
-                getApp().getContentResolver(),
+                app.getContentResolver(),
                 Settings.System.SCREEN_BRIGHTNESS_MODE,
                 enabled ? Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC
                         : Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
@@ -87,7 +87,7 @@ public final class BrightnessUtils {
     public static int getBrightness() {
         try {
             return Settings.System.getInt(
-                    getApp().getContentResolver(),
+                    app.getContentResolver(),
                     Settings.System.SCREEN_BRIGHTNESS
             );
         } catch (Settings.SettingNotFoundException e) {
@@ -105,14 +105,14 @@ public final class BrightnessUtils {
      */
     public static boolean setBrightness(@IntRange(from = 0, to = 255) final int brightness) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && !Settings.System.canWrite(getApp())) {
+                && !Settings.System.canWrite(app)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-            intent.setData(Uri.parse("package:" + getApp().getPackageName()));
+            intent.setData(Uri.parse("package:" + app.getPackageName()));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getApp().startActivity(intent);
+            app.startActivity(intent);
             return false;
         }
-        ContentResolver resolver = getApp().getContentResolver();
+        ContentResolver resolver = app.getContentResolver();
         boolean b = Settings.System.putInt(resolver, Settings.System.SCREEN_BRIGHTNESS, brightness);
         resolver.notifyChange(Settings.System.getUriFor("screen_brightness"), null);
         return b;

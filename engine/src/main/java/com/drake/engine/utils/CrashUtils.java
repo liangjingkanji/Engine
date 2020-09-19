@@ -42,7 +42,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static com.drake.engine.base.EngineKt.getApp;
+import static com.drake.engine.base.EngineKt.app;
 
 /**
  * <pre>
@@ -68,8 +68,8 @@ public final class CrashUtils {
 
     static {
         try {
-            PackageInfo pi = getApp().getPackageManager()
-                    .getPackageInfo(getApp().getPackageName(), 0);
+            PackageInfo pi = app.getPackageManager()
+                    .getPackageInfo(app.getPackageName(), 0);
             if (pi != null) {
                 versionName = pi.versionName;
                 versionCode = pi.versionCode;
@@ -208,10 +208,10 @@ public final class CrashUtils {
             dir = crashDirPath.endsWith(FILE_SEP) ? crashDirPath : crashDirPath + FILE_SEP;
         }
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-                && getApp().getExternalCacheDir() != null) {
-            defaultDir = getApp().getExternalCacheDir() + FILE_SEP + "crash" + FILE_SEP;
+                && app.getExternalCacheDir() != null) {
+            defaultDir = app.getExternalCacheDir() + FILE_SEP + "crash" + FILE_SEP;
         } else {
-            defaultDir = getApp().getCacheDir() + FILE_SEP + "crash" + FILE_SEP;
+            defaultDir = app.getCacheDir() + FILE_SEP + "crash" + FILE_SEP;
         }
         sOnCrashListener = onCrashListener;
         Thread.setDefaultUncaughtExceptionHandler(UNCAUGHT_EXCEPTION_HANDLER);

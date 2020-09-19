@@ -157,7 +157,7 @@ abstract class EngineActivity<B : ViewDataBinding> : AppCompatActivity(), OnClic
             ignoreActivity?.let {
                 intent.putExtra("skip_activity", ignoreActivity)
             }
-            LocalBroadcastManager.getInstance(getApp()).sendBroadcast(intent)
+            LocalBroadcastManager.getInstance(app).sendBroadcast(intent)
         }
     }
 

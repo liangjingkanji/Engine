@@ -27,7 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.drake.engine.base.EngineKt.getApp;
+import static com.drake.engine.base.EngineKt.app;
 
 /**
  * <pre>
@@ -50,7 +50,7 @@ public final class ServiceUtils {
      */
     public static Set getAllRunningServices() {
         ActivityManager am =
-                (ActivityManager) getApp().getSystemService(Context.ACTIVITY_SERVICE);
+                (ActivityManager) app.getSystemService(Context.ACTIVITY_SERVICE);
         if (am == null) {
             return Collections.emptySet();
         }
@@ -84,8 +84,8 @@ public final class ServiceUtils {
      * @param cls The service class.
      */
     public static void startService(final Class<?> cls) {
-        Intent intent = new Intent(getApp(), cls);
-        getApp().startService(intent);
+        Intent intent = new Intent(app, cls);
+        app.startService(intent);
     }
 
     /**
@@ -110,8 +110,8 @@ public final class ServiceUtils {
      * @return {@code true}: success<br>{@code false}: fail
      */
     public static boolean stopService(final Class<?> cls) {
-        Intent intent = new Intent(getApp(), cls);
-        return getApp().stopService(intent);
+        Intent intent = new Intent(app, cls);
+        return app.stopService(intent);
     }
 
     /**
@@ -147,8 +147,8 @@ public final class ServiceUtils {
     public static void bindService(final Class<?> cls,
                                    final ServiceConnection conn,
                                    final int flags) {
-        Intent intent = new Intent(getApp(), cls);
-        getApp().bindService(intent, conn, flags);
+        Intent intent = new Intent(app, cls);
+        app.bindService(intent, conn, flags);
     }
 
     /**
@@ -157,7 +157,7 @@ public final class ServiceUtils {
      * @param conn The ServiceConnection object.
      */
     public static void unbindService(final ServiceConnection conn) {
-        getApp().unbindService(conn);
+        app.unbindService(conn);
     }
 
     /**
@@ -178,7 +178,7 @@ public final class ServiceUtils {
      */
     public static boolean isServiceRunning(final String className) {
         ActivityManager am =
-                (ActivityManager) getApp().getSystemService(Context.ACTIVITY_SERVICE);
+                (ActivityManager) app.getSystemService(Context.ACTIVITY_SERVICE);
         if (am == null) {
             return false;
         }

@@ -56,23 +56,23 @@
 
     <declare-styleable name="ScrollPickerView">
         <!--行数-->
-        <attr name="scrollpicker_rows" />
+        <attr name="scrollPicker_rows" format="integer" />
         <!--行间距-->
-        <attr name="scrollpicker_spacing" />
+        <attr name="scrollPicker_spacing" format="float" />
         <!--字体大小-->
-        <attr name="scrollpicker_textSize" />
+        <attr name="scrollPicker_textSize" format="float" />
         <!--字体格式，宽度为wrap_content时用于计算宽度-->
-        <attr name="scrollpicker_textFormat" />
+        <attr name="scrollPicker_textFormat" format="string" />
         <!--字体放大倍数-->
-        <attr name="scrollpicker_textRatio" />
+        <attr name="scrollPicker_textRatio" format="float" />
         <!--选中时字体颜色-->
-        <attr name="scrollpicker_textColor_center" />
+        <attr name="scrollPicker_textColor_center" format="integer" />
         <!--未选中时字体颜色-->
-        <attr name="scrollpicker_textColor_outside" />
+        <attr name="scrollPicker_textColor_outside" format="integer" />
         <!--文本对齐方式（左、中、右）-->
-        <attr name="scrollpicker_gravity" />
+        <attr name="scrollPicker_gravity" format="integer" />
         <!--是否开启循环-->
-        <attr name="scrollpicker_loop" />
+        <attr name="scrollPicker_loop" format="boolean" />
 
     </declare-styleable>
 

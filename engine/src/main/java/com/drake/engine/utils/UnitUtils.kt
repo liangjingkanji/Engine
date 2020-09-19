@@ -21,7 +21,7 @@ import android.app.Activity
 import android.util.DisplayMetrics
 import androidx.annotation.DimenRes
 import androidx.annotation.IntDef
-import com.drake.engine.base.getApp
+import com.drake.engine.base.app
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -112,26 +112,26 @@ object UnitUtils {
 
 
 // converts dp value into px
-fun Int.px(): Int = (this * getApp().resources.displayMetrics.density).toInt()
+fun Int.px(): Int = (this * app.resources.displayMetrics.density).toInt()
 
-fun Float.px(): Int = (this * getApp().resources.displayMetrics.density).toInt()
+fun Float.px(): Int = (this * app.resources.displayMetrics.density).toInt()
 
 // converts sp value into px
-fun Int.sp2px(): Int = (this * getApp().resources.displayMetrics.scaledDensity).toInt()
+fun Int.sp2px(): Int = (this * app.resources.displayMetrics.scaledDensity).toInt()
 
-fun Float.sp2px(): Int = (this * getApp().resources.displayMetrics.scaledDensity).toInt()
+fun Float.sp2px(): Int = (this * app.resources.displayMetrics.scaledDensity).toInt()
 
 // converts px value into dp
-fun Int.dp(): Float = this.toFloat() / getApp().resources.displayMetrics.density
+fun Int.dp(): Float = this.toFloat() / app.resources.displayMetrics.density
 
-fun Float.dp(): Float = this.toFloat() / getApp().resources.displayMetrics.density
+fun Float.dp(): Float = this.toFloat() / app.resources.displayMetrics.density
 
 // converts px value into sp
-fun Int.sp(): Float = this / getApp().resources.displayMetrics.scaledDensity
+fun Int.sp(): Float = this / app.resources.displayMetrics.scaledDensity
 
-fun Float.sp(): Float = this / getApp().resources.displayMetrics.scaledDensity
+fun Float.sp(): Float = this / app.resources.displayMetrics.scaledDensity
 
-fun dimen(@DimenRes resource: Int): Int = getApp().resources.getDimensionPixelSize(resource)
+fun dimen(@DimenRes resource: Int): Int = app.resources.getDimensionPixelSize(resource)
 
 
 /**
@@ -291,7 +291,7 @@ fun String?.format(
 ): String {
     return when {
         isNullOrEmpty() -> "0.00"
-        this!!.contains(",") || this.contains("¥") -> this
+        this.contains(",") || this.contains("¥") -> this
         else -> {
             val numberFormat = NumberFormat.getInstance()
             numberFormat.minimumFractionDigits = 2

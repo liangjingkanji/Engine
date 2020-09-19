@@ -17,28 +17,22 @@
 package com.drake.engine.sample
 
 import android.os.Bundle
-import android.util.Log
 import com.drake.engine.base.EngineActivity
 import com.drake.engine.sample.databinding.ActivityMainBinding
-import com.example.lib.getUserName
 
 
 class MainActivity : EngineActivity<ActivityMainBinding>() {
 
-
-    var model = Model(26)
+    private var model = Model(26)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        binding.v = this
-        binding.m = model
-
-        Log.d("日志", "(MainActivity.kt:27)    result = ${getUserName()}")
     }
 
     override fun initView() {
+        binding.v = this
+        binding.m = model
 
     }
 

@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.drake.engine.base.EngineKt.getApp;
+import static com.drake.engine.base.EngineKt.app;
 
 /**
  * <pre>
@@ -60,7 +60,7 @@ public final class SDCardUtils {
     public static List<String> getSDCardPaths(final boolean removable) {
         List<String> paths = new ArrayList<>();
         StorageManager sm =
-                (StorageManager) getApp().getSystemService(Context.STORAGE_SERVICE);
+                (StorageManager) app.getSystemService(Context.STORAGE_SERVICE);
         try {
             Class<?> storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
             Method getVolumeList = StorageManager.class.getMethod("getVolumeList");
@@ -94,7 +94,7 @@ public final class SDCardUtils {
      * @return the paths of sdcard
      */
     public static List<String> getSDCardPaths() {
-        StorageManager storageManager = (StorageManager) getApp().getSystemService(Context.STORAGE_SERVICE);
+        StorageManager storageManager = (StorageManager) app.getSystemService(Context.STORAGE_SERVICE);
         List<String> paths = new ArrayList<>();
         try {
             Method getVolumePathsMethod = StorageManager.class.getMethod("getVolumePaths");

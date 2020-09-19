@@ -36,7 +36,7 @@ import android.widget.TextView
 import androidx.annotation.*
 import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
-import com.drake.engine.base.getApp
+import com.drake.engine.base.app
 import java.io.Serializable
 import java.lang.ref.WeakReference
 
@@ -1212,7 +1212,7 @@ class SpanUtils() {
         private var resourceId: Int = 0
 
         constructor(b: Bitmap, verticalAlignment: Int) : super(verticalAlignment) {
-            drawable = BitmapDrawable(getApp().resources, b)
+            drawable = BitmapDrawable(app.resources, b)
             drawable!!.setBounds(
                 0, 0, drawable!!.intrinsicWidth, drawable!!.intrinsicHeight
             )
@@ -1241,13 +1241,13 @@ class SpanUtils() {
                     val bitmap: Bitmap
 
                     try {
-                        val inputStream = getApp().contentResolver.openInputStream(contentUri!!)
+                        val inputStream = app.contentResolver.openInputStream(contentUri!!)
                         bitmap = BitmapFactory.decodeStream(inputStream)
                         inputStream?.close()
-                        BitmapDrawable(getApp().resources, bitmap).apply {
+                        BitmapDrawable(app.resources, bitmap).apply {
                             setBounds(
                                 0, 0, intrinsicWidth, intrinsicHeight
-                            )
+                                     )
                         }
                     } catch (e: Exception) {
                         Log.e("sms", "Failed to loaded content $contentUri", e)
@@ -1255,7 +1255,7 @@ class SpanUtils() {
                     }
                 }
                 else -> {
-                    ContextCompat.getDrawable(getApp(), resourceId).apply {
+                    ContextCompat.getDrawable(app, resourceId).apply {
                         this?.setBounds(0, 0, intrinsicWidth, intrinsicHeight)
                     }
                 }

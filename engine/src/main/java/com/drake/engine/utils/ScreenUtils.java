@@ -35,7 +35,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
 
 import static android.Manifest.permission.WRITE_SETTINGS;
-import static com.drake.engine.base.EngineKt.getApp;
+import static com.drake.engine.base.EngineKt.app;
 
 /**
  * <pre>
@@ -57,9 +57,9 @@ public final class ScreenUtils {
      * @return the width of screen, in pixel
      */
     public static int getScreenWidth() {
-        WindowManager wm = (WindowManager) getApp().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) app.getSystemService(Context.WINDOW_SERVICE);
         if (wm == null) {
-            return getApp().getResources()
+            return app.getResources()
                     .getDisplayMetrics().widthPixels;
         }
         Point point = new Point();
@@ -79,9 +79,9 @@ public final class ScreenUtils {
      * @return the height of screen, in pixel
      */
     public static int getScreenHeight() {
-        WindowManager wm = (WindowManager) getApp().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) app.getSystemService(Context.WINDOW_SERVICE);
         if (wm == null) {
-            return getApp().getResources()
+            return app.getResources()
                     .getDisplayMetrics().heightPixels;
         }
         Point point = new Point();
@@ -101,7 +101,7 @@ public final class ScreenUtils {
      * @return the density of screen
      */
     public static float getScreenDensity() {
-        return getApp().getResources()
+        return app.getResources()
                 .getDisplayMetrics().density;
     }
 
@@ -111,7 +111,7 @@ public final class ScreenUtils {
      * @return the screen density expressed as dots-per-inch
      */
     public static int getScreenDensityDpi() {
-        return getApp().getResources()
+        return app.getResources()
                 .getDisplayMetrics().densityDpi;
     }
 
@@ -132,7 +132,7 @@ public final class ScreenUtils {
      * @return {@code true}: yes<br>{@code false}: no
      */
     public static boolean isLandscape() {
-        return getApp().getResources()
+        return app.getResources()
                 .getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
     }
@@ -152,7 +152,7 @@ public final class ScreenUtils {
      * @return {@code true}: yes<br>{@code false}: no
      */
     public static boolean isPortrait() {
-        return getApp().getResources()
+        return app.getResources()
                 .getConfiguration().orientation
                 == Configuration.ORIENTATION_PORTRAIT;
     }
@@ -242,7 +242,7 @@ public final class ScreenUtils {
      */
     public static boolean isScreenLock() {
         KeyguardManager km =
-                (KeyguardManager) getApp().getSystemService(Context.KEYGUARD_SERVICE);
+                (KeyguardManager) app.getSystemService(Context.KEYGUARD_SERVICE);
         return km != null && km.inKeyguardRestrictedInputMode();
     }
 
@@ -254,7 +254,7 @@ public final class ScreenUtils {
     public static int getSleepDuration() {
         try {
             return Settings.System.getInt(
-                    getApp().getContentResolver(),
+                    app.getContentResolver(),
                     Settings.System.SCREEN_OFF_TIMEOUT
             );
         } catch (Settings.SettingNotFoundException e) {
@@ -272,7 +272,7 @@ public final class ScreenUtils {
     @RequiresPermission(WRITE_SETTINGS)
     public static void setSleepDuration(final int duration) {
         Settings.System.putInt(
-                getApp().getContentResolver(),
+                app.getContentResolver(),
                 Settings.System.SCREEN_OFF_TIMEOUT,
                 duration
         );
@@ -284,7 +284,7 @@ public final class ScreenUtils {
      * @return {@code true}: yes<br>{@code false}: no
      */
     public static boolean isTablet() {
-        return (getApp().getResources()
+        return (app.getResources()
                 .getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;

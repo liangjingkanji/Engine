@@ -20,7 +20,7 @@ import android.os.Environment;
 
 import java.io.File;
 
-import static com.drake.engine.base.EngineKt.getApp;
+import static com.drake.engine.base.EngineKt.app;
 
 
 public final class CleanUtils {
@@ -36,7 +36,7 @@ public final class CleanUtils {
      * @return {@code true}: success<br>{@code false}: fail
      */
     public static boolean cleanInternalCache() {
-        return deleteFilesInDir(getApp().getCacheDir());
+        return deleteFilesInDir(app.getCacheDir());
     }
 
     /**
@@ -46,7 +46,7 @@ public final class CleanUtils {
      * @return {@code true}: success<br>{@code false}: fail
      */
     public static boolean cleanInternalFiles() {
-        return deleteFilesInDir(getApp().getFilesDir());
+        return deleteFilesInDir(app.getFilesDir());
     }
 
     /**
@@ -56,7 +56,7 @@ public final class CleanUtils {
      * @return {@code true}: success<br>{@code false}: fail
      */
     public static boolean cleanInternalDbs() {
-        return deleteFilesInDir(new File(getApp().getFilesDir()
+        return deleteFilesInDir(new File(app.getFilesDir()
                 .getParent(), "databases"));
     }
 
@@ -68,7 +68,7 @@ public final class CleanUtils {
      * @return {@code true}: success<br>{@code false}: fail
      */
     public static boolean cleanInternalDbByName(final String dbName) {
-        return getApp().deleteDatabase(dbName);
+        return app.deleteDatabase(dbName);
     }
 
     /**
@@ -78,7 +78,7 @@ public final class CleanUtils {
      * @return {@code true}: success<br>{@code false}: fail
      */
     public static boolean cleanInternalSp() {
-        return deleteFilesInDir(new File(getApp().getFilesDir()
+        return deleteFilesInDir(new File(app.getFilesDir()
                 .getParent(), "shared_prefs"));
     }
 
@@ -90,7 +90,7 @@ public final class CleanUtils {
      */
     public static boolean cleanExternalCache() {
         return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-                && deleteFilesInDir(getApp().getExternalCacheDir());
+                && deleteFilesInDir(app.getExternalCacheDir());
     }
 
     /**

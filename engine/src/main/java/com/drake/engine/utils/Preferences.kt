@@ -16,85 +16,101 @@
 
 package com.drake.engine.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Base64
-import com.drake.engine.base.getApp
+import com.drake.engine.base.app
 import java.io.*
 
 
-fun getPreferences(name: String = getApp().packageName): Preferences {
-    return Preferences(name)
-}
+object Preference {
 
-inline fun getEdit(
-    name: String = getApp().packageName,
-    commit: Boolean = false,
-    block: SharedPreferences.Editor.() -> Unit
-) {
-    val editor = Preferences(name).edit()
+    var context = app
+    var name: String = context.packageName
 
-    block(editor)
-    if (commit) {
-        editor.commit()
-    } else {
-        editor.apply()
+    //<editor-fold desc="写入">
+    fun write(vararg params: Pair<String, Any?>) = write(name, false, * params)
+
+    fun write(name: String, vararg params: Pair<String, Any?>) = write(name, false, *params)
+
+    fun write(commit: Boolean, vararg params: Pair<String, Any?>) = write(name, false, *params)
+
+    @SuppressLint("ApplySharedPref")
+    fun write(name: String, commit: Boolean, vararg params: Pair<String, Any?>) {
+        val block: SharedPreferences.Editor.() -> Unit = {
+            params.forEach {
+                when (val value = it.second) {
+                    null -> {
+                    }
+                    is Int -> putInt(it.first, value)
+                    is Long -> putLong(it.first, value)
+                    is String -> putString(it.first, value)
+                    is Float -> putFloat(it.first, value)
+                    is Boolean -> putBoolean(it.first, value)
+                    is Short -> putInt(it.first, value.toInt())
+                    is Double -> putString(it.first, value.toString())
+                    is Serializable -> putAny(it.first, value)
+                    else -> throw IllegalArgumentException("SharedPreferences save ${it.first} has wrong type ${value.javaClass.name}")
+                }
+                return@forEach
+            }
+        }
+        val editor = context.getSharedPreferences(name, Context.MODE_PRIVATE).edit().apply(block)
+        if (commit) editor.commit() else editor.apply()
     }
-}
+    //</editor-fold>
 
-fun SharedPreferences.Editor.putAny(key: String, any: Serializable) {
-    try {
-        val byteOutput = ByteArrayOutputStream()
-        val objOutput = ObjectOutputStream(byteOutput)
-        objOutput.writeObject(any)
-
-        val str = Base64.encodeToString(byteOutput.toByteArray(), Base64.DEFAULT)
-        putString(key, str)
-
-    } catch (e: Exception) {
-        e.printStackTrace()
-    }
-}
-
-
-class Preferences(name: String = getApp().packageName) {
-
-    // <editor-fold desc="设置值">
-
-    fun clear() {
-        edit().clear().apply()
-    }
-
-    fun putLong(key: String?, value: Long = 0) {
-        edit().putLong(key, value).apply()
-    }
-
-    fun putInt(key: String?, value: Int = 0) {
-        edit().putInt(key, value).apply()
-    }
-
-    fun remove(key: String?) {
-        edit().remove(key).apply()
+    //<editor-fold desc="读取">
+    inline fun <reified T> read(key: String): T {
+        val preference = context.getSharedPreferences(name, Context.MODE_PRIVATE)
+        return when (T::class.java) {
+            Int::class.java -> preference.getInt(key, 0) as T
+            Long::class.java -> preference.getLong(key, 0) as T
+            String::class.java -> preference.getString(key, "") as T
+            Float::class.java -> preference.getFloat(key, 0F) as T
+            Boolean::class.java -> preference.getBoolean(key, false) as T
+            else -> throw IllegalArgumentException("SharedPreferences save [${key}] has wrong type ${T::class.java.name}")
+        }
     }
 
-    fun putBoolean(key: String?, value: Boolean = false) {
-        edit().putBoolean(key, value).apply()
+    inline fun <reified T> read(key: String, defValue: T): T {
+        val preference = context.getSharedPreferences(name, Context.MODE_PRIVATE)
+        return when (T::class.java) {
+            Int::class.java -> preference.getInt(key, defValue as Int) as T
+            Long::class.java -> preference.getLong(key, defValue as Long) as T
+            String::class.java -> preference.getString(key, defValue as String) as T
+            Float::class.java -> preference.getFloat(key, defValue as Float) as T
+            Boolean::class.java -> preference.getBoolean(key, defValue as Boolean) as T
+            else -> throw IllegalArgumentException("SharedPreferences save ${key} has wrong type ${T::class.java.name}")
+        }
     }
 
-    fun putStringSet(key: String?, values: MutableSet<String>? = mutableSetOf()) {
-        edit().putStringSet(key, values).apply()
+    inline fun <reified T : Serializable> readSerializable(key: String): T? {
+        val preference = context.getSharedPreferences(name, Context.MODE_PRIVATE)
+        return preference.getAny(key) as? T
     }
 
-    fun putFloat(key: String?, value: Float = 0F) {
-        edit().putFloat(key, value).apply()
+    inline fun <reified T : Serializable> readSerializable(key: String, defValue: T): T {
+        val preference = context.getSharedPreferences(name, Context.MODE_PRIVATE)
+        return preference.getAny(key) as? T ?: defValue
+    }
+    //</editor-fold>
+
+
+    fun remove(key: String) {
+        context.getSharedPreferences(name, Context.MODE_PRIVATE).edit().remove(key).apply()
     }
 
-    fun putString(key: String?, value: String? = null) {
-        edit().putString(key, value).apply()
+    fun remove(name: String? = null, key: String) {
+        context.getSharedPreferences(name, Context.MODE_PRIVATE).edit().remove(key).apply()
     }
 
+    fun clear(name: String? = null) {
+        context.getSharedPreferences(name, Context.MODE_PRIVATE).edit().clear().apply()
+    }
 
-    fun putAny(key: String, any: Serializable) {
+    fun SharedPreferences.Editor.putAny(key: String, any: Serializable) {
         try {
             val byteOutput = ByteArrayOutputStream()
             val objOutput = ObjectOutputStream(byteOutput)
@@ -108,93 +124,18 @@ class Preferences(name: String = getApp().packageName) {
         }
     }
 
-    // </editor-fold>
-
-    var sp = getApp().getSharedPreferences(name, Context.MODE_PRIVATE)
-
-
-    // <editor-fold desc="访问值">
-
-    fun getBoolean(key: String?, defValue: Boolean = false): Boolean {
-        return sp.getBoolean(key, defValue)
-    }
-
-    fun getInt(key: String?, defValue: Int = 0): Int {
-        return sp.getInt(key, defValue)
-    }
-
-    fun getAll(): MutableMap<String, *> {
-        return sp.all
-    }
-
-    fun getLong(key: String?, defValue: Long = 0): Long {
-        return sp.getLong(key, defValue)
-    }
-
-    fun getFloat(key: String?, defValue: Float = 0F): Float {
-        return sp.getFloat(key, defValue)
-    }
-
-    fun getStringSet(
-        key: String?,
-        defValues: MutableSet<String>? = mutableSetOf()
-    ): MutableSet<String>? {
-        return sp.getStringSet(key, defValues)
-    }
-
-
-    fun getString(key: String?, defValue: String? = ""): String? {
-        return sp.getString(key, defValue)
-    }
-
-    /**
-     * 读取本地已存储对象
-     *
-     * @param key String
-     * @return T?
-     */
-    inline fun <reified T : Serializable> getAny(key: String): T? {
+    fun SharedPreferences.getAny(key: String): Any? {
         return try {
-            val any = sp.getString(key, null) ?: return null
-
+            val any = this.getString(key, null) ?: return null
             val base64 = Base64.decode(any, Base64.DEFAULT)
             val byteInput = ByteArrayInputStream(base64)
             val objInput = ObjectInputStream(byteInput)
-
-            val readObject = objInput.readObject()
-
-            if (readObject is T) {
-                readObject
-            } else null
-
+            val readAny = objInput.readObject()
+            readAny
         } catch (e: Exception) {
             e.printStackTrace()
             null
         }
     }
-
-    // </editor-fold>
-
-
-    fun contains(key: String?): Boolean {
-        return sp.contains(key)
-    }
-
-    fun edit(): SharedPreferences.Editor {
-        return sp.edit()
-    }
-
-    // <editor-fold desc="监听器">
-
-    fun registerOnSharedPreferenceChangeListener(listener: SharedPreferences.OnSharedPreferenceChangeListener?) {
-        sp.registerOnSharedPreferenceChangeListener(listener)
-    }
-
-
-    fun unregisterOnSharedPreferenceChangeListener(listener: SharedPreferences.OnSharedPreferenceChangeListener?) {
-        sp.unregisterOnSharedPreferenceChangeListener(listener)
-    }
-
-    // </editor-fold>
-
 }
+

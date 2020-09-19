@@ -201,15 +201,15 @@ public class ScrollPickerView extends View implements ValueAnimator.AnimatorUpda
         mDensityDP = context.getResources().getDisplayMetrics().density;//DP密度
         mDensitySP = context.getResources().getDisplayMetrics().scaledDensity;//SP密度
         TypedArray typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.ScrollPickerView);
-        this.mTextRows = typedArray.getInteger(R.styleable.ScrollPickerView_scrollpicker_rows, 5);
-        this.mTextSize = typedArray.getDimension(R.styleable.ScrollPickerView_scrollpicker_textSize, 16 * mDensitySP);
-        this.mTextRatio = typedArray.getFloat(R.styleable.ScrollPickerView_scrollpicker_textRatio, 2F);
-        this.mRowSpacing = typedArray.getDimension(R.styleable.ScrollPickerView_scrollpicker_spacing, 0);
-        this.mTextFormat = typedArray.getString(R.styleable.ScrollPickerView_scrollpicker_textFormat);
-        this.mTextColor_Center = typedArray.getColor(R.styleable.ScrollPickerView_scrollpicker_textColor_center, 0xFFDD8822);
-        this.mTextColor_Outside = typedArray.getColor(R.styleable.ScrollPickerView_scrollpicker_textColor_outside, 0xFFFFDD99);
-        this.mLoopEnable = typedArray.getBoolean(R.styleable.ScrollPickerView_scrollpicker_loop, true);
-        this.mGravity = typedArray.getInt(R.styleable.ScrollPickerView_scrollpicker_gravity, GRAVITY_LEFT);
+        this.mTextRows = typedArray.getInteger(R.styleable.ScrollPickerView_scrollPicker_rows, 5);
+        this.mTextSize = typedArray.getDimension(R.styleable.ScrollPickerView_scrollPicker_textSize, 16 * mDensitySP);
+        this.mTextRatio = typedArray.getFloat(R.styleable.ScrollPickerView_scrollPicker_textRatio, 2F);
+        this.mRowSpacing = typedArray.getDimension(R.styleable.ScrollPickerView_scrollPicker_spacing, 0);
+        this.mTextFormat = typedArray.getString(R.styleable.ScrollPickerView_scrollPicker_textFormat);
+        this.mTextColor_Center = typedArray.getColor(R.styleable.ScrollPickerView_scrollPicker_textColor_center, 0xFFDD8822);
+        this.mTextColor_Outside = typedArray.getColor(R.styleable.ScrollPickerView_scrollPicker_textColor_outside, 0xFFFFDD99);
+        this.mLoopEnable = typedArray.getBoolean(R.styleable.ScrollPickerView_scrollPicker_loop, true);
+        this.mGravity = typedArray.getInt(R.styleable.ScrollPickerView_scrollPicker_gravity, GRAVITY_LEFT);
         this.mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         typedArray.recycle();
         //初始化画笔工具

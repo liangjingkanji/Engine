@@ -63,7 +63,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static com.drake.engine.base.EngineKt.getApp;
+import static com.drake.engine.base.EngineKt.app;
 
 /**
  * <pre>
@@ -146,7 +146,7 @@ public final class ImageUtils {
      * @return drawable
      */
     public static Drawable bitmap2Drawable(final Bitmap bitmap) {
-        return bitmap == null ? null : new BitmapDrawable(getApp().getResources(), bitmap);
+        return bitmap == null ? null : new BitmapDrawable(app.getResources(), bitmap);
     }
 
     /**
@@ -334,7 +334,7 @@ public final class ImageUtils {
      * @return bitmap
      */
     public static Bitmap getBitmap(@DrawableRes final int resId) {
-        Drawable drawable = ContextCompat.getDrawable(getApp(), resId);
+        Drawable drawable = ContextCompat.getDrawable(app, resId);
         Canvas canvas = new Canvas();
         Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
                 drawable.getIntrinsicHeight(),
@@ -357,7 +357,7 @@ public final class ImageUtils {
                                    final int maxWidth,
                                    final int maxHeight) {
         BitmapFactory.Options options = new BitmapFactory.Options();
-        final Resources resources = getApp().getResources();
+        final Resources resources = app.getResources();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeResource(resources, resId, options);
         options.inSampleSize = calculateInSampleSize(options, maxWidth, maxHeight);
@@ -1297,7 +1297,7 @@ public final class ImageUtils {
         RenderScript rs = null;
         Bitmap ret = recycle ? src : src.copy(src.getConfig(), true);
         try {
-            rs = RenderScript.create(getApp());
+            rs = RenderScript.create(app);
             rs.setMessageHandler(new RenderScript.RSMessageHandler());
             Allocation input = Allocation.createFromBitmap(rs,
                     ret,
