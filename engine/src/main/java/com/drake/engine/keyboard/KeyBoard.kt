@@ -36,30 +36,25 @@ import androidx.lifecycle.OnLifecycleEvent
  * 支持键盘的工具类
  */
 
-
 /**
  * 设置当前视图始终显示在键盘之上
  *
- * @receiver FragmentActivity
- * @param view View
- * @param parent ViewGroup
- * @param onKeyboardChanged Function2<[@kotlin.ParameterName] Boolean, [@kotlin.ParameterName] Int, Unit>?
+ * @param view 需要悬浮在键盘之上的视图
+ * @param parent 当键盘显示隐藏时需要滚动的视图
+ * @param onKeyboardChanged 键盘是否显示和高度回调
  */
 @JvmOverloads
 fun FragmentActivity.setAboveKeyboard(
     view: View,
     parent: ViewGroup = view.parent as ViewGroup,
     onKeyboardChanged: ((keyboardVisible: Boolean, keyboardHeight: Int) -> Unit)? = null
-) {
-
+                                     ) {
 
     window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-
 
     val originalParentY = parent.y
     var originalDisplayRect: Rect? = null
     var originalDisplayBottom = 0
-
 
     val layoutChangeListener = object : View.OnLayoutChangeListener {
         override fun onLayoutChange(
@@ -72,8 +67,7 @@ fun FragmentActivity.setAboveKeyboard(
             oldTop: Int,
             oldRight: Int,
             oldBottom: Int
-        ) {
-
+                                   ) {
             if (originalDisplayRect == null) {
                 originalDisplayRect = Rect()
                 view.getWindowVisibleDisplayFrame(originalDisplayRect)
@@ -88,7 +82,6 @@ fun FragmentActivity.setAboveKeyboard(
 
             val keyboardHeight = originalDisplayBottom - currentDisplayRect.bottom
 
-
             if (keyboardHeight > originalDisplayBottom / 4) {
 
                 val scrollY = viewLocation[1] + view.height - currentDisplayRect.bottom.toFloat()
@@ -99,17 +92,13 @@ fun FragmentActivity.setAboveKeyboard(
 
                 parent.y -= scrollY
                 onKeyboardChanged?.invoke(true, keyboardHeight)
-
             } else {
                 parent.y = originalParentY
                 onKeyboardChanged?.invoke(false, keyboardHeight)
             }
         }
     }
-
-
     view.addOnLayoutChangeListener(layoutChangeListener)
-
 
     lifecycle.addObserver(object : LifecycleObserver {
 
@@ -124,10 +113,8 @@ fun FragmentActivity.setAboveKeyboard(
 @Suppress("UNUSED_ANONYMOUS_PARAMETER")
 fun View.addKeyboardListener(onKeyboardChanged: (keyboardVisible: Boolean, keyboardHeight: Int) -> Unit) {
 
-
     var originalDisplayRect: Rect? = null
     var originalDisplayBottom = 0
-
 
     View.OnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
         if (originalDisplayRect == null) {
@@ -140,7 +127,6 @@ fun View.addKeyboardListener(onKeyboardChanged: (keyboardVisible: Boolean, keybo
         getWindowVisibleDisplayFrame(currentDisplayRect)
 
         val keyboardHeight = originalDisplayBottom - currentDisplayRect.bottom
-
 
         if (keyboardHeight > originalDisplayBottom / 4) {
             onKeyboardChanged.invoke(true, keyboardHeight)
