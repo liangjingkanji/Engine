@@ -71,7 +71,7 @@ abstract class EngineNavFragment<B : ViewDataBinding> : Fragment(), OnClickListe
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        binding = DataBindingUtil.bind(view!!)!!
+        binding = DataBindingUtil.bind(requireView())!!
     }
 
 }

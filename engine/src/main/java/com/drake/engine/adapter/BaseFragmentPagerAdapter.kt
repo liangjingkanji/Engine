@@ -23,8 +23,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 
 fun FragmentActivity.FragmentPagerAdapter(
-    titles: MutableList<String>? = null,
-    fragments: MutableList<Fragment>
+    fragments: MutableList<Fragment>,
+    titles: MutableList<String>? = null
 ): BaseFragmentPagerAdapter {
     return BaseFragmentPagerAdapter(supportFragmentManager, fragments, titles)
 }

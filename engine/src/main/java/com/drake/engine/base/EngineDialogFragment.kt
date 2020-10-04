@@ -30,7 +30,7 @@ abstract class EngineDialogFragment<B : ViewDataBinding> : DialogFragment(), OnC
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        binding = DataBindingUtil.bind(view!!)!!
+        binding = DataBindingUtil.bind(requireView())!!
         @Suppress("DEPRECATION")
         try {
             initView()

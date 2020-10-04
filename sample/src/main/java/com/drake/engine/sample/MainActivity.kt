@@ -33,7 +33,6 @@ class MainActivity : EngineActivity<ActivityMainBinding>() {
     override fun initView() {
         binding.v = this
         binding.m = model
-
     }
 
     override fun initData() {

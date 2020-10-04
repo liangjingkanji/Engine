@@ -14,15 +14,27 @@
  * limitations under the License.
  */
 
-package com.drake.engine.sample
+package com.drake.engine.widget
 
-import android.app.Application
-import com.drake.engine.base.initEngine
+import android.content.Context
+import android.util.AttributeSet
+import android.view.MotionEvent
 
-class App : Application() {
+import androidx.viewpager.widget.ViewPager
 
-    override fun onCreate() {
-        super.onCreate()
-        initEngine()
+/**
+ *可设置是否支持划动
+ */
+class NoScrollViewPager @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
+    ViewPager(context, attrs) {
+
+    var touchEnabled = false // 默认不支持划动
+
+    override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
+        return touchEnabled
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        return touchEnabled
     }
 }

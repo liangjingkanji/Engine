@@ -38,7 +38,7 @@ abstract class EngineFragment<B : ViewDataBinding> : Fragment(), OnClickListener
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        binding = DataBindingUtil.bind(view!!)!!
+        binding = DataBindingUtil.bind(requireView())!!
 
         try {
             initView()

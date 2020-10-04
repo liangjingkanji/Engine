@@ -34,7 +34,7 @@ abstract class EngineBottomSheetDialogFragment<B : ViewDataBinding> : BottomShee
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        binding = DataBindingUtil.bind(view!!)!!
+        binding = DataBindingUtil.bind(requireView())!!
         @Suppress("DEPRECATION")
 
         val frameLayout =
