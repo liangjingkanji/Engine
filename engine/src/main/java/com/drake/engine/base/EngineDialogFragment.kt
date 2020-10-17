@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
+import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
@@ -30,7 +31,9 @@ abstract class EngineDialogFragment<B : ViewDataBinding> : DialogFragment(), OnC
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        binding = DataBindingUtil.bind(requireView())!!
+        val adjustView =
+            view ?: dialog?.findViewById<ViewGroup>(android.R.id.content)?.getChildAt(0) ?: return
+        binding = DataBindingUtil.bind(adjustView)!!
         @Suppress("DEPRECATION")
         try {
             initView()

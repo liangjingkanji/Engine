@@ -23,15 +23,15 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 
 fun FragmentActivity.FragmentPagerAdapter(
-    fragments: MutableList<Fragment>,
-    titles: MutableList<String>? = null
+    fragments: List<Fragment>,
+    titles: List<String>? = null
 ): BaseFragmentPagerAdapter {
     return BaseFragmentPagerAdapter(supportFragmentManager, fragments, titles)
 }
 
 fun Fragment.FragmentPagerAdapter(
-    fragments: MutableList<Fragment>,
-    titles: MutableList<String>? = null
+    fragments: List<Fragment>,
+    titles: List<String>? = null
 ): BaseFragmentPagerAdapter {
     return BaseFragmentPagerAdapter(childFragmentManager, fragments, titles)
 }
@@ -39,8 +39,8 @@ fun Fragment.FragmentPagerAdapter(
 
 class BaseFragmentPagerAdapter(
     fragmentManager: FragmentManager,
-    var fragments: MutableList<Fragment>,
-    var titles: MutableList<String>? = null
+    var fragments: List<Fragment>,
+    var titles: List<String>? = null
 ) : FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
