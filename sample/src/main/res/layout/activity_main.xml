@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
-                name="v"
-                type="com.drake.engine.sample.MainActivity" />
+            name="v"
+            type="com.drake.engine.sample.MainActivity" />
+
         <variable
-                name="m"
-                type="com.drake.engine.sample.Model" />
+            name="m"
+            type="com.drake.engine.sample.Model" />
     </data>
 
     <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:id="@+id/root"
@@ -29,40 +31,36 @@
                 android:background="@color/colorPrimary">
 
                 <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="标题" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="标题" />
 
             </FrameLayout>
 
-
             <FrameLayout
-                    android:id="@+id/content"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/ll_input"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:orientation="horizontal"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp">
-
+                    android:id="@+id/ll_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
 
                     <EditText
-                            android:id="@+id/et_input"
-                            android:layout_width="0dp"
-                            android:layout_height="50dp"
-                            android:layout_marginRight="8dp"
-                            app:layout_constraintBottom_toTopOf="@id/tv"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toLeftOf="@id/btn_send"
-                            app:layout_constraintTop_toTopOf="parent" />
-
+                        android:id="@+id/et_input"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintBottom_toTopOf="@id/tv"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/btn_send"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
                         android:id="@+id/btn_send"
@@ -72,19 +70,13 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        imgCorner="@{``}"
-                        corner="@{3}"
-                        android:layout_height="wrap_content" />
-
                     <TextView
                         android:id="@+id/tv"
+                        dateMilli="@{231231}"
                         android:layout_width="wrap_content"
                         android:layout_height="60dp"
                         android:layout_marginBottom="200dp"
                         android:text="快捷回复"
-                        dateMilli="@{231231}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"

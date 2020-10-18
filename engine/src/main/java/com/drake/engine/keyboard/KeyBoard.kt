@@ -48,7 +48,7 @@ fun FragmentActivity.setAboveKeyboard(
     view: View,
     parent: ViewGroup = view.parent as ViewGroup,
     onKeyboardChanged: ((keyboardVisible: Boolean, keyboardHeight: Int) -> Unit)? = null
-                                     ) {
+) {
 
     window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
@@ -67,7 +67,7 @@ fun FragmentActivity.setAboveKeyboard(
             oldTop: Int,
             oldRight: Int,
             oldBottom: Int
-                                   ) {
+        ) {
             if (originalDisplayRect == null) {
                 originalDisplayRect = Rect()
                 view.getWindowVisibleDisplayFrame(originalDisplayRect)

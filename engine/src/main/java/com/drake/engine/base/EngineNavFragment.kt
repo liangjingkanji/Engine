@@ -29,11 +29,6 @@ import androidx.fragment.app.Fragment
 abstract class EngineNavFragment<B : ViewDataBinding> : Fragment(), OnClickListener {
 
     lateinit var binding: B
-
-    override fun onClick(v: View) {
-    }
-
-
     var contentView: View? = null
 
     final override fun onCreateView(
@@ -41,7 +36,6 @@ abstract class EngineNavFragment<B : ViewDataBinding> : Fragment(), OnClickListe
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         contentView = contentView ?: view(inflater, container, savedInstanceState)
         return contentView
     }
@@ -52,10 +46,13 @@ abstract class EngineNavFragment<B : ViewDataBinding> : Fragment(), OnClickListe
         savedInstanceState: Bundle?
     ): View?
 
-
     protected abstract fun initView()
 
+
     protected abstract fun initData()
+
+    override fun onClick(v: View) {
+    }
 
     override fun onResume() {
         try {
@@ -70,7 +67,6 @@ abstract class EngineNavFragment<B : ViewDataBinding> : Fragment(), OnClickListe
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         binding = DataBindingUtil.bind(requireView())!!
     }
 
