@@ -12,12 +12,27 @@
 
 推荐根据需求复制粘贴文件, 当然也提供直接依赖方式
 
+### 基类
+
+| 基类 | 描述 |
+|-|-|
+| Engine.kt | 初始化 |
+| EngineActivity | Activity |
+| EngineSwipeActivity | 可侧滑返回的Activity |
+| EngineToolbarActivity | 拥有工具栏的Activity |
+| EngineFragment | Fragment |
+| EngineNavFragment | 适用于Navigation导航框架的Fragment基类 |
+| EngineDialog | 对话框基类 |
+| EngineDialogFragment | DialogFragment基类 |
+| EngineBottomSheetDialogFragment | BottomSheetDialogFragment基类 |
+
+### 工具
 
 | 工具                     |                                      |
 | ------------------------ | ------------------------------------ |
-| KeyBoard.kt              | 键盘相关, 键盘遮挡/显示/隐藏等       |
+| KeyBoard.kt              | 键盘相关, 键盘遮挡/显示/隐藏/高度...       |
 | Preference.kt            | SharePreference存储                  |
-| DigitsInputFilter.kt     | 输入框小数点限制                     |
+| DigitsInputFilter.kt     | 输入框小数点以及数字位数限制                     |
 | Intents.kt               | 意图创建, 开启Activity/Service等组件 |
 | JetPack.kt               | JetPack框架相关                      |
 | ThrottleClickListener.kt | 点击事件防抖动                       |
@@ -25,7 +40,24 @@
 | Dialog.kt                | 对话框创建                           |
 | DataBindingComponent.kt  | DataBinding常用需求                  |
 | DataBindUtils.kt         | 创建DataBinding                      |
-| ObservableIml            | 实现接口但等效于继承BaseObservable   |
+| ObservableIml            | 如果不便继承BaseObservable可实现该接口等效于   |
+| SpanUtils.kt            | SpannableString工具   |
+
+### UI
+
+| 组件 | 描述 |
+|-|-|
+| FixedViewPager | 修复崩溃和可关闭划动的ViewPager |
+| ViewPagerForMaxHeight | 使用最高页面height的ViewPager |
+| GridPasswordView | 交易密码输入框 |
+| ScrollPickerView | 上下划动选择器 |
+| IndexSideBar | 字母索引列表 |
+| MarqueeTextView | 文字跑马灯 |
+| NestedRadioGroup | 支持任意嵌套的RadioButton单选 |
+| SmoothCheckBox | 漂亮的平滑切换开关 |
+| WaveView | 水纹波动 |
+| FilterCheckBox | 过滤是否可选的CheckBox |
+| FilterSeekBar | 过滤是否可滑动进度条SeekBar |
 
 <br>
 

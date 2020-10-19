@@ -19,23 +19,29 @@ package com.drake.engine.widget
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatCheckBox
+import com.drake.engine.R
 
 
-class FilterCheckBox @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null
-) : AppCompatCheckBox(context, attrs) {
+class FilterCheckBox : AppCompatCheckBox {
 
-    var onFilter: (FilterCheckBox.() -> Boolean)? = null
+    var checkable = true
 
-    fun onFilter(block: FilterCheckBox.() -> Boolean) {
-        this.onFilter = block
+    constructor(context: Context) : this(context, null)
+    constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
+        val attributes = context.obtainStyledAttributes(attrs, R.styleable.FilterCheckBox)
+        checkable = attributes.getBoolean(R.styleable.FixedViewPager_pager_scrollable, true)
+        attributes.recycle()
+    }
+
+    private var filter: FilterCheckBox.() -> Boolean = { checkable }
+
+    fun filter(block: FilterCheckBox.() -> Boolean) {
+        this.filter = block
     }
 
     override fun toggle() {
-        onFilter?.let {
-            if (!onFilter!!(this)) {
-                super.toggle()
-            }
+        if (filter(this)) {
+            super.toggle()
         }
     }
 

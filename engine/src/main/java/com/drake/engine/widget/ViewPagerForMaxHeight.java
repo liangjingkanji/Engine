@@ -22,12 +22,15 @@ import android.view.View;
 
 import androidx.viewpager.widget.ViewPager;
 
-public class ViewPagerForScrollView extends ViewPager {
-    public ViewPagerForScrollView(Context context) {
+/**
+ * 使用最高页面height的ViewPager
+ */
+public class ViewPagerForMaxHeight extends ViewPager {
+    public ViewPagerForMaxHeight(Context context) {
         super(context);
     }
 
-    public ViewPagerForScrollView(Context context, AttributeSet attrs) {
+    public ViewPagerForMaxHeight(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -38,8 +41,7 @@ public class ViewPagerForScrollView extends ViewPager {
             View child = getChildAt(i);
             child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
             int h = child.getMeasuredHeight();
-            if (h > height)
-                height = h;
+            if (h > height) height = h;
         }
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);

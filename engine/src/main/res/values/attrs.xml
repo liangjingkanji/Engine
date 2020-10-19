@@ -77,7 +77,17 @@
     </declare-styleable>
 
     <declare-styleable name="FixedViewPager">
+        <!--是否可以滑动切换页面-->
         <attr name="pager_scrollable" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="FilterCheckBox">
+        <!--是否可选-->
+        <attr name="filter_checkable" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="FilterSeekBar">
+        <!--是否可划动进度-->
+        <attr name="filter_stroke" format="boolean" />
     </declare-styleable>
 
 </resources>
