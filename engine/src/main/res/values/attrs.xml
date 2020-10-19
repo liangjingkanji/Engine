@@ -76,4 +76,8 @@
 
     </declare-styleable>
 
+    <declare-styleable name="FixedViewPager">
+        <attr name="pager_scrollable" format="boolean" />
+    </declare-styleable>
+
 </resources>
