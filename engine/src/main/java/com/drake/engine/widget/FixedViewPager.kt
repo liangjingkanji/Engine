@@ -23,7 +23,7 @@ class FixedViewPager : ViewPager {
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
-        var isIntercept = false
+        var isIntercept = scrollable
         try {
             isIntercept = super.onInterceptTouchEvent(ev)
         } catch (e: Exception) {
@@ -33,7 +33,7 @@ class FixedViewPager : ViewPager {
     }
 
     override fun onTouchEvent(ev: MotionEvent): Boolean {
-        var consume = false
+        var consume = scrollable
         try {
             consume = super.onTouchEvent(ev)
         } catch (e: Exception) {
