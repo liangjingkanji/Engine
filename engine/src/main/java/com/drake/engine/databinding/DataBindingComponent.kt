@@ -420,9 +420,7 @@ interface OnBindListener {
 fun TextView.setRMB(number: String?) {
     if (!number.isNullOrEmpty()) {
         val format = "¥${number.format()}"
-
-        if (format != text.toString())
-            text = format
+        if (format != text.toString()) text = format
     }
 }
 
@@ -430,8 +428,7 @@ fun TextView.setRMB(number: String?) {
 @BindingAdapter("rmb")
 fun TextView.setRMB(number: Double) {
     val format = "¥${number.format()}"
-    if (format != text.toString())
-        text = format
+    if (format != text.toString()) text = format
 }
 
 /**
@@ -441,9 +438,7 @@ fun TextView.setRMB(number: Double) {
 @BindingAdapter("rmb")
 fun TextView.setRMB(number: Long) {
     val format = "¥${number.format()}"
-
-    if (format != text.toString())
-        text = format
+    if (format != text.toString()) text = format
 }
 
 // </editor-fold>
@@ -452,15 +447,11 @@ fun TextView.setRMB(number: Long) {
 // <editor-fold desc="时间">
 
 @BindingAdapter(value = ["dateMilli", "dateFormat"], requireAll = false)
-fun TextView.setDateFromMillis(milli: Long, format: String) {
-
+fun TextView.setDateFromMillis(milli: Long, format: String? = "yyyy-MM-dd") {
     val formatText = UnitUtils.formatDate(milli, format)
-    val oldText = text.toString()
-
-    if (milli == 0L || formatText == oldText) {
+    if (milli == 0L || formatText == text.toString()) {
         return
     }
-
     text = formatText
 }
 
@@ -469,38 +460,27 @@ fun TextView.setDateFromMillis(milli: Long, format: String) {
  * 根据毫秒值来显示时间
  */
 @BindingAdapter(value = ["dateMilli", "dateFormat"], requireAll = false)
-fun TextView.setDateFromMillis(milli: String?, format: String = "yyyy-MM-dd") {
-
+fun TextView.setDateFromMillis(milli: String?, format: String? = "yyyy-MM-dd") {
     val formatText = UnitUtils.formatDate(milli, format)
-    val oldText = text.toString()
-
-    if (milli.isNullOrEmpty() || formatText == oldText) {
+    if (milli.isNullOrEmpty() || formatText == text.toString()) {
         return
     }
-
     text = formatText
 }
 
 @BindingAdapter(value = ["dateSecond", "dateFormat"], requireAll = false)
-fun TextView.setDateFromSecond(second: Long, format: String = "yyyy-MM-dd") {
-
+fun TextView.setDateFromSecond(second: Long, format: String? = "yyyy-MM-dd") {
     val formatText = UnitUtils.formatDate(second * 1000, format)
-
-    val oldText = text.toString()
-    if (second == 0L || formatText == oldText) {
+    if (second == 0L || formatText == text.toString()) {
         return
     }
     text = formatText
 }
 
 @BindingAdapter(value = ["dateSecond", "dateFormat"], requireAll = false)
-fun TextView.setDateFromSecond(second: String, format: String = "yyyy-MM-dd") {
-
+fun TextView.setDateFromSecond(second: String, format: String? = "yyyy-MM-dd") {
     val formatText = UnitUtils.formatDate(java.lang.Long.parseLong(second) * 1000, format)
-
-    val oldText = text.toString()
-
-    if (TextUtils.isEmpty(second) || formatText == oldText) {
+    if (TextUtils.isEmpty(second) || formatText == text.toString()) {
         return
     }
     text = formatText

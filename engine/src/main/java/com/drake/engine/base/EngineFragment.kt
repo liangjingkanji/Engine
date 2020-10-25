@@ -20,11 +20,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
+import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 
-abstract class EngineFragment<B : ViewDataBinding> : Fragment(), OnClickListener {
+abstract class EngineFragment<B : ViewDataBinding>(@LayoutRes contentLayoutId: Int = 0) :
+    Fragment(contentLayoutId), OnClickListener {
 
     lateinit var binding: B
 

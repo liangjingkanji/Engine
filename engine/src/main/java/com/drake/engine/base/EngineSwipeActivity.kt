@@ -18,13 +18,18 @@ package com.drake.engine.base
 
 import android.graphics.Color
 import android.view.MotionEvent
+import androidx.annotation.LayoutRes
 import androidx.databinding.ViewDataBinding
 import com.drake.engine.swipeback.SwipeBackHelper
 
-abstract class EngineSwipeActivity<B : ViewDataBinding> : EngineActivity<B>() {
+abstract class EngineSwipeActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: Int = 0) :
+    EngineActivity<B>(contentLayoutId) {
 
     private var swipeBackHelper: SwipeBackHelper? = null
 
+    /**
+     * 关闭侧滑
+     */
     var swipeEnable = true
         set(value) {
             field = value

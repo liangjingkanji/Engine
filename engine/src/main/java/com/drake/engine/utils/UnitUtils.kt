@@ -91,21 +91,23 @@ object UnitUtils {
     /**
      * 格式化毫秒
      */
-    fun formatDate(millis: Long, format: String = "yyyy-MM-dd"): String {
+    fun formatDate(millis: Long, format: String? = "yyyy-MM-dd"): String {
+        val adjustFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
         val date = Date(millis)
-        val sf = SimpleDateFormat(format, Locale.CHINA)
+        val sf = SimpleDateFormat(adjustFormat, Locale.CHINA)
         return sf.format(date)
     }
 
     /**
      * 格式化毫秒
      */
-    fun formatDate(millis: String?, format: String = "yyyy-MM-dd"): String {
+    fun formatDate(millis: String?, format: String? = "yyyy-MM-dd"): String {
         if (millis.isNullOrEmpty()) {
             return ""
         }
+        val adjustFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
         val date = Date(java.lang.Long.parseLong(millis))
-        val sf = SimpleDateFormat(format, Locale.CHINA)
+        val sf = SimpleDateFormat(adjustFormat, Locale.CHINA)
         return sf.format(date)
     }
 }

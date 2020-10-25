@@ -18,13 +18,15 @@ package com.drake.engine.base
 
 import android.annotation.SuppressLint
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.databinding.ViewDataBinding
 import com.drake.engine.R
 import com.drake.engine.databinding.bind
 import com.drake.statusbar.immersive
 import kotlinx.android.synthetic.main.engine_toolbar.*
 
-abstract class EngineToolbarActivity<B : ViewDataBinding> : EngineActivity<B>() {
+abstract class EngineToolbarActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: Int = 0) :
+    EngineActivity<B>(contentLayoutId) {
 
     override fun setTitle(title: CharSequence) {
         tv_title.text = title
@@ -37,7 +39,10 @@ abstract class EngineToolbarActivity<B : ViewDataBinding> : EngineActivity<B>() 
 
         rootView = layoutInflater.inflate(layoutResID, null)
 
-        val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        val layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
         ll_root.addView(rootView, layoutParams)
         binding = rootView.bind()
 

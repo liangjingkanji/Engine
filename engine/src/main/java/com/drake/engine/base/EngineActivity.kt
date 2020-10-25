@@ -26,12 +26,14 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnClickListener
+import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
-abstract class EngineActivity<B : ViewDataBinding> : AppCompatActivity(), OnClickListener {
+abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: Int = 0) :
+    AppCompatActivity(contentLayoutId), OnClickListener {
 
     lateinit var binding: B
     lateinit var rootView: View

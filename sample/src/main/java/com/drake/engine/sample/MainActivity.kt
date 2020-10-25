@@ -16,19 +16,13 @@
 
 package com.drake.engine.sample
 
-import android.os.Bundle
 import com.drake.engine.base.EngineActivity
 import com.drake.engine.sample.databinding.ActivityMainBinding
 
 
-class MainActivity : EngineActivity<ActivityMainBinding>() {
+class MainActivity : EngineActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private var model = Model(26)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
 
     override fun initView() {
         binding.v = this
@@ -36,7 +30,6 @@ class MainActivity : EngineActivity<ActivityMainBinding>() {
     }
 
     override fun initData() {
-
     }
 }
 
