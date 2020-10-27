@@ -32,8 +32,11 @@ import java.io.Serializable
 
 // <editor-fold desc="跳转">
 
-inline fun <reified T : Activity> Context.openActivity(vararg params: Pair<String, Any?>) =
-    startActivity(createIntent<T>(params))
+inline fun <reified T : Activity> Context.openActivity(vararg params: Pair<String, Any?>) {
+    val intent = createIntent<T>(params)
+    if (this !is Activity) intent.newTask()
+    startActivity(intent)
+}
 
 inline fun <reified T : Activity> Fragment.openActivity(vararg params: Pair<String, Any?>) =
     context?.openActivity<T>(*params)
