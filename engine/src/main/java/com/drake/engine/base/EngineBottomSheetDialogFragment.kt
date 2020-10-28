@@ -39,7 +39,6 @@ abstract class EngineBottomSheetDialogFragment<B : ViewDataBinding> : BottomShee
         val adjustView =
             view ?: dialog?.findViewById<ViewGroup>(android.R.id.content)?.getChildAt(0) ?: return
         binding = DataBindingUtil.bind(adjustView)!!
-        @Suppress("DEPRECATION")
 
         val frameLayout =
             dialog!!.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
@@ -54,12 +53,7 @@ abstract class EngineBottomSheetDialogFragment<B : ViewDataBinding> : BottomShee
         }
     }
 
-    override fun onClick(v: View) {
-
-    }
-
-    abstract fun initData()
-
     abstract fun initView()
-
+    abstract fun initData()
+    override fun onClick(v: View) {}
 }

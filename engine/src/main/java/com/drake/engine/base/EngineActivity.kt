@@ -61,16 +61,9 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
         }
     }
 
-
     protected abstract fun initView()
-
     protected abstract fun initData()
-
-
-    override fun onClick(v: View) {
-
-    }
-
+    override fun onClick(v: View) {}
 
     // <editor-fold desc="生命周期">
 

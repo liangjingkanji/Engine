@@ -18,6 +18,7 @@ package com.drake.engine.sample
 
 import com.drake.engine.base.EngineActivity
 import com.drake.engine.sample.databinding.ActivityMainBinding
+import com.hulab.debugkit.dev
 
 
 class MainActivity : EngineActivity<ActivityMainBinding>(R.layout.activity_main) {
@@ -30,6 +31,10 @@ class MainActivity : EngineActivity<ActivityMainBinding>(R.layout.activity_main)
     }
 
     override fun initData() {
+        dev {
+            function {
+            }
+        }
     }
 }
 
