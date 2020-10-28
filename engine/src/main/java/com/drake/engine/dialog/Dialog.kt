@@ -24,53 +24,19 @@ import android.app.ProgressDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ArrayAdapter
 import android.widget.ListPopupWindow
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import com.drake.engine.utils.px
 
-/**
- * 解决常见的MaterialDesignDialog需求
- */
-
-/**
- * 设置对话框的宽度
- * 必须在对话框显示之后执行
- */
-fun Dialog.setWidth(withDipValue: Int) {
-    val window = window
-    window?.setLayout(withDipValue.px(), WRAP_CONTENT)
-}
-
-
-/**
- * 设置对话框的高度
- * 必须在对话框显示之后执行
- */
-fun Dialog.setHeight(heightDipValue: Int) {
-    val window = window
-    window?.setLayout(WRAP_CONTENT, heightDipValue.px())
-}
-
-/**
- * 设置对话框的宽高
- * 必须在对话框显示之后执行
- */
-fun Dialog.setSize(withDipValue: Int, heightDipValue: Int) {
-    val window = window
-    window?.setLayout(withDipValue.px(), heightDipValue.px())
-}
 
 /**
  * 设置背景透明
  */
 fun Dialog.setTransparent() {
-    val window = window
-    window?.setBackgroundDrawableResource(android.R.color.transparent)
+    window?.apply { setBackgroundDrawableResource(android.R.color.transparent) }
 }
 
 
@@ -79,10 +45,9 @@ fun Dialog.setTransparent() {
  * 分割线的间距由Drawable来控制
  */
 fun AlertDialog.setDivider(@DrawableRes divider: Int) {
-    val listView = this.listView
-    if (listView != null) {
-        listView.overscrollFooter = ColorDrawable(Color.TRANSPARENT)
-        listView.divider = ContextCompat.getDrawable(context, divider)
+    listView?.apply {
+        overscrollFooter = ColorDrawable(Color.TRANSPARENT)
+        this.divider = ContextCompat.getDrawable(context, divider)
     }
 }
 
@@ -116,8 +81,6 @@ fun androidx.fragment.app.DialogFragment.setWidthNoLimit() {
 
 /**
  * 警告对话框
- * @receiver Activity
- * @param block [@kotlin.ExtensionFunctionType] Function1<Builder, Unit>
  */
 fun Activity.alert(block: AlertDialog.Builder.() -> Unit): AlertDialog {
     val builder = AlertDialog.Builder(this)

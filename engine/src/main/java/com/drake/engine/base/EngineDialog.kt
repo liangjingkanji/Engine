@@ -21,20 +21,14 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
+import androidx.annotation.StyleRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 
-abstract class EngineDialog<B : ViewDataBinding>(context: Context) : Dialog(context),
-    OnClickListener {
+abstract class EngineDialog<B : ViewDataBinding>(context: Context, @StyleRes themeResId: Int = 0) :
+    Dialog(context, themeResId), OnClickListener {
 
     lateinit var binding: B
-
-    override fun onClick(v: View) {
-    }
-
-    protected abstract fun initView()
-
-    protected abstract fun initData()
 
     override fun setContentView(layoutResID: Int) {
         binding = DataBindingUtil.inflate(layoutInflater, layoutResID, null, false)
@@ -51,4 +45,8 @@ abstract class EngineDialog<B : ViewDataBinding>(context: Context) : Dialog(cont
             e.printStackTrace()
         }
     }
+
+    protected abstract fun initView()
+    protected abstract fun initData()
+    override fun onClick(v: View) {}
 }

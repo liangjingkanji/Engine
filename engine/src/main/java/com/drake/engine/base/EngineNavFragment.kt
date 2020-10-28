@@ -33,28 +33,18 @@ abstract class EngineNavFragment<B : ViewDataBinding>(@LayoutRes contentLayoutId
     lateinit var binding: B
     var contentView: View? = null
 
-    final override fun onCreateView(
+    override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        contentView = contentView ?: view(inflater, container, savedInstanceState)
+        contentView = contentView ?: super.onCreateView(inflater, container, savedInstanceState)
         return contentView
     }
 
-    abstract fun view(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View?
-
     protected abstract fun initView()
-
-
     protected abstract fun initData()
-
-    override fun onClick(v: View) {
-    }
+    override fun onClick(v: View) {}
 
     override fun onResume() {
         try {
@@ -67,9 +57,8 @@ abstract class EngineNavFragment<B : ViewDataBinding>(@LayoutRes contentLayoutId
         super.onResume()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        binding = DataBindingUtil.bind(requireView())!!
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding = DataBindingUtil.bind(view)!!
     }
 
 }

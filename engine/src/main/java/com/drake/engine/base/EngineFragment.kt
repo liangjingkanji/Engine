@@ -30,17 +30,12 @@ abstract class EngineFragment<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
 
     lateinit var binding: B
 
-    override fun onClick(v: View) {
-    }
-
     protected abstract fun initView()
-
     protected abstract fun initData()
+    override fun onClick(v: View) {}
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        binding = DataBindingUtil.bind(requireView())!!
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding = DataBindingUtil.bind(view)!!
 
         try {
             initView()
@@ -49,6 +44,5 @@ abstract class EngineFragment<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
             Log.e("日志", "初始化失败")
             e.printStackTrace()
         }
-
     }
 }

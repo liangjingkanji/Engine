@@ -33,28 +33,22 @@ abstract class EngineToolbarActivity<B : ViewDataBinding>(@LayoutRes contentLayo
     }
 
     @SuppressLint("InflateParams")
-    override fun setContentView(layoutResID: Int) {
+    override fun setContentView(layoutResId: Int) {
         val root = layoutInflater.inflate(R.layout.engine_toolbar, null) as ViewGroup
         setContentView(root)
-
-        rootView = layoutInflater.inflate(layoutResID, null)
-
+        rootView = layoutInflater.inflate(layoutResId, null)
         val layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
         ll_root.addView(rootView, layoutParams)
         binding = rootView.bind()
-
         immersive(toolbar)
-
         iv_action_back.setOnClickListener { onBack() }
-
         init()
     }
 
-
-    protected fun onBack() {
+    open fun onBack() {
         finishTransition()
     }
 }

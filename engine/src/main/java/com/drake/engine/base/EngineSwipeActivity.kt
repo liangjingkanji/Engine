@@ -40,7 +40,6 @@ abstract class EngineSwipeActivity<B : ViewDataBinding>(@LayoutRes contentLayout
         swipeBackHelper = SwipeBackHelper(this)
         swipeBackHelper?.setBackgroundColor(Color.WHITE)
         super.init()
-
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
