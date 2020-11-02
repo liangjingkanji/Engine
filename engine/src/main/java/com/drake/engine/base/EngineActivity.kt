@@ -82,9 +82,8 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
     }
 
     override fun onBackPressed() {
-        if (onBackPress == null || onBackPress?.invoke() == false) {
-            super.onBackPressed()
-        }
+        if (onBackPress?.invoke() == true) return
+        super.onBackPressed()
     }
 
     override fun onDestroy() {

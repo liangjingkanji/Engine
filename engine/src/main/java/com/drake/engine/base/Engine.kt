@@ -17,11 +17,18 @@
 package com.drake.engine.base
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatActivity
 
 lateinit var app: Application
 
 fun Application.initEngine() {
     app = this
+    registerActivityLifecycleCallbacks(Engine.activityCallbacks)
+}
+
+object Engine {
+    val currentActivity: AppCompatActivity? get() = activityCallbacks.currentActivityWeak?.get()
+    var activityCallbacks: EngineActivityCallbacks = EngineActivityCallbacks()
 }
 
 
