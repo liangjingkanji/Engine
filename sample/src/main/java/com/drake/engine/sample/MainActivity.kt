@@ -16,14 +16,18 @@
 
 package com.drake.engine.sample
 
+import android.util.Log
 import com.drake.engine.base.EngineActivity
 import com.drake.engine.sample.databinding.ActivityMainBinding
+import com.drake.engine.utils.preference
+import com.drake.engine.utils.serializable
 import com.hulab.debugkit.dev
 
 
 class MainActivity : EngineActivity<ActivityMainBinding>(R.layout.activity_main) {
 
-    private var model = Model(26)
+    private var model: Model? by serializable("model")
+    private var name: String? by preference("name")
 
     override fun initView() {
         binding.v = this
@@ -33,6 +37,13 @@ class MainActivity : EngineActivity<ActivityMainBinding>(R.layout.activity_main)
     override fun initData() {
         dev {
             function {
+                Log.d("日志", "(MainActivity.kt:42)    name = ${name}")
+                Log.d("日志", "(MainActivity.kt:41)    model = ${model}")
+            }
+
+            function {
+                name = null
+                model = Model(23)
             }
         }
     }
