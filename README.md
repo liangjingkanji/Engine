@@ -31,7 +31,7 @@
 | 工具                     |                                      |
 | ------------------------ | ------------------------------------ |
 | KeyBoard.kt              | 键盘相关, 键盘遮挡/显示/隐藏/高度...       |
-| Preference.kt            | SharePreference存储                  |
+| Preference.kt            | SharePreference存储, 委托属性                  |
 | DigitsInputFilter.kt     | 输入框小数点以及数字位数限制                     |
 | Intents.kt               | 意图创建, 开启Activity/Service等组件 |
 | JetPack.kt               | JetPack框架相关                      |
@@ -77,7 +77,7 @@ allprojects {
 在 module 的 build.gradle 添加依赖
 
 ```groovy
-implementation 'com.github.liangjingkanji:Engine:0.0.13'
+implementation 'com.github.liangjingkanji:Engine:0.0.14'
 ```
 
 <br>
