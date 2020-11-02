@@ -39,7 +39,7 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
     lateinit var rootView: View
 
     private var finishBroadcastReceiver: BroadcastReceiver? = null
-    private var onBackPress: (() -> Boolean)? = null
+    private val onBackPressInterceptors = ArrayList<() -> Boolean>()
     private var onTouchEvent: (MotionEvent.() -> Boolean)? = null
 
     override fun setContentView(layoutResID: Int) {
@@ -67,6 +67,10 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
 
     // <editor-fold desc="生命周期">
 
+    /**
+     * 触摸事件
+     * @param block 返回值表示是否拦截事件
+     */
     fun onTouchEvent(block: MotionEvent.() -> Boolean) {
         onTouchEvent = block
     }
@@ -77,12 +81,18 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
     }
 
 
+    /**
+     * 返回键事件
+     * @param block 返回值表示是否拦截事件
+     */
     fun onBackPressed(block: () -> Boolean) {
-        onBackPress = block
+        onBackPressInterceptors.add(block)
     }
 
     override fun onBackPressed() {
-        if (onBackPress?.invoke() == true) return
+        onBackPressInterceptors.forEach {
+            if (it.invoke()) return
+        }
         super.onBackPressed()
     }
 
@@ -116,12 +126,10 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
         intentFilter.addAction("activity_event")
         finishBroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-
                 val skipActivity = intent.getStringExtra("skip_activity")
                 if (skipActivity != null && javaClass.simpleName == skipActivity) {
                     return
                 }
-
                 finish()
             }
         }

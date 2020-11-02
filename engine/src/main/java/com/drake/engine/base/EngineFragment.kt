@@ -36,6 +36,8 @@ abstract class EngineFragment<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = DataBindingUtil.bind(view)!!
+        val engineActivity = (requireActivity() as? EngineActivity<*>)
+        engineActivity?.onBackPressed(this::onBackPressed)
 
         try {
             initView()
@@ -44,5 +46,9 @@ abstract class EngineFragment<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
             Log.e("日志", "初始化失败")
             e.printStackTrace()
         }
+    }
+
+    open fun onBackPressed(): Boolean {
+        return false
     }
 }
