@@ -42,8 +42,8 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
     private val onBackPressInterceptors = ArrayList<() -> Boolean>()
     private var onTouchEvent: (MotionEvent.() -> Boolean)? = null
 
-    override fun setContentView(layoutResID: Int) {
-        rootView = layoutInflater.inflate(layoutResID, null)
+    override fun setContentView(layoutResId: Int) {
+        rootView = layoutInflater.inflate(layoutResId, null)
         setContentView(rootView)
         binding = DataBindingUtil.bind(rootView)!!
         init()

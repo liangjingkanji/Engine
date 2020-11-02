@@ -28,8 +28,8 @@ import kotlinx.android.synthetic.main.engine_toolbar.*
 abstract class EngineToolbarActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: Int = 0) :
     EngineActivity<B>(contentLayoutId) {
 
-    override fun setTitle(title: CharSequence) {
-        tv_title.text = title
+    override fun setTitle(title: CharSequence?) {
+        tv_title.text = title ?: return
     }
 
     @SuppressLint("InflateParams")
