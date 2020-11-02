@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.viewpager2.adapter.FragmentStateAdapter
 
 fun FragmentActivity.FragmentPagerAdapter(
     fragments: List<Fragment>,
@@ -56,4 +57,32 @@ class BaseFragmentPagerAdapter(
     }
 
 }
+
+fun FragmentActivity.ViewPagerAdapter(
+    fragments: List<Fragment>
+): FragmentStateAdapter = object : FragmentStateAdapter(this) {
+
+    override fun getItemCount(): Int {
+        return fragments.size
+    }
+
+    override fun createFragment(position: Int): Fragment {
+        return fragments[position]
+    }
+}
+
+fun Fragment.ViewPagerAdapter(
+    fragments: List<Fragment>
+): FragmentStateAdapter = object : FragmentStateAdapter(this) {
+
+    override fun getItemCount(): Int {
+        return fragments.size
+    }
+
+    override fun createFragment(position: Int): Fragment {
+        return fragments[position]
+    }
+}
+
+
 
