@@ -20,7 +20,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Base64
 import com.drake.engine.base.app
-import java.io.*
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -44,7 +47,8 @@ object Preference {
                     is String -> putString(it.first, value)
                     is Float -> putFloat(it.first, value)
                     is Boolean -> putBoolean(it.first, value)
-                    else -> throw IllegalArgumentException("SharedPreferences save ${it.first} has wrong type ${value.javaClass.name}")
+                    is Set<*> -> putStringSet(it.first, value as Set<String>)
+                    else -> putObj(it.first, value)
                 }
                 return@forEach
             }
@@ -64,59 +68,52 @@ object Preference {
             String::class.java -> preference.getString(key, "") as T
             Float::class.java -> preference.getFloat(key, 0F) as T
             Boolean::class.java -> preference.getBoolean(key, false) as T
-            else -> throw IllegalArgumentException("SharedPreferences save [${key}] has wrong type ${T::class.java.name}")
+            Set::class.java, HashSet::class.java, LinkedHashSet::class.java -> preference.getStringSet(
+                key,
+                null
+            ) as T
+            else -> preference.getObj<T>(key) as T
         }
     }
 
-
-    inline fun <reified T> read(key: String, defValue: T, name: String = this.name): T {
+    inline fun <reified T> read(key: String, defValue: T?, name: String = this.name): T {
         val preference = context.getSharedPreferences(name, Context.MODE_PRIVATE)
-
         return when (T::class.java) {
             Int::class.java -> preference.getInt(key, defValue as Int) as T
             Long::class.java -> preference.getLong(key, defValue as Long) as T
             String::class.java -> preference.getString(key, defValue as String) as T
             Float::class.java -> preference.getFloat(key, defValue as Float) as T
             Boolean::class.java -> preference.getBoolean(key, defValue as Boolean) as T
-            else -> throw IllegalArgumentException("SharedPreferences save [${key}] has wrong type ${T::class.java.name}")
+            Set::class.java -> preference.getStringSet(key, defValue as Set<String>) as T
+            HashSet::class.java -> preference.getStringSet(key, defValue as HashSet<String>) as T
+            LinkedHashSet::class.java -> preference.getStringSet(
+                key,
+                defValue as LinkedHashSet<String>
+            ) as T
+            else -> preference.getObj<T>(key) ?: defValue as T
         }
     }
-
 
     //</editor-fold>
 
-    //<editor-fold desc="对象">
 
-    inline fun <reified T> readSerializable(key: String, name: String = this.name): T? {
-        val preference = context.getSharedPreferences(name, Context.MODE_PRIVATE)
-        return preference.readSerializable<T>(key)
-    }
-
-    fun writeSerializable(key: String, obj: Serializable?, name: String = this.name) {
-        val preference = context.getSharedPreferences(name, Context.MODE_PRIVATE)
-        preference.edit().apply {
-            this.writeSerializable(key, obj)
-            apply()
-        }
-    }
-
-    fun SharedPreferences.Editor.writeSerializable(key: String, obj: Serializable?) {
+    fun SharedPreferences.Editor.putObj(key: String, obj: Any?) {
         if (obj == null) {
             remove(key)
-        } else {
-            try {
-                val byteOutput = ByteArrayOutputStream()
-                val objOutput = ObjectOutputStream(byteOutput)
-                objOutput.writeObject(obj)
-                val str = Base64.encodeToString(byteOutput.toByteArray(), Base64.DEFAULT)
-                putString(key, str)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+            return
+        }
+        try {
+            val byteOutput = ByteArrayOutputStream()
+            val objOutput = ObjectOutputStream(byteOutput)
+            objOutput.writeObject(obj)
+            val str = Base64.encodeToString(byteOutput.toByteArray(), Base64.DEFAULT)
+            putString(key, str)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    inline fun <reified T> SharedPreferences.readSerializable(key: String): T? {
+    inline fun <reified T> SharedPreferences.getObj(key: String): T? {
         return try {
             val any = this.getString(key, null) ?: return null
             val base64 = Base64.decode(any, Base64.DEFAULT)
@@ -125,21 +122,17 @@ object Preference {
             val obj = objInput.readObject()
             obj as? T
         } catch (e: Exception) {
-            e.printStackTrace()
             null
         }
     }
-    //</editor-fold>
 
     //<editor-fold desc="删除">
     fun remove(key: String, name: String = this.name) {
-        val adjustName = if (name.isNullOrBlank()) this.name else name
-        context.getSharedPreferences(adjustName, Context.MODE_PRIVATE).edit().remove(key).apply()
+        context.getSharedPreferences(name, Context.MODE_PRIVATE).edit().remove(key).apply()
     }
 
     fun clear(name: String = this.name) {
-        val adjustName = if (name.isNullOrBlank()) this.name else name
-        context.getSharedPreferences(adjustName, Context.MODE_PRIVATE).edit().clear().apply()
+        context.getSharedPreferences(name, Context.MODE_PRIVATE).edit().clear().apply()
     }
     //</editor-fold>
 }
@@ -148,42 +141,8 @@ object Preference {
  * 序列化委托代理属性
  */
 inline fun <reified T> preference(
-    key: String,
     default: T? = null,
-    name: String = Preference.name
-): ReadWriteProperty<Any?, T> {
-
-    val isInit = AtomicBoolean(true)
-
-    return object : ReadWriteProperty<Any?, T> {
-
-        override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-            Preference.write(name, key to value)
-        }
-
-        override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-            if (isInit.get()) {
-                isInit.set(false)
-                return when (T::class.java) {
-                    Int::class.java -> 0 as T
-                    Long::class.java -> 0L as T
-                    String::class.java -> "" as T
-                    Float::class.java -> 0F as T
-                    Boolean::class.java -> false as T
-                    else -> throw IllegalArgumentException("SharedPreferences save [${key}] has wrong type ${T::class.java.name}")
-                }
-            }
-            return if (default == null) {
-                Preference.read(key, name)
-            } else {
-                Preference.read(key, default, name)
-            }
-        }
-    }
-}
-
-inline fun <reified T : Serializable> serializable(
-    key: String,
+    key: String? = null,
     name: String = Preference.name
 ): ReadWriteProperty<Any?, T?> {
 
@@ -192,19 +151,29 @@ inline fun <reified T : Serializable> serializable(
     return object : ReadWriteProperty<Any?, T?> {
 
         override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) {
-            Preference.writeSerializable(key, value, name)
+            val adjustKey = key ?: property.name
+            Preference.write(name, adjustKey to value)
         }
 
         override fun getValue(thisRef: Any?, property: KProperty<*>): T? {
             if (isInit.get()) {
                 isInit.set(false)
-                return null
+                return when (T::class.java) {
+                    Int::class.java -> 0 as T
+                    Long::class.java -> 0L as T
+                    String::class.java -> "" as T
+                    Float::class.java -> 0F as T
+                    Boolean::class.java -> false as T
+                    Set::class.java -> setOf<T>() as T
+                    else -> throw IllegalArgumentException("SharedPreferences save [${key}] has wrong type ${T::class.java.name}")
+                }
             }
-            return Preference.readSerializable<T>(key, name)
+            val adjustKey = key ?: property.name
+            return if (default == null) Preference.read(adjustKey, name) else Preference.read(
+                adjustKey,
+                default,
+                name
+            )
         }
     }
 }
-
-
-
-

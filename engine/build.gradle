@@ -80,4 +80,12 @@ dependencies {
 
     compileOnly "com.github.bumptech.glide:glide:$glide_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"
+
+    // Preferences DataStore
+    api "androidx.datastore:datastore-preferences:1.0.0-alpha02"
+
+    // Proto DataStore
+    api "androidx.datastore:datastore-core:1.0.0-alpha02"
+
+    api 'com.tencent:mmkv-static:1.2.4'
 }

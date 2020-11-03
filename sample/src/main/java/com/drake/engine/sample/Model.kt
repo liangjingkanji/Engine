@@ -19,6 +19,6 @@ package com.drake.engine.sample
 import androidx.databinding.BaseObservable
 import java.io.Serializable
 
-class Model(var age: Int) : BaseObservable(), Serializable {
+data class Model(var age: Int) : BaseObservable(), Serializable {
     var name = "吴彦祖"
 }
