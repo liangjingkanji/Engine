@@ -48,14 +48,14 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    testImplementation "junit:junit:4.13"
+    testImplementation "junit:junit:4.13.1"
     androidTestImplementation "androidx.test:runner:1.3.0"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
     implementation "androidx.appcompat:appcompat:1.2.0"
-    implementation "androidx.constraintlayout:constraintlayout:2.0.3"
+    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "com.google.android.material:material:1.2.1"
@@ -70,17 +70,23 @@ dependencies {
     // ---
 
     // ==================================我的其他库==================================
-    implementation "com.github.liangjingkanji:BRV:1.3.13" // 列表
-    implementation "com.github.liangjingkanji:debugkit:1.2.9" // 调试应用
-    implementation "com.github.liangjingkanji:Net:2.3.4" // 网络请求/异步任务
-    implementation "com.github.liangjingkanji:LogCat:1.1.0" // 日志
-    implementation 'com.github.liangjingkanji:Channel:1.0' // 事件分发
+    implementation 'com.github.liangjingkanji:Net:2.3.4' // 网络请求.异步任务
+    implementation 'com.github.liangjingkanji:BRV:1.3.14' // 列表
+    implementation 'com.github.liangjingkanji:debugkit:1.2.9' // 调试工具
+    implementation 'com.github.liangjingkanji:Serialize:1.0.1' // 序列化数据存储
+    implementation 'com.github.liangjingkanji:Channel:1.0.2' // 事件分发
     implementation 'com.github.liangjingkanji:Tooltip:1.1.0' // 吐司
+    implementation 'com.github.liangjingkanji:FlycoTabLayout:2.0.3' // 标签栏
+    implementation 'com.github.liangjingkanji:LogCat:1.1.0' // 日志工具
 
 
     // ==================================第三方==================================
     implementation "com.yanzhenjie:permission:2.0.0-rc10" // 全选
     implementation "com.king.zxing:zxing-lite:1.0.3" // 二维码
+    // Preferences DataStore
+    api "androidx.datastore:datastore-preferences:1.0.0-alpha02"
+    // Proto DataStore
+    api "androidx.datastore:datastore-core:1.0.0-alpha02"
 
 
 }
