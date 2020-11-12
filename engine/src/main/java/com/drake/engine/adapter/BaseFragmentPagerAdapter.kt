@@ -15,6 +15,8 @@
  */
 
 
+@file:Suppress("FunctionName")
+
 package com.drake.engine.adapter
 
 import androidx.fragment.app.Fragment
@@ -58,7 +60,7 @@ class BaseFragmentPagerAdapter(
 
 }
 
-fun FragmentActivity.ViewPagerAdapter(
+fun FragmentActivity.FragmentAdapter(
     fragments: List<Fragment>
 ): FragmentStateAdapter = object : FragmentStateAdapter(this) {
 
@@ -71,7 +73,7 @@ fun FragmentActivity.ViewPagerAdapter(
     }
 }
 
-fun Fragment.ViewPagerAdapter(
+fun Fragment.FragmentAdapter(
     fragments: List<Fragment>
 ): FragmentStateAdapter = object : FragmentStateAdapter(this) {
 
