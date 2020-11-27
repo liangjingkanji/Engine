@@ -127,7 +127,7 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
         finishBroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 val skipActivity = intent.getStringExtra("skip_activity")
-                if (skipActivity != null && javaClass.simpleName == skipActivity) {
+                if (skipActivity != null && this@EngineActivity.javaClass.simpleName == skipActivity) {
                     return
                 }
                 finish()
