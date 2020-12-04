@@ -170,30 +170,19 @@ fun String.isNumber(): Boolean {
     }
 }
 
-/**
- * 保留两个小数点
- */
-fun Double.m2(): String {
-    val df = DecimalFormat("#.00")
-    val d = df.format(this)
-    return when {
-        d == ".00" -> "0"
-        d.substring(0, 1) == "." -> "0$d"
-        else -> d
-    }
+ /**
+  * # 表示非0补齐,比如 3.001 -> 3
+  * 0 表示补齐0,比如3.00 -> 3.00
+  * */
+fun Number.format(pattern: String = "0.##"): String {
+    val decimalFormat = DecimalFormat(pattern)
+    return decimalFormat.format(this)
 }
 
-/**
- * 保留两个小数点
- */
-fun Float.m2(): String {
-    val df = DecimalFormat("#.00")
-    val d = df.format(this)
-    return when {
-        d == ".00" -> "0"
-        d.substring(0, 1) == "." -> "0$d"
-        else -> d
-    }
+fun Float.toPercent(pattern: String = "0.##%"): String {
+    val decimalFormat = DecimalFormat(pattern)
+//    return "${decimalFormat.format(this * 100)}%"
+    return "${decimalFormat.format(this)}"
 }
 
 /**
