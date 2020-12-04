@@ -171,19 +171,32 @@ fun String.isNumber(): Boolean {
 }
 
  /**
-  * # 表示非0补齐,比如 3.001 -> 3
-  * 0 表示补齐0,比如3.00 -> 3.00
+  * # 表示非0补齐,比如 3.001 ->0.##-> 3
+  * 0 表示补齐0,比如3.00 ->0.00-> 3.00
+  * % 表示乘以 100 和作为百分比显示 10.3001->#.00#%->1030.01%
   * */
 fun Number.format(pattern: String = "0.##"): String {
     val decimalFormat = DecimalFormat(pattern)
     return decimalFormat.format(this)
 }
 
-fun Float.toPercent(pattern: String = "0.##%"): String {
-    val decimalFormat = DecimalFormat(pattern)
-//    return "${decimalFormat.format(this * 100)}%"
-    return "${decimalFormat.format(this)}"
-}
+val Number.KB: Long
+    get() {
+        return when (this) {
+            is Int -> this * 1024L
+            is Float -> (this * 1024).toLong()
+            is Double -> (this * 1024).toLong()
+            is Short -> this * 1024L
+            is Long -> this * 1024L
+            else -> throw java.lang.IllegalArgumentException("什么乱七八糟的数据啊,要转自己该")
+        }
+    }
+
+val Number.MB: Long
+    get() = this.KB * 1024
+
+val Number.GB: Long
+    get() = this.MB * 1024
 
 /**
  * 屏幕宽度
