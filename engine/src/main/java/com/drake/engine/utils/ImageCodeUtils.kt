@@ -42,8 +42,8 @@ class ImageCodeUtils {
     fun createBitmap(): Bitmap {
         mPaddingLeft = 0 //每次生成验证码图片时初始化
         mPaddingTop = 0
-        DEFAULT_WIDTH = 100f.px()
-        DEFAULT_HEIGHT = 40.px()
+        DEFAULT_WIDTH = 100f.dp
+        DEFAULT_HEIGHT = 40.dp
         val bitmap = Bitmap.createBitmap(DEFAULT_WIDTH, DEFAULT_HEIGHT, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
 

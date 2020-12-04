@@ -1,6 +1,8 @@
 package com.drake.engine.databinding
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
+import android.view.View
 import android.widget.ImageView
 import androidx.annotation.Dimension
 import androidx.databinding.BindingAdapter
@@ -8,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.drake.engine.utils.px
+import com.drake.engine.base.app
 
 /**
  * 加载圆角图片
@@ -22,7 +24,9 @@ fun ImageView.loadImageCornerWithHolder(url: Any?, holder: Drawable?, @Dimension
     val requestOptions = if (corner == 0) {
         RequestOptions().circleCrop().placeholder(holder)
     } else {
-        RequestOptions().transforms(CenterCrop(), RoundedCorners(corner.px())).placeholder(holder)
+        RequestOptions().transforms(
+            CenterCrop(), RoundedCorners((corner * app.resources.displayMetrics.density).toInt())
+        ).placeholder(holder)
     }
     Glide.with(context).load(url).apply(requestOptions).into(this)
 }
@@ -32,7 +36,9 @@ fun ImageView.loadImageCorner(url: Any?, @Dimension corner: Int = 0) {
     val requestOptions = if (corner == 0) {
         RequestOptions().circleCrop().placeholder(drawable)
     } else {
-        RequestOptions().transforms(CenterCrop(), RoundedCorners(corner.px())).placeholder(drawable)
+        RequestOptions().transforms(
+            CenterCrop(), RoundedCorners((corner * app.resources.displayMetrics.density).toInt())
+        ).placeholder(drawable)
     }
     Glide.with(context).load(url).apply(requestOptions).into(this)
 }
@@ -46,4 +52,25 @@ fun ImageView.loadImageWithHolder(url: Any?, holder: Drawable?) {
 @BindingAdapter("img")
 fun ImageView.loadImage(url: Any?) {
     Glide.with(context).load(url).apply(RequestOptions().placeholder(drawable)).into(this)
+}
+
+
+@SuppressLint("CheckResult")
+@BindingAdapter(value = ["gif", "holder"], requireAll = false)
+fun ImageView.loadGif(url: Any?, holder: Drawable? = null) {
+
+    if (url == null || (url is CharSequence && url.isEmpty()) || (url is Int && url == View.NO_ID)) {
+        holder?.let {
+            setImageDrawable(it)
+        }
+        return
+    }
+
+    val requestOptions = if (holder == null && drawable != null) {
+        RequestOptions().placeholder(drawable)
+    } else {
+        RequestOptions().placeholder(holder)
+    }
+
+    Glide.with(context).asGif().load(url).apply(requestOptions).into(this)
 }

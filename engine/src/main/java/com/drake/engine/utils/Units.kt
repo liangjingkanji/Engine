@@ -17,9 +17,6 @@
 
 package com.drake.engine.utils
 
-import android.app.Activity
-import android.util.DisplayMetrics
-import androidx.annotation.DimenRes
 import androidx.annotation.IntDef
 import com.drake.engine.base.app
 import java.math.BigDecimal
@@ -35,18 +32,22 @@ import java.util.regex.Pattern
 */
 object Units {
 
+    //<editor-fold desc="Memory">
     @IntDef(BYTE, KB, MB, GB)
     @Retention(AnnotationRetention.SOURCE)
     annotation class Memory
 
+    const val BYTE = 1
+    const val KB = 1024
+    const val MB = 1048576
+    const val GB = 1073741824 //</editor-fold>
+
+
+    //<editor-fold desc="Time">
     @IntDef(MSEC, SEC, MIN, HOUR, DAY)
     @Retention(AnnotationRetention.SOURCE)
     annotation class Time
 
-    const val BYTE = 1
-    const val KB = 1024
-    const val MB = 1048576
-    const val GB = 1073741824
     const val MSEC = 1
     const val SEC = 1000
     const val MIN = 60000
@@ -54,45 +55,12 @@ object Units {
     const val DAY = 86400000
 
     /**
-     * 距离单位超过千米自动换算km
-     *
-     * @param distance 单位/m
-     */
-    fun toKM(distance: Float): String {
-
-        return if (distance >= 1000) {
-            val format = DecimalFormat("#.##")
-            format.format(distance / 1000.0) + "km"
-        } else {
-            distance.toInt().toString() + "m"
-        }
-    }
-
-    /**
-     * 判断目标时间是否大于当前时间
-     *
-     * @param dateStr 目标时间
-     */
-    fun greaterThanCurDate(dateStr: String): Boolean {
-        val time = System.currentTimeMillis()
-        val format = SimpleDateFormat("yyyy.MM.dd hh:mm:ss", Locale.CHINA)
-        try {
-            val date = format.parse(dateStr)
-            return time < date!!.time
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        return false
-    }
-
-    /**
      * 格式化毫秒
      */
     fun formatDate(millis: Long, format: String? = "yyyy-MM-dd"): String {
-        val adjustFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
+        val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
         val date = Date(millis)
-        val sf = SimpleDateFormat(adjustFormat, Locale.CHINA)
+        val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
         return sf.format(date)
     }
 
@@ -103,41 +71,86 @@ object Units {
         if (millis.isNullOrEmpty()) {
             return ""
         }
-        val adjustFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
+        val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
         val date = Date(java.lang.Long.parseLong(millis))
-        val sf = SimpleDateFormat(adjustFormat, Locale.CHINA)
+        val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
         return sf.format(date)
+    } //</editor-fold>
+
+    /**
+     * 距离单位超过千米自动换算km
+     * @param distance 单位/m
+     */
+    fun toKM(distance: Float): String {
+        return if (distance >= 1000) {
+            val format = DecimalFormat("#.##")
+            format.format(distance / 1000.0) + "km"
+        } else {
+            distance.toInt().toString() + "m"
+        }
     }
 }
 
 
-// converts dp value into px
+//<editor-fold desc="Display">
+@Deprecated("rename", ReplaceWith("dp"), DeprecationLevel.ERROR)
 fun Int.px(): Int = (this * app.resources.displayMetrics.density).toInt()
 
+@Deprecated("rename", ReplaceWith("dp"), DeprecationLevel.ERROR)
 fun Float.px(): Int = (this * app.resources.displayMetrics.density).toInt()
 
-// converts sp value into px
+@Deprecated("rename", ReplaceWith("sp"), DeprecationLevel.ERROR)
 fun Int.sp2px(): Int = (this * app.resources.displayMetrics.scaledDensity).toInt()
 
+@Deprecated("rename", ReplaceWith("sp"), DeprecationLevel.ERROR)
 fun Float.sp2px(): Int = (this * app.resources.displayMetrics.scaledDensity).toInt()
 
-// converts px value into dp
+@Deprecated("rename", ReplaceWith("toDp()"), DeprecationLevel.ERROR)
 fun Int.dp(): Float = this.toFloat() / app.resources.displayMetrics.density
 
+@Deprecated("rename", ReplaceWith("toDp()"), DeprecationLevel.ERROR)
 fun Float.dp(): Float = this.toFloat() / app.resources.displayMetrics.density
 
-// converts px value into sp
+@Deprecated("rename", ReplaceWith("toSp()"), DeprecationLevel.ERROR)
 fun Int.sp(): Float = this / app.resources.displayMetrics.scaledDensity
 
+@Deprecated("rename", ReplaceWith("toSp()"), DeprecationLevel.ERROR)
 fun Float.sp(): Float = this / app.resources.displayMetrics.scaledDensity
 
-fun dimen(@DimenRes resource: Int): Int = app.resources.getDimensionPixelSize(resource)
+/*converts dp value into px*/
+val Int.dp
+    get() = (this * app.resources.displayMetrics.density).toInt()
+
+/*converts dp value into px*/
+val Float.dp
+    get() = (this * app.resources.displayMetrics.density).toInt()
+
+/*converts sp value into px*/
+val Int.sp
+    get() = (this * app.resources.displayMetrics.scaledDensity).toInt()
+
+/*converts sp value into px*/
+val Float.sp
+    get() = (this * app.resources.displayMetrics.scaledDensity).toInt()
+
+/*converts px value into dp*/
+fun Int.toDp(): Float = this.toFloat() / app.resources.displayMetrics.density
+
+/*converts px value into dp*/
+fun Float.toDp(): Float = this.toFloat() / app.resources.displayMetrics.density
+
+/*converts px value into sp*/
+fun Int.toSp(): Float = this / app.resources.displayMetrics.scaledDensity
+
+/*converts px value into sp*/
+fun Float.toSp(): Float = this / app.resources.displayMetrics.scaledDensity
+
+//</editor-fold>
 
 
+//<editor-fold desc="Number">
 /**
  * 是否为浮点数, 无论Float或者Double
- * @receiver String
- * @return Boolean
  */
 fun String.isDouble(): Boolean {
     val pattern = Pattern.compile("^[-\\+]?[.\\d]*$")
@@ -146,8 +159,6 @@ fun String.isDouble(): Boolean {
 
 /**
  * 是否为整数
- * @receiver String
- * @return Boolean
  */
 fun String.isInteger(): Boolean {
     val pattern = Pattern.compile("^[-\\+]?[\\d]*$")
@@ -157,8 +168,6 @@ fun String.isInteger(): Boolean {
 
 /**
  * 是否是数字
- * @receiver String
- * @return Boolean
  */
 fun String.isNumber(): Boolean {
     return if (this == ".") {
@@ -168,101 +177,42 @@ fun String.isNumber(): Boolean {
     }
 }
 
+//</editor-fold>
+
+//<editor-fold desc="Memory">
+
+val Number.KB: Long
+    get() {
+        return when (this) {
+            is Int -> this * 1024L
+            is Float -> (this * 1024).toLong()
+            is Double -> (this * 1024).toLong()
+            is Short -> this * 1024L
+            is Long -> this * 1024L
+            else -> throw java.lang.IllegalArgumentException("Unsupported type: $this")
+        }
+    }
+
+val Number.MB: Long
+    get() = this.KB * 1024
+
+val Number.GB: Long
+    get() = this.MB * 1024
+
+//</editor-fold>
+
+//<editor-fold desc="Fraction">
 /**
- * 保留两个小数点
- */
-fun Double.m2(): String {
-    val df = DecimalFormat("#.00")
-    val d = df.format(this)
-    return when {
-        d == ".00" -> "0"
-        d.substring(0, 1) == "." -> "0$d"
-        else -> d
-    }
+ * # 表示非0补齐,比如 3.001 ->0.##-> 3
+ * 0 表示补齐0,比如3.00 ->0.00-> 3.00
+ * % 表示乘以 100 和作为百分比显示 10.3001->#.00#%->1030.01%
+ * */
+fun Number.fractionDigitPattern(pattern: String = "0.##"): String {
+    val decimalFormat = DecimalFormat(pattern)
+    return decimalFormat.format(this)
 }
 
-/**
- * 保留两个小数点
- */
-fun Float.m2(): String {
-    val df = DecimalFormat("#.00")
-    val d = df.format(this)
-    return when {
-        d == ".00" -> "0"
-        d.substring(0, 1) == "." -> "0$d"
-        else -> d
-    }
-}
-
-/**
- * 屏幕宽度
- * @receiver Activity
- * @return Int 像素单位
- */
-fun Activity.getWith(): Int {
-    val metric = DisplayMetrics()
-    windowManager.defaultDisplay.getMetrics(metric)
-    return metric.widthPixels
-}
-
-/**
- * 屏幕高度
- * @receiver Activity
- * @return Int 像素单位
- */
-fun Activity.getHeight(): Int {
-    val metric = DisplayMetrics()
-    windowManager.defaultDisplay.getMetrics(metric)
-    return metric.heightPixels
-}
-
-/**
- * 数字转成百分比形式 (1 = 100%)
- * @receiver String
- * @param fraction Boolean
- * @param decimalCount Int
- * @return String
- */
-fun String.percent(fraction: Boolean, decimalCount: Int = 2): String {
-
-    if (!isNumber()) {
-        return ""
-    }
-
-    val numberFormat = NumberFormat.getPercentInstance()
-
-    if (fraction) {
-        numberFormat.maximumFractionDigits = decimalCount
-        numberFormat.minimumFractionDigits = decimalCount
-    }
-
-    return try {
-        numberFormat.format(this)
-    } catch (e: Exception) {
-        ""
-    }
-}
-
-fun Double.percent(fraction: Boolean, decimalCount: Int = 2): String {
-
-    val numberFormat = NumberFormat.getPercentInstance()
-
-    if (fraction) {
-        numberFormat.maximumFractionDigits = decimalCount
-        numberFormat.minimumFractionDigits = decimalCount
-    }
-
-    return try {
-        numberFormat.format(this)
-    } catch (e: Exception) {
-        ""
-    }
-}
-
-
-fun Double?.format(
-    roundingMode: RoundingMode = RoundingMode.UP
-): String {
+fun Double?.fractionDigit(roundingMode: RoundingMode = RoundingMode.UP): String {
     val numberFormat = NumberFormat.getInstance()
     numberFormat.minimumFractionDigits = 2
     numberFormat.maximumFractionDigits = 2
@@ -274,10 +224,7 @@ fun Double?.format(
 /**
  * 默认看做 "分" 处理(除以100)
  */
-fun Long?.format(
-    roundingMode: RoundingMode = RoundingMode.UP
-): String {
-
+fun Long?.fractionDigit(roundingMode: RoundingMode = RoundingMode.UP): String {
     val numberFormat = NumberFormat.getInstance()
     numberFormat.minimumFractionDigits = 2
     numberFormat.maximumFractionDigits = 2
@@ -286,9 +233,7 @@ fun Long?.format(
 }
 
 
-fun String?.format(
-    roundingMode: RoundingMode = RoundingMode.UP
-): String {
+fun String?.fractionDigit(roundingMode: RoundingMode = RoundingMode.UP): String {
     return when {
         isNullOrEmpty() -> "0.00"
         this.contains(",") || this.contains("¥") -> this
@@ -307,11 +252,9 @@ fun String?.format(
     }
 }
 
-fun BigDecimal.format(
-    roundingMode: RoundingMode = RoundingMode.UP
-): String {
+fun BigDecimal.fractionDigit(roundingMode: RoundingMode = RoundingMode.UP): String {
     return setScale(2, roundingMode).toPlainString()
-}
+} //</editor-fold>
 
 
 

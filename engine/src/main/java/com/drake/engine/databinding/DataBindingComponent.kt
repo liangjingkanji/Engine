@@ -22,7 +22,6 @@ import android.app.Activity
 import android.content.ContextWrapper
 import android.content.res.ColorStateList
 import android.graphics.Paint
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.TextUtils
 import android.view.View
@@ -33,13 +32,13 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.databinding.BindingAdapter
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.drake.engine.utils.Units
-import com.drake.engine.utils.format
-import com.drake.engine.utils.px
+import com.drake.engine.base.app
 import com.drake.engine.utils.throttleClick
 import com.google.android.material.button.MaterialButton
+import java.math.RoundingMode
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 object DataBindingComponent {
@@ -74,21 +73,14 @@ object DataBindingComponent {
 // <editor-fold desc="图片">
 
 @BindingAdapter(
-    value = ["leftDrawable", "topDrawable", "rightDrawable", "bottomDrawable"],
-    requireAll = false
+    value = ["leftDrawable", "topDrawable", "rightDrawable", "bottomDrawable"], requireAll = false
 )
 fun TextView.setTextViewDrawable(
-    drawableLeft: Int,
-    drawableTop: Int,
-    drawableRight: Int,
-    drawableBottom: Int
+    drawableLeft: Int, drawableTop: Int, drawableRight: Int, drawableBottom: Int
 ) {
     if (drawableLeft != 0 || drawableTop != 0 || drawableRight != 0 || drawableBottom != 0) {
         setCompoundDrawablesWithIntrinsicBounds(
-            drawableLeft,
-            drawableTop,
-            drawableRight,
-            drawableBottom
+            drawableLeft, drawableTop, drawableRight, drawableBottom
         )
     }
 }
@@ -114,27 +106,6 @@ fun ImageView.setImageRes(drawableId: Int) {
         setImageResource(drawableId)
     }
 }
-
-@SuppressLint("CheckResult")
-@BindingAdapter(value = ["gif", "holder"], requireAll = false)
-fun ImageView.loadGif(url: Any?, holder: Drawable? = null) {
-
-    if (url == null || (url is CharSequence && url.isEmpty()) || (url is Int && url == NO_ID)) {
-        holder?.let {
-            setImageDrawable(it)
-        }
-        return
-    }
-
-    val requestOptions = if (holder == null && drawable != null) {
-        RequestOptions().placeholder(drawable)
-    } else {
-        RequestOptions().placeholder(holder)
-    }
-
-    Glide.with(context).asGif().load(url).apply(requestOptions).into(this)
-}
-
 
 // </editor-fold>
 
@@ -189,14 +160,13 @@ fun View.setGone(visibilityVar: Any?) {
 
 // <editor-fold desc="阴影">
 
-
 @BindingAdapter("android:elevation")
-fun View.setElevationDp(dp: Int) {
-    ViewCompat.setElevation(this, dp.px().toFloat())
+fun View.setElevationOf(dp: Int) {
+    ViewCompat.setElevation(this, (dp * app.resources.displayMetrics.density).toInt().toFloat())
 }
 
 @BindingAdapter("android:elevation")
-fun CardView.setElevationDp(dp: Int) {
+fun CardView.setElevationOf(dp: Int) {
     cardElevation = dp.toFloat()
 }
 
@@ -350,7 +320,11 @@ fun TextView.setRMB(number: String?) {
 @SuppressLint("SetTextI18n")
 @BindingAdapter("rmb")
 fun TextView.setRMB(number: Double) {
-    val format = "¥${number.format()}"
+    val numberFormat = NumberFormat.getInstance()
+    numberFormat.minimumFractionDigits = 2
+    numberFormat.maximumFractionDigits = 2
+    numberFormat.roundingMode = RoundingMode.UP
+    val format = "¥${numberFormat.format(number ?: 0.0)}"
     if (format != text.toString()) text = format
 }
 
@@ -360,7 +334,14 @@ fun TextView.setRMB(number: Double) {
 @SuppressLint("SetTextI18n")
 @BindingAdapter("rmb")
 fun TextView.setRMB(number: Long) {
-    val format = "¥${number.format()}"
+    /**
+     * 默认看做 "分" 处理(除以100)
+     */
+    val numberFormat = NumberFormat.getInstance()
+    numberFormat.minimumFractionDigits = 2
+    numberFormat.maximumFractionDigits = 2
+    numberFormat.roundingMode = RoundingMode.UP
+    val format = "¥${numberFormat.format(number / 100.0)}"
     if (format != text.toString()) text = format
 }
 
@@ -371,7 +352,13 @@ fun TextView.setRMB(number: Long) {
 
 @BindingAdapter(value = ["dateMilli", "dateFormat"], requireAll = false)
 fun TextView.setDateFromMillis(milli: Long, format: String? = "yyyy-MM-dd") {
-    val formatText = Units.formatDate(milli, format)
+    /**
+     * 格式化毫秒
+     */
+    val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
+    val date = Date(milli)
+    val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
+    val formatText = sf.format(date)
     if (milli == 0L || formatText == text.toString()) {
         return
     }
@@ -384,7 +371,11 @@ fun TextView.setDateFromMillis(milli: Long, format: String? = "yyyy-MM-dd") {
  */
 @BindingAdapter(value = ["dateMilli", "dateFormat"], requireAll = false)
 fun TextView.setDateFromMillis(milli: String?, format: String? = "yyyy-MM-dd") {
-    val formatText = Units.formatDate(milli, format)
+    var formatText = ""
+    val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
+    val date = Date(java.lang.Long.parseLong(formatText))
+    val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
+    formatText = sf.format(date)
     if (milli.isNullOrEmpty() || formatText == text.toString()) {
         return
     }
@@ -393,7 +384,13 @@ fun TextView.setDateFromMillis(milli: String?, format: String? = "yyyy-MM-dd") {
 
 @BindingAdapter(value = ["dateSecond", "dateFormat"], requireAll = false)
 fun TextView.setDateFromSecond(second: Long, format: String? = "yyyy-MM-dd") {
-    val formatText = Units.formatDate(second * 1000, format)
+    /**
+     * 格式化毫秒
+     */
+    val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
+    val date = Date(second * 1000)
+    val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
+    val formatText = sf.format(date)
     if (second == 0L || formatText == text.toString()) {
         return
     }
@@ -402,7 +399,13 @@ fun TextView.setDateFromSecond(second: Long, format: String? = "yyyy-MM-dd") {
 
 @BindingAdapter(value = ["dateSecond", "dateFormat"], requireAll = false)
 fun TextView.setDateFromSecond(second: String, format: String? = "yyyy-MM-dd") {
-    val formatText = Units.formatDate(java.lang.Long.parseLong(second) * 1000, format)
+    /**
+     * 格式化毫秒
+     */
+    val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
+    val date = Date(java.lang.Long.parseLong(second) * 1000)
+    val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
+    val formatText = sf.format(date)
     if (TextUtils.isEmpty(second) || formatText == text.toString()) {
         return
     }
