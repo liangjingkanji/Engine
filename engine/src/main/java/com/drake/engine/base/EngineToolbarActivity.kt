@@ -17,19 +17,20 @@
 package com.drake.engine.base
 
 import android.annotation.SuppressLint
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.databinding.ViewDataBinding
 import com.drake.engine.R
 import com.drake.engine.databinding.bind
 import com.drake.statusbar.immersive
-import kotlinx.android.synthetic.main.engine_toolbar.*
 
 abstract class EngineToolbarActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: Int = 0) :
     EngineActivity<B>(contentLayoutId) {
 
     override fun setTitle(title: CharSequence?) {
-        tv_title.text = title ?: return
+        findViewById<TextView>(R.id.tv_title).text = title ?: return
     }
 
     @SuppressLint("InflateParams")
@@ -41,10 +42,10 @@ abstract class EngineToolbarActivity<B : ViewDataBinding>(@LayoutRes contentLayo
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        ll_root.addView(rootView, layoutParams)
+        findViewById<ViewGroup>(R.id.ll_root).addView(rootView, layoutParams)
         binding = rootView.bind()
-        immersive(toolbar)
-        iv_action_back.setOnClickListener { onBack() }
+        immersive(findViewById(R.id.toolbar))
+        findViewById<View>(R.id.iv_action_back).setOnClickListener { onBack() }
         init()
     }
 
