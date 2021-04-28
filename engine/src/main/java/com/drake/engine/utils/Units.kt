@@ -33,17 +33,15 @@ import java.util.regex.Pattern
 /*
     单位换算工具
 */
-object UnitUtils {
-
-
-    @IntDef(MSEC, SEC, MIN, HOUR, DAY)
-    @Retention(AnnotationRetention.SOURCE)
-    annotation class Memory
+object Units {
 
     @IntDef(BYTE, KB, MB, GB)
     @Retention(AnnotationRetention.SOURCE)
-    annotation class Time
+    annotation class Memory
 
+    @IntDef(MSEC, SEC, MIN, HOUR, DAY)
+    @Retention(AnnotationRetention.SOURCE)
+    annotation class Time
 
     const val BYTE = 1
     const val KB = 1024

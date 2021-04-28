@@ -38,7 +38,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.drake.engine.utils.UnitUtils
+import com.drake.engine.utils.Units
 import com.drake.engine.utils.format
 import com.drake.engine.utils.px
 import com.drake.engine.utils.throttleClick
@@ -404,7 +404,7 @@ fun TextView.setRMB(number: Long) {
 
 @BindingAdapter(value = ["dateMilli", "dateFormat"], requireAll = false)
 fun TextView.setDateFromMillis(milli: Long, format: String? = "yyyy-MM-dd") {
-    val formatText = UnitUtils.formatDate(milli, format)
+    val formatText = Units.formatDate(milli, format)
     if (milli == 0L || formatText == text.toString()) {
         return
     }
@@ -417,7 +417,7 @@ fun TextView.setDateFromMillis(milli: Long, format: String? = "yyyy-MM-dd") {
  */
 @BindingAdapter(value = ["dateMilli", "dateFormat"], requireAll = false)
 fun TextView.setDateFromMillis(milli: String?, format: String? = "yyyy-MM-dd") {
-    val formatText = UnitUtils.formatDate(milli, format)
+    val formatText = Units.formatDate(milli, format)
     if (milli.isNullOrEmpty() || formatText == text.toString()) {
         return
     }
@@ -426,7 +426,7 @@ fun TextView.setDateFromMillis(milli: String?, format: String? = "yyyy-MM-dd") {
 
 @BindingAdapter(value = ["dateSecond", "dateFormat"], requireAll = false)
 fun TextView.setDateFromSecond(second: Long, format: String? = "yyyy-MM-dd") {
-    val formatText = UnitUtils.formatDate(second * 1000, format)
+    val formatText = Units.formatDate(second * 1000, format)
     if (second == 0L || formatText == text.toString()) {
         return
     }
@@ -435,7 +435,7 @@ fun TextView.setDateFromSecond(second: Long, format: String? = "yyyy-MM-dd") {
 
 @BindingAdapter(value = ["dateSecond", "dateFormat"], requireAll = false)
 fun TextView.setDateFromSecond(second: String, format: String? = "yyyy-MM-dd") {
-    val formatText = UnitUtils.formatDate(java.lang.Long.parseLong(second) * 1000, format)
+    val formatText = Units.formatDate(java.lang.Long.parseLong(second) * 1000, format)
     if (TextUtils.isEmpty(second) || formatText == text.toString()) {
         return
     }

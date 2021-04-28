@@ -199,7 +199,7 @@ public final class ConvertUtils {
      * @return size of byte
      */
     public static long memorySize2Byte(final long memorySize,
-                                       @UnitUtils.Memory final int unit) {
+                                       @Units.Memory final int unit) {
         if (memorySize < 0) {
             return -1;
         }
@@ -214,7 +214,7 @@ public final class ConvertUtils {
      * @return size of memory in unit
      */
     public static double byte2MemorySize(final long byteSize,
-                                         @UnitUtils.Memory final int unit) {
+                                         @Units.Memory final int unit) {
         if (byteSize < 0) {
             return -1;
         }
@@ -232,14 +232,14 @@ public final class ConvertUtils {
     public static String byte2FitMemorySize(final long byteSize) {
         if (byteSize < 0) {
             return "shouldn't be less than zero!";
-        } else if (byteSize < UnitUtils.KB) {
+        } else if (byteSize < Units.KB) {
             return String.format("%.3fB", (double) byteSize);
-        } else if (byteSize < UnitUtils.MB) {
-            return String.format("%.3fKB", (double) byteSize / UnitUtils.KB);
-        } else if (byteSize < UnitUtils.GB) {
-            return String.format("%.3fMB", (double) byteSize / UnitUtils.MB);
+        } else if (byteSize < Units.MB) {
+            return String.format("%.3fKB", (double) byteSize / Units.KB);
+        } else if (byteSize < Units.GB) {
+            return String.format("%.3fMB", (double) byteSize / Units.MB);
         } else {
-            return String.format("%.3fGB", (double) byteSize / UnitUtils.GB);
+            return String.format("%.3fGB", (double) byteSize / Units.GB);
         }
     }
 
@@ -250,7 +250,7 @@ public final class ConvertUtils {
      * @param unit     The unit of time span.
      * @return milliseconds
      */
-    public static long timeSpan2Millis(final long timeSpan, @UnitUtils.Time final int unit) {
+    public static long timeSpan2Millis(final long timeSpan, @Units.Time final int unit) {
         return timeSpan * unit;
     }
 
@@ -261,7 +261,7 @@ public final class ConvertUtils {
      * @param unit   The unit of time span.
      * @return time span in unit
      */
-    public static long millis2TimeSpan(final long millis, @UnitUtils.Time final int unit) {
+    public static long millis2TimeSpan(final long millis, @Units.Time final int unit) {
         return millis / unit;
     }
 
@@ -307,9 +307,9 @@ public final class ConvertUtils {
         }
         try {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
-            byte[] b = new byte[UnitUtils.KB];
+            byte[] b = new byte[Units.KB];
             int len;
-            while ((len = is.read(b, 0, UnitUtils.KB)) != -1) {
+            while ((len = is.read(b, 0, Units.KB)) != -1) {
                 os.write(b, 0, len);
             }
             return os;

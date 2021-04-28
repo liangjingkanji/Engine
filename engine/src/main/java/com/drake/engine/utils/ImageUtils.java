@@ -2003,9 +2003,9 @@ public final class ImageUtils {
         }
         try {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
-            byte[] b = new byte[UnitUtils.KB];
+            byte[] b = new byte[Units.KB];
             int len;
-            while ((len = is.read(b, 0, UnitUtils.KB)) != -1) {
+            while ((len = is.read(b, 0, Units.KB)) != -1) {
                 os.write(b, 0, len);
             }
             return os.toByteArray();
