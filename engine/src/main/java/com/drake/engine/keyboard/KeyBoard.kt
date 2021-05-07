@@ -31,7 +31,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 
-
 /**
  * 支持键盘的工具类
  */
@@ -53,8 +52,7 @@ fun FragmentActivity.setAboveKeyboard(
     window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
     val originalParentY = parent.y
-    var originalDisplayRect: Rect? = null
-    var originalDisplayBottom = 0
+    var defaultDisplayBottom = 0
 
     val layoutChangeListener = object : View.OnLayoutChangeListener {
         override fun onLayoutChange(
@@ -68,28 +66,17 @@ fun FragmentActivity.setAboveKeyboard(
             oldRight: Int,
             oldBottom: Int
         ) {
-            if (originalDisplayRect == null) {
-                originalDisplayRect = Rect()
-                view.getWindowVisibleDisplayFrame(originalDisplayRect)
-                originalDisplayBottom = originalDisplayRect!!.bottom
-            }
+            val displayRect = Rect()
+            view.getWindowVisibleDisplayFrame(displayRect)
+            if (defaultDisplayBottom == 0) defaultDisplayBottom = displayRect.bottom
 
-            val viewLocation = IntArray(2)
-            view.getLocationInWindow(viewLocation)
+            val locationRect = Rect()
+            view.getGlobalVisibleRect(locationRect)
+            val keyboardHeight = defaultDisplayBottom - displayRect.bottom
 
-            val currentDisplayRect = Rect()
-            view.getWindowVisibleDisplayFrame(currentDisplayRect)
-
-            val keyboardHeight = originalDisplayBottom - currentDisplayRect.bottom
-
-            if (keyboardHeight > originalDisplayBottom / 4) {
-
-                val scrollY = viewLocation[1] + view.height - currentDisplayRect.bottom.toFloat()
-
-                if (scrollY <= 0) {
-                    return
-                }
-
+            if (keyboardHeight > defaultDisplayBottom / 4) {
+                val scrollY = locationRect.bottom - displayRect.bottom + displayRect.top
+                if (scrollY <= 0) return
                 parent.y -= scrollY
                 onKeyboardChanged?.invoke(true, keyboardHeight)
             } else {
@@ -206,5 +193,4 @@ fun EditText.hideKeyboard() {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(this.windowToken, 0)
 }
-
 
