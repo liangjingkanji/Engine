@@ -90,4 +90,19 @@
         <attr name="filter_stroke" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="VerificationCodeEditText">
+        <!--验证码数量-->
+        <attr name="codeLength" format="integer" />
+        <!---每个验证码的宽度-->
+        <attr name="codeWidth" format="dimension" />
+        <!---验证码之间的间隔-->
+        <attr name="codeMargin" format="dimension" />
+        <!--每个验证码的背景-->
+        <attr name="codeBackground" format="reference" />
+        <!--是否显示光标-->
+        <attr name="codeCursorVisible" format="boolean" />
+        <!--光标背景-->
+        <attr name="codeCursorDrawable" format="reference" />
+    </declare-styleable>
+
 </resources>

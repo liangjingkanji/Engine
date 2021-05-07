@@ -58,6 +58,7 @@
 | WaveView | 水纹波动 |
 | FilterCheckBox | 过滤是否可选的CheckBox |
 | FilterSeekBar | 过滤是否可滑动进度条SeekBar |
+| VerificationCodeEditText | 验证码输入框 |
 
 <br>
 
