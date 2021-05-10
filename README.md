@@ -16,7 +16,7 @@
 
 | 基类 | 描述 |
 |-|-|
-| Engine.kt | 初始化 |
+| Engine.kt | 当前Activity, 当前Applicaiton |
 | EngineActivity | Activity |
 | EngineSwipeActivity | 可侧滑返回的Activity |
 | EngineToolbarActivity | 拥有工具栏的Activity |
