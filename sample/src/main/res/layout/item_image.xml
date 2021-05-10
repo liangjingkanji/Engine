@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="m"
-            type="com.drake.engine.sample.Model" />
+            type="com.drake.engine.sample.model.Model" />
 
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_marginBottom="10dp"
-        android:layout_height="wrap_content">
+        android:layout_height="50dp">
 
-        <ImageView
-            img="@{m.url}"
-            holder="@{null}"
-            android:src="@drawable/bg_default"
-            android:scaleType="centerCrop"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@{String.valueOf(m.itemPosition)}"
+            android:textColor="@color/black"
+            tools:text="吴彦祖" />
 
     </FrameLayout>
 </layout>

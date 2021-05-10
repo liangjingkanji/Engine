@@ -26,7 +26,7 @@ import androidx.databinding.PropertyChangeRegistry
  * [.notifyPropertyChanged] and [.notifyChange] methods.
  */
 
-interface ObservableIml : Observable {
+interface ObservableImpl : Observable {
 
     val registry: PropertyChangeRegistry
 

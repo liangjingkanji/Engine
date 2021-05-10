@@ -7,6 +7,24 @@
 <img src="https://img.shields.io/badge/license-Apache-blue"/>
 <a href="https://jq.qq.com/?_wv=1027&k=vWsXSNBJ"><img src="https://img.shields.io/badge/QQ群-752854893-blue"/></a>
 </p>
+## 依赖
+
+在项目根目录的 build.gradle 添加仓库
+
+```groovy
+allprojects {
+    repositories {
+        // ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+在 module 的 build.gradle 添加依赖
+
+```groovy
+implementation 'com.github.liangjingkanji:Engine:0.0.18'
+```
 
 ## 使用
 
@@ -59,29 +77,6 @@
 | FilterCheckBox | 过滤是否可选的CheckBox |
 | FilterSeekBar | 过滤是否可滑动进度条SeekBar |
 | VerificationCodeEditText | 验证码输入框 |
-
-<br>
-
-## 依赖
-
-在项目根目录的 build.gradle 添加仓库
-
-```groovy
-allprojects {
-    repositories {
-        // ...
-        maven { url 'https://jitpack.io' }
-    }
-}
-```
-
-在 module 的 build.gradle 添加依赖
-
-```groovy
-implementation 'com.github.liangjingkanji:Engine:0.0.18'
-```
-
-<br>
 
 ## License
 

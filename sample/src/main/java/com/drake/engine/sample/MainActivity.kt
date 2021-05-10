@@ -16,25 +16,23 @@
 
 package com.drake.engine.sample
 
-import com.drake.brv.utils.BRV
+import com.drake.brv.utils.divider
 import com.drake.brv.utils.linear
 import com.drake.brv.utils.setup
 import com.drake.engine.base.EngineActivity
 import com.drake.engine.sample.databinding.ActivityMainBinding
-import kotlinx.android.synthetic.main.activity_main.*
+import com.drake.engine.sample.model.Model
 
 
 class MainActivity : EngineActivity<ActivityMainBinding>(R.layout.activity_main) {
 
 
     override fun initView() {
-        BRV.modelId = BR.m
-        binding.v = this
-        // binding.m = model
+
     }
 
     override fun initData() {
-        rv.linear().setup {
+        binding.rv.divider(R.drawable.divider_horizontal).linear().setup {
             addType<Model>(R.layout.item_image)
         }.models = getData()
     }
@@ -42,9 +40,7 @@ class MainActivity : EngineActivity<ActivityMainBinding>(R.layout.activity_main)
     private fun getData(): MutableList<Model> {
         val list = mutableListOf<Model>()
         for (i in 0..40) {
-            if (i == 10) {
-                list.add(Model())
-            } else list.add(Model("image"))
+            list.add(Model())
         }
         return list
     }

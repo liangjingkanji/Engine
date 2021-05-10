@@ -10,7 +10,7 @@
 
         <variable
             name="m"
-            type="com.drake.engine.sample.Model" />
+            type="com.drake.engine.sample.model.Model" />
     </data>
 
     <LinearLayout

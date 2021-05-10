@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package com.drake.engine.sample
+package com.drake.engine.sample.model
 
 import androidx.databinding.BaseObservable
-import java.io.Serializable
+import com.drake.brv.item.ItemPosition
 
-data class Model(var url: Any? = null) : BaseObservable(), Serializable {
-    var name = "吴彦祖"
+data class Model(var url: Any? = null) : BaseObservable(), ItemPosition {
+    var name = "Model"
+    override var itemPosition: Int = 0
 }
