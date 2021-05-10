@@ -16,15 +16,12 @@
 
 package com.drake.engine.base
 
+import android.annotation.SuppressLint
 import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 
+@SuppressLint("StaticFieldLeak")
 lateinit var app: Application
-
-fun Application.initEngine() {
-    app = this
-    registerActivityLifecycleCallbacks(Engine.activityCallbacks)
-}
 
 object Engine {
     val currentActivity: AppCompatActivity? get() = activityCallbacks.currentActivityWeak?.get()

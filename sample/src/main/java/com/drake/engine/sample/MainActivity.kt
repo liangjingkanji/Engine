@@ -44,7 +44,7 @@ class MainActivity : EngineActivity<ActivityMainBinding>(R.layout.activity_main)
         for (i in 0..40) {
             if (i == 10) {
                 list.add(Model())
-            } else list.add(Model("http://182.92.97.186/download/img"))
+            } else list.add(Model("image"))
         }
         return list
     }
