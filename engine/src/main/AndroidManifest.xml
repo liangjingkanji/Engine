@@ -12,7 +12,8 @@
             android:name=".utils.InitContentProvider"
             android:authorities="com.drake.engine.init"
             android:enabled="true"
-            android:exported="false"></provider>
+            android:multiprocess="true"
+            android:exported="false" />
     </application>
 
 </manifest>
