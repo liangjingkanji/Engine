@@ -10,7 +10,7 @@
     <application>
         <provider
             android:name=".utils.InitContentProvider"
-            android:authorities="com.drake.engine.init"
+            android:authorities="${applicationId}.drake.engineInit"
             android:enabled="true"
             android:multiprocess="true"
             android:exported="false" />
