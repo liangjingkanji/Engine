@@ -7,7 +7,8 @@
 <img src="https://img.shields.io/badge/license-Apache-blue"/>
 <a href="https://jq.qq.com/?_wv=1027&k=vWsXSNBJ"><img src="https://img.shields.io/badge/QQ群-752854893-blue"/></a>
 </p>
-## 依赖
+
+## 安装
 
 在项目根目录的 build.gradle 添加仓库
 
