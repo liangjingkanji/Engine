@@ -37,8 +37,7 @@ internal class ThrottleClickListener(
     private val interval: Long = 500,
     private val unit: TimeUnit = TimeUnit.MILLISECONDS,
     private var block: View.() -> Unit
-) :
-    View.OnClickListener {
+) : View.OnClickListener {
 
     private var lastTime: Long = 0
 

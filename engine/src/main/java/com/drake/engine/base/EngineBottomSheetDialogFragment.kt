@@ -16,6 +16,7 @@
 
 package com.drake.engine.base
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -32,17 +33,14 @@ abstract class EngineBottomSheetDialogFragment<B : ViewDataBinding> : BottomShee
 
     lateinit var binding: B
     lateinit var behavior: BottomSheetBehavior<FrameLayout>
+    lateinit var rootView: FrameLayout
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        val adjustView =
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val viewFinal =
             view ?: dialog?.findViewById<ViewGroup>(android.R.id.content)?.getChildAt(0) ?: return
-        binding = DataBindingUtil.bind(adjustView)!!
-
-        val frameLayout =
-            dialog!!.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
-        behavior = BottomSheetBehavior.from(frameLayout)
+        binding = DataBindingUtil.bind(viewFinal)!!
+        rootView = dialog!!.findViewById(com.google.android.material.R.id.design_bottom_sheet)
+        behavior = BottomSheetBehavior.from(rootView)
 
         try {
             initView()
@@ -51,6 +49,13 @@ abstract class EngineBottomSheetDialogFragment<B : ViewDataBinding> : BottomShee
             Log.e("日志", "初始化失败")
             e.printStackTrace()
         }
+    }
+
+    /**
+     * 设置背景透明
+     */
+    fun setBackgroundTransparent() {
+        rootView.setBackgroundColor(Color.TRANSPARENT)
     }
 
     abstract fun initView()

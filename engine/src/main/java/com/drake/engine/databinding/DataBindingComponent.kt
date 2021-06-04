@@ -284,10 +284,9 @@ fun View.hit(isPrevent: Boolean = true) {
 
 /**
  * 关闭当前界面
- *
  * @param enabled 是否启用
  */
-@SuppressLint("CheckResult")
+@SuppressLint("CheckResult", "ObsoleteSdkInt")
 @BindingAdapter("finish")
 fun View.finishActivity(enabled: Boolean = true) {
     if (enabled) {
