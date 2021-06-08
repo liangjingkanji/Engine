@@ -19,12 +19,12 @@ package com.drake.engine.sample
 import com.drake.brv.utils.divider
 import com.drake.brv.utils.linear
 import com.drake.brv.utils.setup
-import com.drake.engine.base.EngineActivity
+import com.drake.engine.base.EngineToolbarActivity
 import com.drake.engine.sample.databinding.ActivityMainBinding
 import com.drake.engine.sample.model.Model
 
 
-class MainActivity : EngineActivity<ActivityMainBinding>(R.layout.activity_main) {
+class MainActivity : EngineToolbarActivity<ActivityMainBinding>(R.layout.activity_main) {
 
 
     override fun initView() {

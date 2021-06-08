@@ -19,37 +19,55 @@ package com.drake.engine.base
 import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.drake.engine.R
-import com.drake.engine.databinding.bind
-import com.drake.statusbar.immersive
 
+/**
+ * 在项目layout目录下创建`engine_toolbar.xml`可以覆写标题栏布局
+ */
 abstract class EngineToolbarActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: Int = 0) :
     EngineActivity<B>(contentLayoutId) {
 
+    lateinit var rootViewWithoutToolbar: View
+    lateinit var toolbar: LinearLayout
+    lateinit var toolbarLeft: TextView
+    lateinit var toolbarRight: TextView
+    lateinit var toolbarTitle: TextView
+
     override fun setTitle(title: CharSequence?) {
-        findViewById<TextView>(R.id.tv_title).text = title ?: return
+        if (this::toolbarTitle.isInitialized) toolbarTitle.text = title ?: return
+    }
+
+    override fun setTitle(titleId: Int) {
+        title = getString(titleId)
     }
 
     @SuppressLint("InflateParams")
     override fun setContentView(layoutResId: Int) {
-        val root = layoutInflater.inflate(R.layout.engine_toolbar, null) as ViewGroup
-        setContentView(root)
-        rootView = layoutInflater.inflate(layoutResId, null)
+        rootView = layoutInflater.inflate(R.layout.engine_toolbar, null)
+        setContentView(rootView)
+        rootViewWithoutToolbar = layoutInflater.inflate(layoutResId, null)
         val layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        findViewById<ViewGroup>(R.id.ll_root).addView(rootView, layoutParams)
-        binding = rootView.bind()
-        immersive(findViewById(R.id.toolbar))
-        findViewById<View>(R.id.iv_action_back).setOnClickListener { onBack() }
+        (rootView as ViewGroup).addView(rootViewWithoutToolbar, layoutParams)
+        binding = DataBindingUtil.bind(rootViewWithoutToolbar)!!
+        toolbar = findViewById(R.id.toolbar) ?: return
+        toolbarLeft = findViewById(R.id.toolbarLeft) ?: return
+        toolbarRight = findViewById(R.id.toolbarRight) ?: return
+        toolbarTitle = findViewById(R.id.toolbarTitle) ?: return
+        if (this::toolbarLeft.isInitialized) {
+            toolbarLeft.setOnClickListener { onBack(it) }
+        }
         init()
     }
 
-    open fun onBack() {
+    open fun onBack(v: View) {
         finishTransition()
     }
 }

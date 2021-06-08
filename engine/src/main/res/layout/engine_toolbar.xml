@@ -1,31 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="56dp">
-
-        <ImageView
-            android:id="@+id/iv_action_back"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:scaleType="center" />
+        android:layout_height="56dp"
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/toolbarLeft"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            app:drawableLeftCompat="@drawable/ic_toolbar_back"
+            tools:text="返回" />
+
+        <TextView
+            android:id="@+id/toolbarTitle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="8dp"
             android:textSize="16sp"
             android:textStyle="bold"
             tools:text="标题" />
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/toolbarRight"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            tools:drawableRight="@drawable/ic_toolbar_more"
+            tools:text="更多" />
+
+    </LinearLayout>
 
 </LinearLayout>
