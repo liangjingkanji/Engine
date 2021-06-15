@@ -48,7 +48,7 @@ abstract class EngineToolbarActivity<B : ViewDataBinding>(@LayoutRes contentLayo
 
     @SuppressLint("InflateParams")
     override fun setContentView(layoutResId: Int) {
-        rootView = layoutInflater.inflate(R.layout.engine_toolbar, null)
+        rootView = layoutInflater.inflate(R.layout.layout_engine_toolbar, null)
         setContentView(rootView)
         rootViewWithoutToolbar = layoutInflater.inflate(layoutResId, null)
         val layoutParams = ViewGroup.LayoutParams(
