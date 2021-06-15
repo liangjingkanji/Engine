@@ -1,0 +1,41 @@
+site_name: Engine
+site_author: drake
+site_description: Engine document
+copyright: Copyright &copy; 2018 - 2020 劉強東
+
+repo_name: GitHub
+repo_url: https://github.com/liangjingkanji/Engine
+
+extra_css:
+  - css/extra.css
+
+docs_dir: docs
+
+theme:
+  name: material
+  custom_dir: docs/material
+
+  palette:
+    scheme: drake
+    primary: white
+
+  font: false
+
+  language: zh
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed
+
+
+nav:
+  - 引擎索引: index.md
+  - 基类: base.md
+  - 函数文档: api/index.html
