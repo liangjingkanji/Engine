@@ -28,7 +28,7 @@ class MainActivity : EngineToolbarActivity<ActivityMainBinding>(R.layout.activit
 
 
     override fun initView() {
-
+        title = "Engine"
     }
 
     override fun initData() {
