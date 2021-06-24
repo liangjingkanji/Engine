@@ -33,13 +33,13 @@ abstract class EngineToolbarActivity<B : ViewDataBinding>(@LayoutRes contentLayo
     EngineActivity<B>(contentLayoutId) {
 
     lateinit var rootViewWithoutToolbar: View
-    lateinit var toolbar: LinearLayout
-    lateinit var toolbarLeft: TextView
-    lateinit var toolbarRight: TextView
-    lateinit var toolbarTitle: TextView
+    lateinit var actionbar: LinearLayout
+    lateinit var actionLeft: TextView
+    lateinit var actionRight: TextView
+    lateinit var actionTitle: TextView
 
     override fun setTitle(title: CharSequence?) {
-        if (this::toolbarTitle.isInitialized) toolbarTitle.text = title ?: return
+        if (this::actionTitle.isInitialized) actionTitle.text = title ?: return
     }
 
     override fun setTitle(titleId: Int) {
@@ -48,7 +48,7 @@ abstract class EngineToolbarActivity<B : ViewDataBinding>(@LayoutRes contentLayo
 
     @SuppressLint("InflateParams")
     override fun setContentView(layoutResId: Int) {
-        rootView = layoutInflater.inflate(R.layout.layout_engine_toolbar, null)
+        rootView = layoutInflater.inflate(R.layout.activity_engine_toolbar, null)
         setContentView(rootView)
         rootViewWithoutToolbar = layoutInflater.inflate(layoutResId, null)
         val layoutParams = ViewGroup.LayoutParams(
@@ -57,12 +57,12 @@ abstract class EngineToolbarActivity<B : ViewDataBinding>(@LayoutRes contentLayo
         )
         (rootView as ViewGroup).addView(rootViewWithoutToolbar, layoutParams)
         binding = DataBindingUtil.bind(rootViewWithoutToolbar)!!
-        toolbar = findViewById(R.id.toolbar) ?: return
-        toolbarLeft = findViewById(R.id.toolbarLeft) ?: return
-        toolbarRight = findViewById(R.id.toolbarRight) ?: return
-        toolbarTitle = findViewById(R.id.toolbarTitle) ?: return
-        if (this::toolbarLeft.isInitialized) {
-            toolbarLeft.setOnClickListener { onBack(it) }
+        actionbar = findViewById(R.id.actionbar) ?: return
+        actionLeft = findViewById(R.id.actionLeft) ?: return
+        actionRight = findViewById(R.id.actionRight) ?: return
+        actionTitle = findViewById(R.id.actionTitle) ?: return
+        if (this::actionLeft.isInitialized) {
+            actionLeft.setOnClickListener { onBack(it) }
         }
         init()
     }
