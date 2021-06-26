@@ -25,7 +25,6 @@
 
     <!--字体颜色-->
     <color name="textColor">#333333</color>
-    <color name="textDescription">#999999</color>
 
     <!--基本颜色-->
     <color name="white">#FFFFFF</color>

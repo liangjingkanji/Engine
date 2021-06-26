@@ -26,7 +26,6 @@ import com.drake.engine.sample.model.Model
 
 class MainActivity : EngineToolbarActivity<ActivityMainBinding>(R.layout.activity_main) {
 
-
     override fun initView() {
         title = "Engine"
     }

@@ -4,7 +4,7 @@
 
 每个界面都应当继承自`Engine<组件类型>`的抽象类
 
-## 标题栏
+## 基类
 
 例如: EngineActivity 提供最基础的界面
 
@@ -18,7 +18,9 @@ class MainActivity : EngineActivity<ActivityMainBinding>(R.layout.activity_main)
 }
 ```
 
-如果你存在标题栏请使用
+## 标题栏基类
+
+如果你存在标题栏请继承`EngineToolbarActivity`
 
 ```kotlin
 class MainActivity : EngineToolbarActivity<ActivityMainBinding>(R.layout.activity_main) {
@@ -30,16 +32,20 @@ class MainActivity : EngineToolbarActivity<ActivityMainBinding>(R.layout.activit
 }
 ```
 
-假设你要完全自定义标题栏请在自己项目`layout`目录下创建一个名为`layout_engine_toolbar.xml`的布局文件.或者直接继承`EngineActivity`.
+<img src="https://i.imgur.com/5eazKGO.png" width="250"/>
 
-为了不影响EngineToolbarActivity的功能请尽量保持控件Id和engine库下的`layout_engine_toolbar.xml`相同
-
-标题栏使用LinearLayout中包裹三个TextView实现. 具体请打开EngineToolbarActivity的源码查看即可
+标题栏使用ConstraintLayout中包裹三个TextView实现. 具体请打开`layout_engine_toolbar`的源码查看即可
 
 ```kotlin
-lateinit var rootViewWithoutToolbar: View
-lateinit var toolbar: LinearLayout
-lateinit var toolbarLeft: TextView
-lateinit var toolbarRight: TextView
-lateinit var toolbarTitle: TextView
+lateinit var actionbar: LinearLayout
+lateinit var actionLeft: TextView
+lateinit var actionRight: TextView
+lateinit var actionTitle: TextView
 ```
+
+1. 你可以直接使用其视图引用修改标题样式
+2. 复制Engine库中的`layout_engine_toolbar.xml`到项目中修改. 如果不想影响原有视图引用或者左侧图标的点击finish事件建议保持Id相同
+3. 实现EngineToolbarActivity的函数`onCreateToolbar`
+3. 直接继承`EngineActivity`创建自己的Toolbar
+
+> 避免过度封装

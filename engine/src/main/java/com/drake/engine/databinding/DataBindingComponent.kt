@@ -58,6 +58,16 @@ object DataBindingComponent {
     fun View.setView(listener: OnBindListener) {
         listener.onBind(this)
     }
+
+    @JvmStatic
+    @BindingAdapter("paddingStart", "paddingEnd", requireAll = false)
+    fun View.bindPaddingEnd(start: View?, end: View?) {
+        post {
+            val startFinal = (start?.width ?: 0) + paddingStart
+            val endFinal = (end?.width ?: 0) + paddingEnd
+            setPaddingRelative(startFinal, paddingTop, endFinal, paddingBottom)
+        }
+    }
 }
 
 

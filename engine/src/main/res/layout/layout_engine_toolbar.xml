@@ -14,42 +14,57 @@
   ~ limitations under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/actionbar"
-    android:layout_width="match_parent"
-    android:layout_height="56dp"
-    android:orientation="horizontal">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/actionLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:drawablePadding="4dp"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="16dp"
-        app:drawableLeftCompat="@drawable/ic_action_left" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp">
 
-    <TextView
-        android:id="@+id/actionTitle"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="8dp"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        tools:text="标题" />
+        <TextView
+            android:id="@+id/actionLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="8dp"
+            android:singleLine="true"
+            app:drawableLeftCompat="@drawable/ic_action_left"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:drawableStart="@drawable/ic_action_left" />
 
-    <TextView
-        android:id="@+id/actionRight"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:drawablePadding="4dp"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="16dp"
-        tools:drawableRight="@drawable/ic_action_right" />
+        <TextView
+            android:id="@+id/actionTitle"
+            paddingEnd="@{actionRight}"
+            paddingStart="@{actionLeft}"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="8dp"
+            android:singleLine="true"
+            android:textColor="@color/textColor"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:paddingHorizontal="58dp"
+            tools:text="标题" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/actionRight"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:paddingRight="16dp"
+            android:singleLine="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="保存" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
