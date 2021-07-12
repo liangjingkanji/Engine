@@ -47,6 +47,6 @@ abstract class EngineDialog<B : ViewDataBinding>(context: Context, @StyleRes the
     }
 
     protected abstract fun initView()
-    protected abstract fun initData()
+    protected fun initData() {}
     override fun onClick(v: View) {}
 }
