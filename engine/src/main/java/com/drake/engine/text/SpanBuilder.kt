@@ -41,11 +41,15 @@ import java.io.Serializable
 import java.lang.ref.WeakReference
 
 
-fun TextView.createSpan(): SpanUtils {
-    return SpanUtils(this)
+fun TextView.toSpanBuilder(): SpanBuilder {
+    return SpanBuilder(this)
 }
 
-class SpanUtils() {
+fun String.toSpanBuilder(): SpanBuilder {
+    return SpanBuilder().append(this)
+}
+
+class SpanBuilder() {
 
     private var textView: TextView? = null
     private var text: CharSequence? = null
@@ -108,27 +112,17 @@ class SpanUtils() {
     private var regex: String? = null
     private var regexGlobal: String? = null
 
+    @IntDef(ALIGN_BOTTOM, ALIGN_BASELINE, ALIGN_CENTER, ALIGN_TOP)
+    annotation class Align
 
     companion object {
-
         private const val COLOR_DEFAULT = -0x1000001
-
         const val ALIGN_BOTTOM = 0
         const val ALIGN_BASELINE = 1
         const val ALIGN_CENTER = 2
         const val ALIGN_TOP = 3
-
         private val LINE_SEPARATOR = System.getProperty("line.separator")
     }
-
-    @IntDef(
-        ALIGN_BOTTOM,
-        ALIGN_BASELINE,
-        ALIGN_CENTER,
-        ALIGN_TOP
-    )
-    annotation class Align
-
 
     init {
         builder = SerializableSpannableStringBuilder()
@@ -181,14 +175,14 @@ class SpanUtils() {
      *
      * @param flag The flag.
      *
-     *  * [Spanned.SPAN_INCLUSIVE_EXCLUSIVE]
-     *  * [Spanned.SPAN_INCLUSIVE_INCLUSIVE]
-     *  * [Spanned.SPAN_EXCLUSIVE_EXCLUSIVE]
-     *  * [Spanned.SPAN_EXCLUSIVE_INCLUSIVE]
+     * [Spanned.SPAN_INCLUSIVE_EXCLUSIVE]
+     * [Spanned.SPAN_INCLUSIVE_INCLUSIVE]
+     * [Spanned.SPAN_EXCLUSIVE_EXCLUSIVE]
+     * [Spanned.SPAN_EXCLUSIVE_INCLUSIVE]
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setFlag(flag: Int): SpanUtils {
+    fun setFlag(flag: Int): SpanBuilder {
         this.flag = flag
         return this
     }
@@ -199,10 +193,21 @@ class SpanUtils() {
      * Set the span of foreground's color.
      *
      * @param color The color of foreground
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setForegroundColor(@ColorInt color: Int): SpanUtils {
+    fun setForegroundColor(@ColorInt color: Int): SpanBuilder {
         this.foregroundColor = color
+        return this
+    }
+
+    /**
+     * Set the span of foreground's color.
+     *
+     * @param color The color of foreground
+     * @return the single [SpanBuilder] instance
+     */
+    fun setForegroundColorRes(@ColorRes color: Int): SpanBuilder {
+        this.foregroundColor = app.resources.getColor(color)
         return this
     }
 
@@ -210,10 +215,21 @@ class SpanUtils() {
      * Set the span of background's color.
      *
      * @param color The color of background
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setBackgroundColor(@ColorInt color: Int): SpanUtils {
+    fun setBackgroundColor(@ColorInt color: Int): SpanBuilder {
         this.backgroundColor = color
+        return this
+    }
+
+    /**
+     * Set the span of background's color.
+     *
+     * @param color The color of background
+     * @return the single [SpanBuilder] instance
+     */
+    fun setBackgroundColorRes(@ColorRes color: Int): SpanBuilder {
+        this.backgroundColor = app.resources.getColor(color)
         return this
     }
 
@@ -223,17 +239,17 @@ class SpanUtils() {
      * @param lineHeight The line height, in pixel.
      * @param align      The alignment.
      *
-     *  * [Align.ALIGN_TOP]
-     *  * [Align.ALIGN_CENTER]
-     *  * [Align.ALIGN_BOTTOM]
+     * [ALIGN_TOP]
+     * [ALIGN_CENTER]
+     * [ALIGN_BOTTOM]
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
     @JvmOverloads
     fun setLineHeight(
         @IntRange(from = 0) lineHeight: Int,
         @Align align: Int = ALIGN_CENTER
-    ): SpanUtils {
+    ): SpanBuilder {
         this.lineHeight = lineHeight
         this.alignLine = align
         return this
@@ -245,14 +261,14 @@ class SpanUtils() {
      * @param color       The color of quote.
      * @param stripeWidth The width of stripe, in pixel.
      * @param gapWidth    The width of gap, in pixel.
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
     @JvmOverloads
     fun setQuoteColor(
         @ColorInt color: Int,
         @IntRange(from = 1) stripeWidth: Int = 2,
         @IntRange(from = 0) gapWidth: Int = 2
-    ): SpanUtils {
+    ): SpanBuilder {
         this.quoteColor = color
         this.stripeWidth = stripeWidth
         this.quoteGapWidth = gapWidth
@@ -264,12 +280,12 @@ class SpanUtils() {
      *
      * @param first The indent for the first line of the paragraph.
      * @param rest  The indent for the remaining lines of the paragraph.
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
     fun setLeadingMargin(
         @IntRange(from = 0) first: Int,
         @IntRange(from = 0) rest: Int
-    ): SpanUtils {
+    ): SpanBuilder {
         this.first = first
         this.rest = rest
         return this
@@ -279,9 +295,9 @@ class SpanUtils() {
      * Set the span of bullet.
      *
      * @param gapWidth The width of gap, in pixel.
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setBullet(@IntRange(from = 0) gapWidth: Int): SpanUtils {
+    fun setBullet(@IntRange(from = 0) gapWidth: Int): SpanBuilder {
         return setBullet(0, 3, gapWidth)
     }
 
@@ -291,13 +307,13 @@ class SpanUtils() {
      * @param color    The color of bullet.
      * @param radius   The radius of bullet, in pixel.
      * @param gapWidth The width of gap, in pixel.
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
     fun setBullet(
         @ColorInt color: Int,
         @IntRange(from = 0) radius: Int,
         @IntRange(from = 0) gapWidth: Int
-    ): SpanUtils {
+    ): SpanBuilder {
         this.bulletColor = color
         this.bulletRadius = radius
         this.bulletGapWidth = gapWidth
@@ -309,10 +325,10 @@ class SpanUtils() {
      *
      * @param size The size of font.
      * @param isSp True to use sp, false to use pixel.
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
     @JvmOverloads
-    fun setFontSize(@IntRange(from = 0) size: Int, isSp: Boolean = false): SpanUtils {
+    fun setFontSize(@IntRange(from = 0) size: Int, isSp: Boolean = false): SpanBuilder {
         this.fontSize = size
         this.fontSizeIsDp = isSp
         return this
@@ -322,9 +338,9 @@ class SpanUtils() {
      * Set the span of proportion of font.
      *
      * @param proportion The proportion of font.
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setFontProportion(proportion: Float): SpanUtils {
+    fun setFontProportion(proportion: Float): SpanBuilder {
         this.proportion = proportion
         return this
     }
@@ -333,9 +349,9 @@ class SpanUtils() {
      * Set the span of transverse proportion of font.
      *
      * @param proportion The transverse proportion of font.
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setFontXProportion(proportion: Float): SpanUtils {
+    fun setFontXProportion(proportion: Float): SpanBuilder {
         this.xProportion = proportion
         return this
     }
@@ -343,9 +359,9 @@ class SpanUtils() {
     /**
      * Set the span of strikethrough.
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setStrikethrough(): SpanUtils {
+    fun setStrikethrough(): SpanBuilder {
         this.isStrikeThrough = true
         return this
     }
@@ -353,9 +369,9 @@ class SpanUtils() {
     /**
      * Set the span of underline.
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setUnderline(): SpanUtils {
+    fun setUnderline(): SpanBuilder {
         this.isUnderline = true
         return this
     }
@@ -363,9 +379,9 @@ class SpanUtils() {
     /**
      * Set the span of superscript.
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setSuperscript(): SpanUtils {
+    fun setSuperscript(): SpanBuilder {
         this.isSuperscript = true
         return this
     }
@@ -373,9 +389,9 @@ class SpanUtils() {
     /**
      * Set the span of subscript.
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setSubscript(): SpanUtils {
+    fun setSubscript(): SpanBuilder {
         this.isSubscript = true
         return this
     }
@@ -383,9 +399,9 @@ class SpanUtils() {
     /**
      * Set the span of bold.
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setBold(): SpanUtils {
+    fun setBold(): SpanBuilder {
         isBold = true
         return this
     }
@@ -393,9 +409,9 @@ class SpanUtils() {
     /**
      * Set the span of italic.
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setItalic(): SpanUtils {
+    fun setItalic(): SpanBuilder {
         isItalic = true
         return this
     }
@@ -403,9 +419,9 @@ class SpanUtils() {
     /**
      * Set the span of bold italic.
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setBoldItalic(): SpanUtils {
+    fun setBoldItalic(): SpanBuilder {
         isBoldItalic = true
         return this
     }
@@ -415,13 +431,13 @@ class SpanUtils() {
      *
      * @param fontFamily The font family.
      *
-     *  * monospace
-     *  * serif
-     *  * sans-serif
+     * monospace
+     * serif
+     * sans-serif
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setFontFamily(fontFamily: String): SpanUtils {
+    fun setFontFamily(fontFamily: String): SpanBuilder {
         this.fontFamily = fontFamily
         return this
     }
@@ -430,9 +446,9 @@ class SpanUtils() {
      * Set the span of typeface.
      *
      * @param typeface The typeface.
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setTypeface(typeface: Typeface): SpanUtils {
+    fun setTypeface(typeface: Typeface): SpanBuilder {
         this.typeface = typeface
         return this
     }
@@ -442,13 +458,13 @@ class SpanUtils() {
      *
      * @param alignment The alignment.
      *
-     *  * [Alignment.ALIGN_NORMAL]
-     *  * [Alignment.ALIGN_OPPOSITE]
-     *  * [Alignment.ALIGN_CENTER]
+     * [Alignment.ALIGN_NORMAL]
+     * [Alignment.ALIGN_OPPOSITE]
+     * [Alignment.ALIGN_CENTER]
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setHorizontalAlign(alignment: Alignment): SpanUtils {
+    fun setHorizontalAlign(alignment: Alignment): SpanBuilder {
         this.alignment = alignment
         return this
     }
@@ -458,14 +474,14 @@ class SpanUtils() {
      *
      * @param align The alignment.
      *
-     *  * [Align.ALIGN_TOP]
-     *  * [Align.ALIGN_CENTER]
-     *  * [Align.ALIGN_BASELINE]
-     *  * [Align.ALIGN_BOTTOM]
+     * [ALIGN_TOP]
+     * [ALIGN_CENTER]
+     * [ALIGN_BASELINE]
+     * [ALIGN_BOTTOM]
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setVerticalAlign(@Align align: Int): SpanUtils {
+    fun setVerticalAlign(@Align align: Int): SpanBuilder {
         this.verticalAlign = align
         return this
     }
@@ -476,9 +492,9 @@ class SpanUtils() {
      * Must set `view.setMovementMethod(LinkMovementMethod.getInstance())`
      *
      * @param clickSpan The span of click.
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setClickSpan(clickSpan: ClickableSpan): SpanUtils {
+    fun setClickSpan(clickSpan: ClickableSpan): SpanBuilder {
         if (textView != null && textView!!.movementMethod == null) {
             textView!!.movementMethod = LinkMovementMethod.getInstance()
         }
@@ -492,9 +508,9 @@ class SpanUtils() {
      * Must set `view.setMovementMethod(LinkMovementMethod.getInstance())`
      *
      * @param url The url.
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setUrl(url: String): SpanUtils {
+    fun setUrl(url: String): SpanBuilder {
         if (textView != null && textView!!.movementMethod == null) {
             textView!!.movementMethod = LinkMovementMethod.getInstance()
         }
@@ -508,17 +524,17 @@ class SpanUtils() {
      * @param radius The radius of blur.
      * @param style  The style.
      *
-     *  * [Blur.NORMAL]
-     *  * [Blur.SOLID]
-     *  * [Blur.OUTER]
-     *  * [Blur.INNER]
+     * [Blur.NORMAL]
+     * [Blur.SOLID]
+     * [Blur.OUTER]
+     * [Blur.INNER]
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
     fun setBlur(
         @FloatRange(from = 0.0, fromInclusive = false) radius: Float,
         style: Blur
-    ): SpanUtils {
+    ): SpanBuilder {
         this.blurRadius = radius
         this.style = style
         return this
@@ -528,9 +544,9 @@ class SpanUtils() {
      * Set the span of shader.
      *
      * @param shader The shader.
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setShader(shader: Shader): SpanUtils {
+    fun setShader(shader: Shader): SpanBuilder {
         this.shader = shader
         return this
     }
@@ -542,14 +558,14 @@ class SpanUtils() {
      * @param dx          X-axis offset, in pixel.
      * @param dy          Y-axis offset, in pixel.
      * @param shadowColor The color of shadow.
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
     fun setShadow(
         @FloatRange(from = 0.0, fromInclusive = false) radius: Float,
         dx: Float,
         dy: Float,
         shadowColor: Int
-    ): SpanUtils {
+    ): SpanBuilder {
         this.shadowRadius = radius
         this.shadowDx = dx
         this.shadowDy = dy
@@ -562,9 +578,9 @@ class SpanUtils() {
      * Set the spans.
      *
      * @param spans The spans.
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun setSpans(vararg spans: Any): SpanUtils {
+    fun setSpans(vararg spans: Any): SpanBuilder {
         if (spans.isNotEmpty()) {
             this.spans = spans
         }
@@ -580,9 +596,9 @@ class SpanUtils() {
      * Append the text text.
      *
      * @param text The text.
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun append(text: CharSequence): SpanUtils {
+    fun append(text: CharSequence): SpanBuilder {
         apply(typeCharSequence)
         this.text = text
         return this
@@ -591,9 +607,9 @@ class SpanUtils() {
     /**
      * Append one line.
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun appendLine(): SpanUtils {
+    fun appendLine(): SpanBuilder {
         apply(typeCharSequence)
         text = LINE_SEPARATOR
         return this
@@ -602,9 +618,9 @@ class SpanUtils() {
     /**
      * Append text and one line.
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
-    fun appendLine(text: CharSequence): SpanUtils {
+    fun appendLine(text: CharSequence): SpanBuilder {
         apply(typeCharSequence)
         this.text = text.toString() + LINE_SEPARATOR!!
         return this
@@ -616,15 +632,15 @@ class SpanUtils() {
      * @param bitmap The bitmap.
      * @param align  The alignment.
      *
-     *  * [Align.ALIGN_TOP]
-     *  * [Align.ALIGN_CENTER]
-     *  * [Align.ALIGN_BASELINE]
-     *  * [Align.ALIGN_BOTTOM]
+     * [ALIGN_TOP]
+     * [ALIGN_CENTER]
+     * [ALIGN_BASELINE]
+     * [ALIGN_BOTTOM]
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
     @JvmOverloads
-    fun appendImage(bitmap: Bitmap, @Align align: Int = ALIGN_BOTTOM): SpanUtils {
+    fun appendImage(bitmap: Bitmap, @Align align: Int = ALIGN_BOTTOM): SpanBuilder {
         apply(typeImage)
         this.imageBitmap = bitmap
         this.alignImage = align
@@ -637,15 +653,15 @@ class SpanUtils() {
      * @param drawable The drawable of image.
      * @param align    The alignment.
      *
-     *  * [Align.ALIGN_TOP]
-     *  * [Align.ALIGN_CENTER]
-     *  * [Align.ALIGN_BASELINE]
-     *  * [Align.ALIGN_BOTTOM]
+     * [ALIGN_TOP]
+     * [ALIGN_CENTER]
+     * [ALIGN_BASELINE]
+     * [ALIGN_BOTTOM]
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
     @JvmOverloads
-    fun appendImage(drawable: Drawable, @Align align: Int = ALIGN_BOTTOM): SpanUtils {
+    fun appendImage(drawable: Drawable, @Align align: Int = ALIGN_BOTTOM): SpanBuilder {
         apply(typeImage)
         this.imageDrawable = drawable
         this.alignImage = align
@@ -658,15 +674,15 @@ class SpanUtils() {
      * @param uri   The uri of image.
      * @param align The alignment.
      *
-     *  * [Align.ALIGN_TOP]
-     *  * [Align.ALIGN_CENTER]
-     *  * [Align.ALIGN_BASELINE]
-     *  * [Align.ALIGN_BOTTOM]
+     * [ALIGN_TOP]
+     * [ALIGN_CENTER]
+     * [ALIGN_BASELINE]
+     * [ALIGN_BOTTOM]
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
     @JvmOverloads
-    fun appendImage(uri: Uri, @Align align: Int = ALIGN_BOTTOM): SpanUtils {
+    fun appendImage(uri: Uri, @Align align: Int = ALIGN_BOTTOM): SpanBuilder {
         apply(typeImage)
         this.imageUri = uri
         this.alignImage = align
@@ -679,15 +695,15 @@ class SpanUtils() {
      * @param resourceId The resource id of image.
      * @param align      The alignment.
      *
-     *  * [Align.ALIGN_TOP]
-     *  * [Align.ALIGN_CENTER]
-     *  * [Align.ALIGN_BASELINE]
-     *  * [Align.ALIGN_BOTTOM]
+     * [ALIGN_TOP]
+     * [ALIGN_CENTER]
+     * [ALIGN_BASELINE]
+     * [ALIGN_BOTTOM]
      *
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
     @JvmOverloads
-    fun appendImage(@DrawableRes resourceId: Int, @Align align: Int = ALIGN_BOTTOM): SpanUtils {
+    fun appendImage(@DrawableRes resourceId: Int, @Align align: Int = ALIGN_BOTTOM): SpanBuilder {
         apply(typeImage)
         this.imageResourceId = resourceId
         this.alignImage = align
@@ -699,10 +715,13 @@ class SpanUtils() {
      *
      * @param size  The size of space.
      * @param color The color of space.
-     * @return the single [SpanUtils] instance
+     * @return the single [SpanBuilder] instance
      */
     @JvmOverloads
-    fun appendSpace(@IntRange(from = 0) size: Int, @ColorInt color: Int = Color.TRANSPARENT): SpanUtils {
+    fun appendSpace(
+        @IntRange(from = 0) size: Int,
+        @ColorInt color: Int = Color.TRANSPARENT
+    ): SpanBuilder {
         apply(typeSpace)
         spaceSize = size
         spaceColor = color
@@ -740,7 +759,7 @@ class SpanUtils() {
      *
      * @return the span string
      */
-    fun create(): SpannableStringBuilder {
+    fun build(): SpannableStringBuilder {
         applyLast()
         textView?.text = builder
         return builder
@@ -772,11 +791,7 @@ class SpanUtils() {
         builder.append(text)
         val end = builder.length
         if (verticalAlign != -1) {
-            builder.setSpan(
-                VerticalAlignSpan(
-                    verticalAlign
-                ), start, end, flag
-            )
+            builder.setSpan(VerticalAlignSpan(verticalAlign), start, end, flag)
         }
         if (foregroundColor != COLOR_DEFAULT) {
             builder.setSpan(ForegroundColorSpan(foregroundColor), start, end, flag)
@@ -789,11 +804,7 @@ class SpanUtils() {
         }
         if (quoteColor != COLOR_DEFAULT) {
             builder.setSpan(
-                CustomQuoteSpan(
-                    quoteColor,
-                    stripeWidth,
-                    quoteGapWidth
-                ),
+                CustomQuoteSpan(quoteColor, stripeWidth, quoteGapWidth),
                 start,
                 end,
                 flag
@@ -801,11 +812,7 @@ class SpanUtils() {
         }
         if (bulletColor != COLOR_DEFAULT) {
             builder.setSpan(
-                CustomBulletSpan(
-                    bulletColor,
-                    bulletRadius,
-                    bulletGapWidth
-                ),
+                CustomBulletSpan(bulletColor, bulletRadius, bulletGapWidth),
                 start,
                 end,
                 flag
@@ -821,12 +828,7 @@ class SpanUtils() {
             builder.setSpan(ScaleXSpan(xProportion), start, end, flag)
         }
         if (lineHeight != -1) {
-            builder.setSpan(
-                CustomLineHeightSpan(
-                    lineHeight,
-                    alignLine
-                ), start, end, flag
-            )
+            builder.setSpan(CustomLineHeightSpan(lineHeight, alignLine), start, end, flag)
         }
         if (isStrikeThrough) {
             builder.setSpan(StrikethroughSpan(), start, end, flag)
@@ -865,24 +867,14 @@ class SpanUtils() {
             builder.setSpan(URLSpan(url), start, end, flag)
         }
         if (blurRadius != -1f) {
-            builder.setSpan(
-                MaskFilterSpan(BlurMaskFilter(blurRadius, style)),
-                start,
-                end,
-                flag
-            )
+            builder.setSpan(MaskFilterSpan(BlurMaskFilter(blurRadius, style)), start, end, flag)
         }
         if (shader != null) {
             builder.setSpan(ShaderSpan(shader!!), start, end, flag)
         }
         if (shadowRadius != -1f) {
             builder.setSpan(
-                ShadowSpan(
-                    shadowRadius,
-                    shadowDx,
-                    shadowDy,
-                    shadowColor
-                ),
+                ShadowSpan(shadowRadius, shadowDx, shadowDy, shadowColor),
                 start,
                 end,
                 flag
@@ -1013,8 +1005,12 @@ class SpanUtils() {
         LineHeightSpan {
 
         override fun chooseHeight(
-            text: CharSequence, start: Int, end: Int,
-            spanstartv: Int, v: Int, fm: Paint.FontMetricsInt
+            text: CharSequence,
+            start: Int,
+            end: Int,
+            spanstartv: Int,
+            v: Int,
+            fm: Paint.FontMetricsInt
         ) {
             if (sfm == null) {
                 sfm = Paint.FontMetricsInt()
@@ -1065,10 +1061,8 @@ class SpanUtils() {
         }
     }
 
-    internal class SpaceSpan constructor(
-        private val width: Int,
-        color: Int = Color.TRANSPARENT
-    ) : ReplacementSpan() {
+    internal class SpaceSpan constructor(private val width: Int, color: Int = Color.TRANSPARENT) :
+        ReplacementSpan() {
         private val paint = Paint()
 
         init {
@@ -1077,7 +1071,8 @@ class SpanUtils() {
         }
 
         override fun getSize(
-            paint: Paint, text: CharSequence,
+            paint: Paint,
+            text: CharSequence,
             @IntRange(from = 0) start: Int,
             @IntRange(from = 0) end: Int,
             fm: Paint.FontMetricsInt?
@@ -1086,10 +1081,14 @@ class SpanUtils() {
         }
 
         override fun draw(
-            canvas: Canvas, text: CharSequence,
+            canvas: Canvas,
+            text: CharSequence,
             @IntRange(from = 0) start: Int,
             @IntRange(from = 0) end: Int,
-            x: Float, top: Int, y: Int, bottom: Int,
+            x: Float,
+            top: Int,
+            y: Int,
+            bottom: Int,
             paint: Paint
         ) {
             canvas.drawRect(x, top.toFloat(), x + width, bottom.toFloat(), this.paint)
@@ -1107,10 +1106,18 @@ class SpanUtils() {
         }
 
         override fun drawLeadingMargin(
-            c: Canvas, p: Paint, x: Int, dir: Int,
-            top: Int, baseline: Int, bottom: Int,
-            text: CharSequence, start: Int, end: Int,
-            first: Boolean, layout: Layout
+            c: Canvas,
+            p: Paint,
+            x: Int,
+            dir: Int,
+            top: Int,
+            baseline: Int,
+            bottom: Int,
+            text: CharSequence,
+            start: Int,
+            end: Int,
+            first: Boolean,
+            layout: Layout
         ) {
             val style = p.style
             val color = p.color
@@ -1141,14 +1148,22 @@ class SpanUtils() {
         }
 
         override fun drawLeadingMargin(
-            c: Canvas, p: Paint, x: Int, dir: Int,
-            top: Int, baseline: Int, bottom: Int,
-            text: CharSequence, start: Int, end: Int,
-            first: Boolean, l: Layout
+            c: Canvas,
+            p: Paint,
+            x: Int,
+            dir: Int,
+            top: Int,
+            baseline: Int,
+            bottom: Int,
+            text: CharSequence,
+            start: Int,
+            end: Int,
+            first: Boolean,
+            l: Layout
         ) {
             if ((text as Spanned).getSpanStart(this) == start) {
                 val style = p.style
-                var oldColor: Int = p.color
+                val oldColor: Int = p.color
                 p.color = color
                 p.style = Paint.Style.FILL
                 if (c.isHardwareAccelerated) {
@@ -1229,7 +1244,10 @@ class SpanUtils() {
             contentUri = uri
         }
 
-        constructor(@DrawableRes resourceId: Int, verticalAlignment: Int) : super(verticalAlignment) {
+        constructor(
+            @DrawableRes resourceId: Int,
+            verticalAlignment: Int
+        ) : super(verticalAlignment) {
             this.resourceId = resourceId
         }
 
@@ -1245,9 +1263,7 @@ class SpanUtils() {
                         bitmap = BitmapFactory.decodeStream(inputStream)
                         inputStream?.close()
                         BitmapDrawable(app.resources, bitmap).apply {
-                            setBounds(
-                                0, 0, intrinsicWidth, intrinsicHeight
-                                     )
+                            setBounds(0, 0, intrinsicWidth, intrinsicHeight)
                         }
                     } catch (e: Exception) {
                         Log.e("sms", "Failed to loaded content $contentUri", e)
@@ -1327,9 +1343,15 @@ class SpanUtils() {
         }
 
         override fun draw(
-            canvas: Canvas, text: CharSequence,
-            start: Int, end: Int, x: Float,
-            top: Int, y: Int, bottom: Int, paint: Paint
+            canvas: Canvas,
+            text: CharSequence,
+            start: Int,
+            end: Int,
+            x: Float,
+            top: Int,
+            y: Int,
+            bottom: Int,
+            paint: Paint
         ) {
             val d = getCachedDrawable()
             val rect = d!!.bounds
@@ -1375,7 +1397,6 @@ class SpanUtils() {
 
     private class SerializableSpannableStringBuilder : SpannableStringBuilder(), Serializable {
         companion object {
-
             private const val serialVersionUID = 4909567650765875771L
         }
     }
