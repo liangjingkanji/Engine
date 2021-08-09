@@ -29,12 +29,16 @@ import com.drake.engine.R
  */
 class FixedViewPager(context: Context, attrs: AttributeSet? = null) : ViewPager(context, attrs) {
 
-    /** 是否支持划动 属性设置 [app:pager_scrollable] */
+    /** 是否支持划动 */
     var scrollable: Boolean = true
+
+    /** 该属性可以启用高度为wrap_content, ViewPager默认是match_parent */
+    var wrapHeight: Boolean = false
 
     init {
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.FixedViewPager)
         scrollable = attributes.getBoolean(R.styleable.FixedViewPager_pager_scrollable, true)
+        wrapHeight = attributes.getBoolean(R.styleable.FixedViewPager_wrap_height, false)
         attributes.recycle()
     }
 
@@ -58,5 +62,26 @@ class FixedViewPager(context: Context, attrs: AttributeSet? = null) : ViewPager(
             }
         }
         return false
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        if (wrapHeight) {
+            var height = 0
+            for (i in 0 until childCount) {
+                val child = getChildAt(i)
+                child.measure(
+                    widthMeasureSpec,
+                    MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+                )
+                val h = child.measuredHeight
+                if (h > height) height = h
+            }
+            super.onMeasure(
+                widthMeasureSpec,
+                MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
+            )
+        } else {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        }
     }
 }

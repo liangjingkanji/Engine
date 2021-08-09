@@ -79,6 +79,8 @@
     <declare-styleable name="FixedViewPager">
         <!--是否可以滑动切换页面-->
         <attr name="pager_scrollable" format="boolean" />
+        <!--是否高度为wrap_content-->
+        <attr name="wrap_height" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="FilterCheckBox">

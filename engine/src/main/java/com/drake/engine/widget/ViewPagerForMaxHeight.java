@@ -22,9 +22,13 @@ import android.view.View;
 
 import androidx.viewpager.widget.ViewPager;
 
+import kotlin.Deprecated;
+import kotlin.ReplaceWith;
+
 /**
  * 使用最高页面height的ViewPager
  */
+@Deprecated(message = "使用FixedViewPager替代", replaceWith = @ReplaceWith(expression = "FixedViewPager", imports = {"com.drake.engine.widget.FixedViewPager"}))
 public class ViewPagerForMaxHeight extends ViewPager {
     public ViewPagerForMaxHeight(Context context) {
         super(context);
