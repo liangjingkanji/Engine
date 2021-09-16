@@ -41,7 +41,7 @@ abstract class EngineDialog<B : ViewDataBinding>(context: Context, @StyleRes the
             initView()
             initData()
         } catch (e: Exception) {
-            Log.e("日志", "初始化失败")
+            Log.e("Engine", "Initializing failure")
             e.printStackTrace()
         }
     }
