@@ -18,11 +18,14 @@ package com.drake.engine.databinding
 
 import android.annotation.SuppressLint
 import android.graphics.Paint
+import android.text.TextUtils
 import android.webkit.WebView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import java.math.RoundingMode
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 object TextBindingComponent {
 
@@ -66,6 +69,76 @@ object TextBindingComponent {
         numberFormat.roundingMode = RoundingMode.UP
         val format = "¥${numberFormat.format(number / 100.0)}"
         if (format != text.toString()) text = format
+    }
+
+    // </editor-fold>
+
+    // <editor-fold desc="时间">
+
+    @BindingAdapter(value = ["dateMilli", "dateFormat"], requireAll = false)
+    @JvmStatic
+    fun TextView.setDateFromMillis(milli: Long, format: String? = "yyyy-MM-dd") {
+        /**
+         * 格式化毫秒
+         */
+        val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
+        val date = Date(milli)
+        val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
+        val formatText = sf.format(date)
+        if (milli == 0L || formatText == text.toString()) {
+            return
+        }
+        text = formatText
+    }
+
+
+    /**
+     * 根据毫秒值来显示时间
+     */
+    @BindingAdapter(value = ["dateMilli", "dateFormat"], requireAll = false)
+    @JvmStatic
+    fun TextView.setDateFromMillis(milli: String?, format: String? = "yyyy-MM-dd") {
+        var formatText = ""
+        val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
+        val date = Date(java.lang.Long.parseLong(formatText))
+        val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
+        formatText = sf.format(date)
+        if (milli.isNullOrEmpty() || formatText == text.toString()) {
+            return
+        }
+        text = formatText
+    }
+
+    @BindingAdapter(value = ["dateSecond", "dateFormat"], requireAll = false)
+    @JvmStatic
+    fun TextView.setDateFromSecond(second: Long, format: String? = "yyyy-MM-dd") {
+        /**
+         * 格式化毫秒
+         */
+        val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
+        val date = Date(second * 1000)
+        val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
+        val formatText = sf.format(date)
+        if (second == 0L || formatText == text.toString()) {
+            return
+        }
+        text = formatText
+    }
+
+    @BindingAdapter(value = ["dateSecond", "dateFormat"], requireAll = false)
+    @JvmStatic
+    fun TextView.setDateFromSecond(second: String, format: String? = "yyyy-MM-dd") {
+        /**
+         * 格式化毫秒
+         */
+        val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
+        val date = Date(java.lang.Long.parseLong(second) * 1000)
+        val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
+        val formatText = sf.format(date)
+        if (TextUtils.isEmpty(second) || formatText == text.toString()) {
+            return
+        }
+        text = formatText
     }
 
     // </editor-fold>
