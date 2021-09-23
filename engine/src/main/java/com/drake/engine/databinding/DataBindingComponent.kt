@@ -284,43 +284,54 @@ object DataBindingComponent {
 
     // <editor-fold desc="货币">
 
+    /**
+     * 格式化RMB
+     * @param number 货币数量
+     * @param unit 货币种类, 默认为 ¥
+     */
     @SuppressLint("SetTextI18n")
-    @BindingAdapter("rmb")
+    @BindingAdapter("rmb", "rmbUnit", requireAll = false)
     @JvmStatic
-    fun TextView.formatCNY(number: String?) {
-        if (!number.isNullOrEmpty()) {
-            val format = "¥${number.format()}"
+    fun TextView.formatCNY(number: String?, unit: String?) {
+        if (!number.isNullOrEmpty() && text.contentEquals(number)) {
+            val format = "${unit ?: "¥"}${number.format()}"
             if (format != text.toString()) text = format
         }
     }
 
+    /**
+     * 格式化RMB
+     * @param number 货币数量
+     * @param prefix 货币种类, 默认为 ¥
+     * @param roundingMode 货币保留2位小数时的规则, 默认为[java.math.RoundingMode.UP]
+     */
     @SuppressLint("SetTextI18n")
-    @BindingAdapter("rmb")
+    @BindingAdapter("rmb", "rmbUnit", "roundingMode", requireAll = false)
     @JvmStatic
-    fun TextView.formatCNY(number: Double) {
+    fun TextView.formatCNY(number: Double?, prefix: String?, roundingMode: RoundingMode?) {
         val numberFormat = NumberFormat.getInstance()
         numberFormat.minimumFractionDigits = 2
         numberFormat.maximumFractionDigits = 2
-        numberFormat.roundingMode = RoundingMode.UP
-        val format = "¥${numberFormat.format(number ?: 0.0)}"
+        numberFormat.roundingMode = roundingMode ?: RoundingMode.UP
+        val format = "${prefix ?: "¥"}${numberFormat.format(number ?: 0.0)}"
         if (format != text.toString()) text = format
     }
 
     /**
-     * 设置rmb，已经除100
+     * 设置rmb，默认看做 "分" 处理(除以100)
+     * @param number 货币数量
+     * @param prefix 货币种类, 默认为 ¥
+     * @param roundingMode 货币保留2位小数时的规则, 默认为[java.math.RoundingMode.UP]
      */
     @SuppressLint("SetTextI18n")
-    @BindingAdapter("rmb")
+    @BindingAdapter("rmb", "rmbUnit", "roundingMode", requireAll = false)
     @JvmStatic
-    fun TextView.formatCNY(number: Long) {
-        /**
-         * 默认看做 "分" 处理(除以100)
-         */
+    fun TextView.formatCNY(number: Long?, prefix: String?, roundingMode: RoundingMode?) {
         val numberFormat = NumberFormat.getInstance()
         numberFormat.minimumFractionDigits = 2
         numberFormat.maximumFractionDigits = 2
-        numberFormat.roundingMode = RoundingMode.UP
-        val format = "¥${numberFormat.format(number / 100.0)}"
+        numberFormat.roundingMode = roundingMode ?: RoundingMode.UP
+        val format = "${prefix ?: "¥"}${numberFormat.format(number ?: 0 / 100.0)}"
         if (format != text.toString()) text = format
     }
 
