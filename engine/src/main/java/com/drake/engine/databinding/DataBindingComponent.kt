@@ -409,6 +409,42 @@ object DataBindingComponent {
         }
     }
 
+    @BindingAdapter("android:text")
+    @JvmStatic
+    fun TextView.setTextOfNumber(number: Int) {
+        val finalText = number.toString()
+        if (!text.contentEquals(finalText)) {
+            text = finalText
+        }
+    }
+
+    @BindingAdapter("android:text")
+    @JvmStatic
+    fun TextView.setTextOfNumber(number: Long) {
+        val finalText = number.toString()
+        if (!text.contentEquals(finalText)) {
+            text = finalText
+        }
+    }
+
+    @BindingAdapter("android:text")
+    @JvmStatic
+    fun TextView.setTextOfNumber(number: Double) {
+        val finalText = number.toString()
+        if (!text.contentEquals(finalText)) {
+            text = finalText
+        }
+    }
+
+    @BindingAdapter("android:text")
+    @JvmStatic
+    fun TextView.setTextOfNumber(number: Float) {
+        val finalText = number.toString()
+        if (!text.contentEquals(finalText)) {
+            text = finalText
+        }
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="网页">
