@@ -31,6 +31,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import java.io.Serializable
 
 abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: Int = 0) :
     AppCompatActivity(contentLayoutId), OnClickListener {
@@ -38,7 +39,8 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
     lateinit var binding: B
     lateinit var rootView: View
 
-    private var finishBroadcastReceiver: BroadcastReceiver? = null
+    /** 发送给所有界面的广播 */
+    private var activityBroadcastReceiver: BroadcastReceiver? = null
     private val onBackPressInterceptors = ArrayList<() -> Boolean>()
     private var onTouchEvent: (MotionEvent.() -> Boolean)? = null
 
@@ -121,44 +123,42 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
     /**
      * 注册广播
      */
-    private fun registerBroadcast() {
+    protected fun registerBroadcast() {
         val intentFilter = IntentFilter()
-        intentFilter.addAction("activity_event")
-        finishBroadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                val skipActivity = intent.getStringExtra("skip_activity")
-                if (skipActivity != null && this@EngineActivity.javaClass.simpleName == skipActivity) {
-                    return
+        intentFilter.addAction("EngineActivity")
+        if (activityBroadcastReceiver == null) {
+            activityBroadcastReceiver = object : BroadcastReceiver() {
+                override fun onReceive(context: Context, intent: Intent) {
+                    val flag = intent.getSerializableExtra("EngineActivityFlag")
+                    if (flag != null && this@EngineActivity.javaClass == flag) return
+                    finish()
                 }
-                finish()
             }
         }
         LocalBroadcastManager.getInstance(this)
-            .registerReceiver(finishBroadcastReceiver!!, intentFilter)
+            .registerReceiver(activityBroadcastReceiver ?: return, intentFilter)
     }
 
     /**
      * 注销广播
      */
     protected fun unregisterBroadcast() {
-        finishBroadcastReceiver?.let {
+        activityBroadcastReceiver?.let {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(it)
+            activityBroadcastReceiver = null
         }
-        finishBroadcastReceiver = null
     }
 
     companion object {
 
         /**
          * 发送关闭全部界面的广播
-         * @param ignoreActivity 被忽略的界面
+         * @param flag 被忽略的界面
          */
         @JvmOverloads
-        fun finishAll(ignoreActivity: String? = null) {
-            val intent = Intent().setAction("activity_event")
-            ignoreActivity?.let {
-                intent.putExtra("skip_activity", ignoreActivity)
-            }
+        fun finishAll(flag: Serializable? = null) {
+            val intent = Intent().setAction("EngineActivity")
+            flag?.let { intent.putExtra("EngineActivityFlag", flag) }
             LocalBroadcastManager.getInstance(app).sendBroadcast(intent)
         }
     }
