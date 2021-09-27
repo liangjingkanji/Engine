@@ -87,6 +87,7 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
      * 返回键事件
      * @param block 返回值表示是否拦截事件
      */
+    @Deprecated("建议使用onBackPressedDispatcher")
     fun onBackPressed(block: () -> Boolean) {
         onBackPressInterceptors.add(block)
     }
