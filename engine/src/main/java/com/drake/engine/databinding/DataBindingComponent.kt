@@ -20,32 +20,39 @@ package com.drake.engine.databinding
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContextWrapper
-import android.content.res.ColorStateList
 import android.graphics.Paint
 import android.os.Build
+import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.view.View.NO_ID
 import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.databinding.BindingAdapter
-import com.drake.engine.base.app
+import androidx.databinding.BindingMethod
+import androidx.databinding.BindingMethods
 import com.drake.engine.utils.throttleClick
-import com.google.android.material.button.MaterialButton
 import java.math.RoundingMode
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 
+@BindingMethods(
+    BindingMethod(type = View::class, attribute = "android:enabled", method = "enabled"),
+    BindingMethod(type = View::class, attribute = "android:selected", method = "selected"),
+    BindingMethod(type = View::class, attribute = "android:activated", method = "activated"),
+)
 object DataBindingComponent {
 
     //<editor-fold desc="间距">
     @BindingAdapter("paddingStart", "paddingEnd", requireAll = false)
     @JvmStatic
-    fun View.setPaddingRtl(start: View?, end: View?) {
+    fun View.setPaddingHorizontal(start: View?, end: View?) {
         post {
             val startFinal = (start?.width ?: 0) + paddingStart
             val endFinal = (end?.width ?: 0) + paddingEnd
@@ -74,26 +81,13 @@ object DataBindingComponent {
     @BindingAdapter("android:background")
     @JvmStatic
     fun View.setBackgroundRes(drawableId: Int) {
-        if (drawableId != 0 && drawableId != NO_ID) {
-            setBackgroundResource(drawableId)
-        }
+        if (drawableId > NO_ID) setBackgroundResource(drawableId) else background = null
     }
-
-    @BindingAdapter("android:backgroundTint")
-    @JvmStatic
-    fun MaterialButton.setBackgroundTintRes(color: Int) {
-        if (color != 0 && color != NO_ID) {
-            backgroundTintList = ColorStateList(arrayOf(intArrayOf()), intArrayOf(color))
-        }
-    }
-
 
     @BindingAdapter("android:src")
     @JvmStatic
-    fun ImageView.setImageRes(drawableId: Int) {
-        if (drawableId != 0 && drawableId != NO_ID) {
-            setImageResource(drawableId)
-        }
+    fun ImageView.setImageDrawable(@DrawableRes drawableId: Int) {
+        if (drawableId > NO_ID) setImageResource(drawableId) else setImageDrawable(null)
     }
 
     // </editor-fold>
@@ -103,21 +97,12 @@ object DataBindingComponent {
 
     /**
      * 隐藏控件
+     * @param isVisible 当为true则显示[View.VISIBLE], 否则隐藏[View.INVISIBLE]
      */
     @BindingAdapter("invisible")
     @JvmStatic
-    fun View.setInvisible(visibilityVar: Boolean) {
-        visibility = if (visibilityVar) {
-            View.VISIBLE
-        } else {
-            View.INVISIBLE
-        }
-    }
-
-    @BindingAdapter("invisible")
-    @JvmStatic
-    fun View.setInvisible(visibilityVar: Any?) {
-        visibility = if (visibilityVar != null) {
+    fun View.setVisibleOrInvisible(isVisible: Boolean) {
+        visibility = if (isVisible) {
             View.VISIBLE
         } else {
             View.INVISIBLE
@@ -125,22 +110,41 @@ object DataBindingComponent {
     }
 
     /**
-     * 取消控件
+     * 隐藏控件
+     * @param isVisible 当不为null则显示[View.VISIBLE], 否则隐藏[View.INVISIBLE]
+     */
+    @BindingAdapter("invisible")
+    @JvmStatic
+    fun View.setVisibleOrInvisible(isVisible: Any?) {
+        visibility = if (isVisible != null) {
+            View.VISIBLE
+        } else {
+            View.INVISIBLE
+        }
+    }
+
+    /**
+     * 隐藏控件
+     * @param isVisible 当为true则显示[View.VISIBLE], 否则隐藏[View.GONE]
      */
     @BindingAdapter("gone")
     @JvmStatic
-    fun View.setGone(visibilityVar: Boolean) {
-        visibility = if (visibilityVar) {
+    fun View.setVisibleOrGone(isVisible: Boolean) {
+        visibility = if (isVisible) {
             View.VISIBLE
         } else {
             View.GONE
         }
     }
 
+    /**
+     * 隐藏控件
+     * @param isVisible 当不为null则显示[View.VISIBLE], 否则隐藏[View.INVISIBLE]
+     */
     @BindingAdapter("gone")
     @JvmStatic
-    fun View.setGone(visibilityVar: Any?) {
-        visibility = if (visibilityVar != null) {
+    fun View.setVisibleOrGone(isVisible: Any?) {
+        visibility = if (isVisible != null) {
             View.VISIBLE
         } else {
             View.GONE
@@ -155,14 +159,15 @@ object DataBindingComponent {
 
     @BindingAdapter("android:elevation")
     @JvmStatic
-    fun View.setElevationOf(dp: Int) {
-        ViewCompat.setElevation(this, (dp * app.resources.displayMetrics.density).toInt().toFloat())
+    fun View.setElevation(dp: Int) {
+        ViewCompat.setElevation(this, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics))
     }
 
     @BindingAdapter("android:elevation")
     @JvmStatic
-    fun CardView.setElevationOf(dp: Int) {
-        cardElevation = dp.toFloat()
+    fun CardView.setElevation(dp: Int) {
+        Log.d("日志", "(DataBindingComponent.kt:170) -> setElevation    ")
+        cardElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics)
     }
 
     // </editor-fold>
@@ -171,39 +176,19 @@ object DataBindingComponent {
 
     @BindingAdapter("android:enabled")
     @JvmStatic
-    fun View.setEnableBind(enable: Boolean) {
-        isEnabled = enable
-    }
-
-    @BindingAdapter("android:enabled")
-    @JvmStatic
-    fun View.setEnableBind(enable: Any?) {
+    fun View.setEnabled(enable: Any?) {
         isEnabled = enable != null
     }
 
     @BindingAdapter("selected")
     @JvmStatic
-    fun View.setSelectedBind(selected: Boolean) {
-        isSelected = selected
-    }
-
-    @BindingAdapter("selected")
-    @JvmStatic
-    fun View.setSelectedBind(selected: Any?) {
+    fun View.setSelected(selected: Any?) {
         isSelected = selected != null
     }
 
-
     @BindingAdapter("activated")
     @JvmStatic
-    fun View.setActivatedBind(activated: Boolean) {
-        isActivated = activated
-    }
-
-
-    @BindingAdapter("activated")
-    @JvmStatic
-    fun View.setActivatedBind(activated: Any?) {
+    fun View.setActivated(activated: Any?) {
         isActivated = activated != null
     }
 
