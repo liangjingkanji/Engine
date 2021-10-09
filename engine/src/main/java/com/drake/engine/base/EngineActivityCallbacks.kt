@@ -27,14 +27,14 @@ class EngineActivityCallbacks : Application.ActivityLifecycleCallbacks {
     var currentActivityWeak: WeakReference<AppCompatActivity>? = null
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-        val currentActivity = activity as? AppCompatActivity ?: return
-        currentActivityWeak = WeakReference(currentActivity)
     }
 
     override fun onActivityStarted(activity: Activity) {
     }
 
     override fun onActivityResumed(activity: Activity) {
+        val currentActivity = activity as? AppCompatActivity ?: return
+        currentActivityWeak = WeakReference(currentActivity)
     }
 
     override fun onActivityPaused(activity: Activity) {
