@@ -32,7 +32,7 @@ class MainActivity : EngineToolbarActivity<ActivityMainBinding>(R.layout.activit
 }
 ```
 
-<img src="https://i.imgur.com/5eazKGO.png" width="250"/>
+<img src="https://i.loli.net/2021/10/10/SG5KjaJe2o8MOX6.png" width="250"/>
 
 标题栏使用ConstraintLayout中包裹三个TextView实现. 具体请打开`layout_engine_toolbar`的源码查看即可
 
