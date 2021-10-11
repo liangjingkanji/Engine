@@ -71,15 +71,15 @@ dependencies {
     testImplementation "junit:junit:4.13.2"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    implementation "androidx.appcompat:appcompat:1.3.0"
-    implementation "androidx.core:core-ktx:1.5.0"
-    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+    implementation "androidx.appcompat:appcompat:1.3.1"
+    implementation "androidx.core:core-ktx:1.6.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.1"
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
     implementation "androidx.cardview:cardview:1.0.0"
-    implementation "com.google.android.material:material:1.3.0"
-    api 'androidx.viewpager2:viewpager2:1.1.0-alpha01'
+    implementation "com.google.android.material:material:1.4.0"
+    api 'androidx.viewpager2:viewpager2:1.0.0'
 
-    api 'com.github.liangjingkanji:StatusBar:1.1.1' // 透明状态栏
+    api 'com.github.liangjingkanji:StatusBar:2.0.1' // 透明状态栏
 
     compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"

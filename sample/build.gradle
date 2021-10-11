@@ -50,17 +50,17 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     testImplementation "junit:junit:4.13.2"
-    androidTestImplementation "androidx.test:runner:1.3.0"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
+    androidTestImplementation "androidx.test:runner:1.4.0"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
-    implementation "androidx.appcompat:appcompat:1.3.0"
-    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+    implementation "androidx.appcompat:appcompat:1.3.1"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.1"
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
     implementation "androidx.cardview:cardview:1.0.0"
-    implementation "com.google.android.material:material:1.3.0"
-    implementation "androidx.core:core-ktx:1.5.0"
+    implementation "com.google.android.material:material:1.4.0"
+    implementation "androidx.core:core-ktx:1.6.0"
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
     implementation project(path: ":engine")
@@ -71,11 +71,11 @@ dependencies {
     // ---
 
     // ==================================我的其他库==================================
-    implementation 'com.github.liangjingkanji:Net:3.0.18' // 网络请求.异步任务
+    implementation 'com.github.liangjingkanji:Net:3.0.24' // 网络请求.异步任务
     implementation "com.squareup.okhttp3:okhttp:4.9.1"
-    implementation 'com.github.liangjingkanji:BRV:1.3.29' // 列表
+    implementation 'com.github.liangjingkanji:BRV:1.3.36' // 列表
     implementation 'com.github.liangjingkanji:debugkit:1.2.11' // 调试工具
-    implementation 'com.github.liangjingkanji:Serialize:1.2.0' // 序列化数据存储
+    implementation 'com.github.liangjingkanji:Serialize:1.2.2' // 序列化数据存储
     implementation 'com.github.liangjingkanji:Channel:1.1.4' // 事件分发
     implementation 'com.github.liangjingkanji:Tooltip:1.1.3' // 吐司
     implementation 'com.github.liangjingkanji:FlycoTabLayout:2.0.3' // 标签栏
