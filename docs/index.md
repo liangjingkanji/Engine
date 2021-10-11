@@ -10,7 +10,7 @@
 
 | 基类 | 描述 |
 |-|-|
-| Engine.kt | 当前Activity, 当前Applicaiton |
+| Engine.kt | 当前Activity, 当前Application |
 | EngineActivity | Activity |
 | EngineSwipeActivity | 可侧滑返回的Activity |
 | EngineToolbarActivity | 拥有工具栏的Activity |
@@ -53,6 +53,7 @@
 | FilterCheckBox | 过滤是否可选的CheckBox |
 | FilterSeekBar | 过滤是否可滑动进度条SeekBar |
 | VerificationCodeEditText | 验证码输入框 |
+| FloatMenu | 浮动菜单 |
 
 ## 独立依赖
 Engine库中使用的独立依赖存在于Demo中名为sample的Module的`build.gradle`下

@@ -47,4 +47,25 @@
         <item name="android:layout_marginBottom">1dp</item>
     </style>
 
+    <!--FloatMenu显示隐藏动画-->
+    <style name="Animation_top_left">
+        <item name="android:windowEnterAnimation">@anim/float_menu_open_top_left</item>
+        <item name="android:windowExitAnimation">@anim/float_menu_close_top_left</item>
+    </style>
+
+    <style name="Animation_bottom_left">
+        <item name="android:windowEnterAnimation">@anim/float_menu_open_bottom_left</item>
+        <item name="android:windowExitAnimation">@anim/float_menu_close_bottom_left</item>
+    </style>
+
+    <style name="Animation_bottom_right">
+        <item name="android:windowEnterAnimation">@anim/float_menu_open_bottom_right</item>
+        <item name="android:windowExitAnimation">@anim/float_menu_close_bottom_right</item>
+    </style>
+
+    <style name="Animation_top_right">
+        <item name="android:windowEnterAnimation">@anim/float_menu_open_top_right</item>
+        <item name="android:windowExitAnimation">@anim/float_menu_close_top_right</item>
+    </style>
+
 </resources>
