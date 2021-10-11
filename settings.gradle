@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-include ':sample', ':engine'
+include ':app', ':engine'
