@@ -324,12 +324,18 @@ object DataBindingComponent {
 
     // <editor-fold desc="时间">
 
+    /**
+     * 根据时间产生格式化字符串
+     * @param milli 指定时间, 单位毫秒, 如果小于0将设置为空字符串
+     * @param format 格式化文本
+     */
     @BindingAdapter(value = ["dateMilli", "dateFormat"], requireAll = false)
     @JvmStatic
     fun TextView.setDateFromMillis(milli: Long, format: String? = "yyyy-MM-dd") {
-        /**
-         * 格式化毫秒
-         */
+        if (milli < 0) {
+            text = ""
+            return
+        }
         val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
         val date = Date(milli)
         val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
@@ -340,13 +346,19 @@ object DataBindingComponent {
 
 
     /**
-     * 根据毫秒值来显示时间
+     * 根据时间产生格式化字符串
+     * @param milli 指定时间, 单位毫秒, 如果小于0将设置为空字符串
+     * @param format 格式化文本
      */
     @BindingAdapter(value = ["dateMilli", "dateFormat"], requireAll = false)
     @JvmStatic
     fun TextView.setDateFromMillis(milli: String?, format: String? = "yyyy-MM-dd") {
         val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
         val finalMilli = milli?.toLongOrNull() ?: return
+        if (finalMilli < 0 || milli.isNullOrBlank()) {
+            text = ""
+            return
+        }
         val date = Date(finalMilli)
         val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
         val formatText = sf.format(date)
@@ -355,11 +367,17 @@ object DataBindingComponent {
     }
 
     /**
-     * 格式化毫秒
+     * 根据时间产生格式化字符串
+     * @param second 指定时间, 单位秒, 如果小于0将设置为空字符串
+     * @param format 格式化文本
      */
     @BindingAdapter(value = ["dateSecond", "dateFormat"], requireAll = false)
     @JvmStatic
     fun TextView.setDateFromSecond(second: Long, format: String? = "yyyy-MM-dd") {
+        if (second < 0) {
+            text = ""
+            return
+        }
         val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
         val date = Date(second * 1000)
         val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
@@ -369,13 +387,19 @@ object DataBindingComponent {
     }
 
     /**
-     * 格式化毫秒
+     * 根据时间产生格式化字符串
+     * @param second 指定时间, 单位秒, 如果小于0将设置为空字符串
+     * @param format 格式化文本
      */
     @BindingAdapter(value = ["dateSecond", "dateFormat"], requireAll = false)
     @JvmStatic
-    fun TextView.setDateFromSecond(second: String, format: String? = "yyyy-MM-dd") {
+    fun TextView.setDateFromSecond(second: String?, format: String? = "yyyy-MM-dd") {
         val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
-        val finalSecond = second.toLongOrNull() ?: return
+        val finalSecond = second?.toLongOrNull() ?: return
+        if (finalSecond < 0 || second.isNullOrBlank()) {
+            text = ""
+            return
+        }
         val date = Date(finalSecond * 1000)
         val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
         val formatText = sf.format(date)
