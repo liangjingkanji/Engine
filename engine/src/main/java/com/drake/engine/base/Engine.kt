@@ -24,7 +24,11 @@ import androidx.appcompat.app.AppCompatActivity
 lateinit var app: Application
 
 object Engine {
-    val currentActivity: AppCompatActivity? get() = activityCallbacks.currentActivityWeak?.get()
+    @JvmStatic
+    val currentActivity: AppCompatActivity?
+        get() = activityCallbacks.currentActivityWeak?.get()
+
+    @JvmStatic
     var activityCallbacks: EngineActivityCallbacks = EngineActivityCallbacks()
 }
 

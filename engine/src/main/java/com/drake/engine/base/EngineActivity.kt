@@ -156,6 +156,7 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
          * 发送关闭全部界面的广播
          * @param flag 被忽略的界面
          */
+        @JvmStatic
         @JvmOverloads
         fun finishAll(flag: Serializable? = null) {
             val intent = Intent().setAction("EngineActivity")
