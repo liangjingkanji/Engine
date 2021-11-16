@@ -23,6 +23,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 
@@ -86,6 +87,10 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
             if (it.invoke()) return
         }
         super.onBackPressed()
+    }
+
+    fun requireActivity(): AppCompatActivity {
+        return this
     }
 
     // </editor-fold>
