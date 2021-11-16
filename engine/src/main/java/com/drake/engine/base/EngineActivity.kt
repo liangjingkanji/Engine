@@ -16,10 +16,6 @@
 
 package com.drake.engine.base
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.util.Log
@@ -27,20 +23,15 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import java.io.Serializable
 
 abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: Int = 0) :
-    AppCompatActivity(contentLayoutId), OnClickListener {
+    FinishBroadcastActivity(contentLayoutId), OnClickListener {
 
     lateinit var binding: B
     lateinit var rootView: View
 
-    /** 发送给所有界面的广播 */
-    private var activityBroadcastReceiver: BroadcastReceiver? = null
     private val onBackPressInterceptors = ArrayList<() -> Boolean>()
     private var onTouchEvent: (MotionEvent.() -> Boolean)? = null
 
@@ -52,8 +43,6 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
     }
 
     open fun init() {
-        registerBroadcast()
-
         try {
             initView()
             initData()
@@ -99,11 +88,6 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
         super.onBackPressed()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterBroadcast()
-    }
-
     // </editor-fold>
 
 
@@ -117,51 +101,6 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
             finishAfterTransition()
         } else {
             super.finish()
-        }
-    }
-
-
-    /**
-     * 注册广播
-     */
-    protected fun registerBroadcast() {
-        val intentFilter = IntentFilter()
-        intentFilter.addAction("EngineActivity")
-        if (activityBroadcastReceiver == null) {
-            activityBroadcastReceiver = object : BroadcastReceiver() {
-                override fun onReceive(context: Context, intent: Intent) {
-                    val flag = intent.getSerializableExtra("EngineActivityFlag")
-                    if (flag != null && this@EngineActivity.javaClass == flag) return
-                    finish()
-                }
-            }
-        }
-        LocalBroadcastManager.getInstance(this)
-            .registerReceiver(activityBroadcastReceiver ?: return, intentFilter)
-    }
-
-    /**
-     * 注销广播
-     */
-    protected fun unregisterBroadcast() {
-        activityBroadcastReceiver?.let {
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(it)
-            activityBroadcastReceiver = null
-        }
-    }
-
-    companion object {
-
-        /**
-         * 发送关闭全部界面的广播
-         * @param flag 被忽略的界面
-         */
-        @JvmStatic
-        @JvmOverloads
-        fun finishAll(flag: Serializable? = null) {
-            val intent = Intent().setAction("EngineActivity")
-            flag?.let { intent.putExtra("EngineActivityFlag", flag) }
-            LocalBroadcastManager.getInstance(app).sendBroadcast(intent)
         }
     }
 
