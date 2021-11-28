@@ -22,7 +22,6 @@ import android.app.Activity
 import android.content.ContextWrapper
 import android.graphics.Paint
 import android.os.Build
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.View.NO_ID
@@ -166,7 +165,6 @@ object DataBindingComponent {
     @BindingAdapter("android:elevation")
     @JvmStatic
     fun CardView.setElevation(dp: Int) {
-        Log.d("日志", "(DataBindingComponent.kt:170) -> setElevation    ")
         cardElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics)
     }
 
