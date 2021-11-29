@@ -24,11 +24,8 @@ import android.graphics.BlurMaskFilter.Blur
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.text.Layout
+import android.text.*
 import android.text.Layout.Alignment
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.*
 import android.util.Log
@@ -36,6 +33,7 @@ import android.widget.TextView
 import androidx.annotation.*
 import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
+import androidx.core.text.set
 import com.drake.engine.base.app
 import java.io.Serializable
 import java.lang.ref.WeakReference
@@ -47,6 +45,65 @@ fun TextView.toSpanBuilder(): SpanBuilder {
 
 fun String.toSpanBuilder(): SpanBuilder {
     return SpanBuilder().append(this)
+}
+
+/**
+ * 使用正则替换Span
+ * @param span 每次匹配到字符串都会调用此函数, 返回一个指定的Span对象
+ */
+fun CharSequence.replaceSpan(regex: String, span: (MatchResult) -> Any?): SpannableString {
+    return replaceSpan(regex.toRegex(), span)
+}
+
+/**
+ * 使用正则替换Span
+ * @param span 每次匹配到字符串都会调用此函数, 返回一个指定的Span对象, 返回null表示无效
+ */
+fun CharSequence.replaceSpan(regex: Regex, span: (MatchResult) -> Any?): SpannableString {
+    val spannable = SpannableString(this)
+    regex.findAll(this).forEach {
+        val range = it.range
+        spannable[range.first, range.last + 1] = span(it) ?: return@forEach
+    }
+    return spannable
+}
+
+/**
+ * 使用正则替换Span, 并且支持同时替换字符串
+ * @param replacement 替换字符串
+ * @param span 每次匹配到字符串都会调用此函数, 返回一个指定的Span对象, 返回null表示无效
+ */
+fun CharSequence.replaceSpan(regex: String, replacement: CharSequence, span: (MatchResult) -> Any?): SpannableString {
+    return replaceSpan(regex.toRegex(), replacement, span)
+}
+
+/**
+ * 使用正则替换Span, 并且支持同时替换字符串
+ * @param replacement 替换字符串
+ * @param span 每次匹配到字符串都会调用此函数, 返回一个指定的Span对象
+ */
+fun CharSequence.replaceSpan(regex: Regex, replacement: CharSequence, span: (MatchResult) -> Any?): SpannableString {
+    val ranges = mutableListOf<kotlin.ranges.IntRange>()
+    val matchResults = mutableListOf<MatchResult>()
+    var offset = 0
+    val replacementString = regex.replace(this) {
+        var adjustReplacement = replacement
+        it.destructured.toList().forEachIndexed { index, s ->
+            adjustReplacement = adjustReplacement.replace("\\$$index".toRegex(), s)
+        }
+        val matchLength = it.value.length
+        val replacementLength = adjustReplacement.length
+        val replaceRange = IntRange(it.range.first + offset, it.range.first + offset + replacementLength)
+        ranges.add(replaceRange)
+        offset += replacementLength - matchLength
+        matchResults.add(it)
+        adjustReplacement
+    }
+    val spannable = SpannableString(replacementString)
+    ranges.forEachIndexed { index, intRange ->
+        spannable[intRange.first, intRange.last] = span(matchResults[index]) ?: return@forEachIndexed
+    }
+    return spannable
 }
 
 class SpanBuilder() {
@@ -107,10 +164,6 @@ class SpanBuilder() {
     private val typeCharSequence = 0
     private val typeImage = 1
     private val typeSpace = 2
-
-
-    private var regex: String? = null
-    private var regexGlobal: String? = null
 
     @IntDef(ALIGN_BOTTOM, ALIGN_BASELINE, ALIGN_CENTER, ALIGN_TOP)
     annotation class Align
@@ -590,7 +643,7 @@ class SpanBuilder() {
     // </editor-fold>
 
 
-    // <editor-fold desc="append">
+    // <editor-fold desc="Append">
 
     /**
      * Append the text text.
@@ -728,25 +781,6 @@ class SpanBuilder() {
         return this
     }
 
-
-    /**
-     * 添加全局匹配规则样式
-     *
-     * @param regex String
-     */
-    fun appendRegexGlobal(regex: String) {
-        this.regexGlobal = regex
-    }
-
-    /**
-     * 应用正则到当前跨度文本
-     *
-     * @param regex String
-     */
-    fun appendRegex(regex: String) {
-        this.regex = regex
-    }
-
     // </editor-fold>
 
     fun get(): SpannableStringBuilder {
@@ -780,10 +814,10 @@ class SpanBuilder() {
     }
 
     private fun updateCharCharSequence() {
-        if (text!!.isEmpty()) return
+        if (text.isNullOrEmpty()) return
         var start = builder.length
-        if (start == 0 && lineHeight != -1) {// bug of LineHeightSpan when first line
-            builder.append(Character.toString(2.toChar()))
+        if (start == 0 && lineHeight != -1) { // bug of LineHeightSpan when first line
+            builder.append(2.toChar())
                 .append("\n")
                 .setSpan(AbsoluteSizeSpan(0), 0, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             start = 2
@@ -803,20 +837,10 @@ class SpanBuilder() {
             builder.setSpan(LeadingMarginSpan.Standard(first, rest), start, end, flag)
         }
         if (quoteColor != COLOR_DEFAULT) {
-            builder.setSpan(
-                CustomQuoteSpan(quoteColor, stripeWidth, quoteGapWidth),
-                start,
-                end,
-                flag
-            )
+            builder.setSpan(CustomQuoteSpan(quoteColor, stripeWidth, quoteGapWidth), start, end, flag)
         }
         if (bulletColor != COLOR_DEFAULT) {
-            builder.setSpan(
-                CustomBulletSpan(bulletColor, bulletRadius, bulletGapWidth),
-                start,
-                end,
-                flag
-            )
+            builder.setSpan(CustomBulletSpan(bulletColor, bulletRadius, bulletGapWidth), start, end, flag)
         }
         if (fontSize != -1) {
             builder.setSpan(AbsoluteSizeSpan(fontSize, fontSizeIsDp), start, end, flag)
@@ -873,12 +897,7 @@ class SpanBuilder() {
             builder.setSpan(ShaderSpan(shader!!), start, end, flag)
         }
         if (shadowRadius != -1f) {
-            builder.setSpan(
-                ShadowSpan(shadowRadius, shadowDx, shadowDy, shadowColor),
-                start,
-                end,
-                flag
-            )
+            builder.setSpan(ShadowSpan(shadowRadius, shadowDx, shadowDy, shadowColor), start, end, flag)
         }
         if (spans != null) {
             for (span in spans!!) {
