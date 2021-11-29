@@ -24,11 +24,8 @@ import android.graphics.BlurMaskFilter.Blur
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.text.Layout
+import android.text.*
 import android.text.Layout.Alignment
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.*
 import android.util.Log
@@ -36,6 +33,7 @@ import android.widget.TextView
 import androidx.annotation.*
 import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
+import androidx.core.text.set
 import com.drake.engine.base.app
 import java.io.Serializable
 import java.lang.ref.WeakReference
@@ -47,6 +45,186 @@ fun TextView.toSpanBuilder(): SpanBuilder {
 
 fun String.toSpanBuilder(): SpanBuilder {
     return SpanBuilder().append(this)
+}
+
+/**
+ * 设置Span文字效果
+ */
+fun CharSequence.setSpan(what: Any?): CharSequence {
+    val str = when (this) {
+        is Spannable -> this
+        else -> SpannableString(this)
+    }
+    return str.apply { setSpan(what, 0, length, Spanned.SPAN_INCLUSIVE_INCLUSIVE) }
+}
+
+/**
+ * 替换匹配的字符串
+ *
+ * @param oldValue 被替换的字符串
+ * @param ignoreCase 忽略大小写
+ * @param replacement 每次匹配到字符串都会调用此函数
+ * 1. 如果返回null则表示不执行任何操作
+ * 2. 返回单个Span则应用效果, 当然返回Span集合或数组就会应用多个效果,
+ * 3. 返回[android.text.Spanned]可以替换字符串同时添加Span效果.
+ * 4. 返回[kotlin.CharSequence]则仅仅是替换字符串.
+ * 5. 并且本函数支持反向引用捕获组, 使用方法等同于RegEx: $捕获组索引
+ * 6. 和[replace]函数不同的时本函数会保留原有[android.text.Spanned]的效果
+ *
+ * @return 如果没有匹配任何项会返回原来的[CharSequence]
+ */
+fun CharSequence.replaceSpan(oldValue: String, ignoreCase: Boolean = false, replacement: (MatchResult) -> Any?): CharSequence {
+    val regex = if (ignoreCase) {
+        Regex.escape(oldValue).toRegex(RegexOption.IGNORE_CASE)
+    } else {
+        Regex.escape(oldValue).toRegex()
+    }
+    return replaceSpan(regex, replacement = replacement)
+}
+
+/**
+ * 使用正则替换匹配字符串
+ *
+ * @param regex 正则
+ * @param quoteGroup 是否允许反向引用捕获组
+ * @param replacement 每次匹配到字符串都会调用此函数
+ * 1. 如果返回null则表示不执行任何操作
+ * 2. 返回单个Span则应用效果, 当然返回Span集合或数组就会应用多个效果,
+ * 3. 返回[android.text.Spanned]可以替换字符串同时添加Span效果.
+ * 4. 返回[kotlin.CharSequence]则仅仅是替换字符串.
+ * 5. 并且本函数支持反向引用捕获组, 使用方法等同于RegEx: $捕获组索引
+ * 6. 和[replace]函数不同的时本函数会保留原有[android.text.Spanned]的效果
+ *
+ * @return 如果没有匹配任何项会返回原来的[CharSequence]
+ */
+fun CharSequence.replaceSpan(regex: Regex, quoteGroup: Boolean = false, replacement: (MatchResult) -> Any?): CharSequence {
+    val spanBuilder = SpannableStringBuilder(this)
+    var offset = 0
+    regex.findAll(this).forEach { matchResult ->
+        val range = matchResult.range
+        replacement(matchResult)?.let { spanned ->
+            when (spanned) {
+                is List<*> -> for (item in spanned) {
+                    spanBuilder[range.first, range.last + 1] = item ?: continue
+                }
+                is Array<*> -> for (item in spanned) {
+                    spanBuilder[range.first, range.last + 1] = item ?: continue
+                }
+                is CharSequence -> {
+                    var adjustReplacement: CharSequence = spanned
+                    val groups = matchResult.destructured.toList()
+                    if (quoteGroup && groups.isNotEmpty()) {
+                        val attachedSpans = if (spanned is Spanned) {
+                            spanned.getSpans(0, spanned.length, Any::class.java)
+                        } else null
+                        groups.forEachIndexed { index, s ->
+                            val groupRegex = "\\$$index".toRegex()
+                            if (adjustReplacement.contains(groupRegex)) {
+                                adjustReplacement = adjustReplacement.replace(groupRegex, s)
+                            }
+                        }
+                        if (attachedSpans != null && adjustReplacement !== spanned) {
+                            attachedSpans.forEach {
+                                if (adjustReplacement is Spannable) {
+                                    adjustReplacement.setSpan(it)
+                                } else {
+                                    adjustReplacement = SpannableString(adjustReplacement).apply { setSpan(it) }
+                                }
+                            }
+                        }
+                    }
+                    val matchLength = matchResult.value.length
+                    spanBuilder.replace(range.first + offset, range.first + offset + matchLength, adjustReplacement)
+                    offset += adjustReplacement.length - matchLength
+                }
+                else -> spanBuilder[range.first, range.last + 1] = spanned
+            }
+        }
+    }
+    return spanBuilder
+}
+
+/**
+ * 替换匹配的字符串
+ *
+ * @param oldValue 被替换的字符串
+ * @param ignoreCase 忽略大小写
+ * @param replacement 每次匹配到字符串都会调用此函数
+ * 1. 如果返回null则表示不执行任何操作
+ * 2. 返回单个Span则应用效果, 当然返回Span集合或数组就会应用多个效果,
+ * 3. 返回[android.text.Spanned]可以替换字符串同时添加Span效果.
+ * 4. 返回[kotlin.CharSequence]则仅仅是替换字符串.
+ * 5. 并且本函数支持反向引用捕获组, 使用方法等同于RegEx: $捕获组索引
+ * 6. 和[replace]函数不同的时本函数会保留原有[android.text.Spanned]的效果
+ *
+ * @return 如果没有匹配任何项会返回原来的[CharSequence]
+ */
+fun CharSequence.replaceSpanFirst(oldValue: String, ignoreCase: Boolean = false, replacement: (MatchResult) -> Any?): CharSequence {
+    val regex = if (ignoreCase) {
+        Regex.escape(oldValue).toRegex(RegexOption.IGNORE_CASE)
+    } else {
+        Regex.escape(oldValue).toRegex()
+    }
+    return replaceSpanFirst(regex, replacement = replacement)
+}
+
+/**
+ * 使用正则替换第一个匹配字符串
+ *
+ * @param regex 正则
+ * @param quoteGroup 是否允许反向引用捕获组
+ * @param replacement 每次匹配到字符串都会调用此函数
+ * 1. 如果返回null则表示不执行任何操作
+ * 2. 返回单个Span则应用效果, 当然返回Span集合或数组就会应用多个效果,
+ * 3. 返回[android.text.Spanned]可以替换字符串同时添加Span效果.
+ * 4. 返回[kotlin.CharSequence]则仅仅是替换字符串.
+ * 5. 并且本函数支持反向引用捕获组, 使用方法等同于RegEx: $捕获组索引
+ * 6. 和[replace]函数不同的时本函数会保留原有[android.text.Spanned]的效果
+ *
+ * @return 如果没有匹配任何项会返回原来的[CharSequence]
+ */
+fun CharSequence.replaceSpanFirst(regex: Regex, quoteGroup: Boolean = false, replacement: (MatchResult) -> Any?): CharSequence {
+    val matchResult = regex.find(this) ?: return this
+    val spanBuilder = SpannableStringBuilder(this)
+    val range = matchResult.range
+    replacement(matchResult)?.let { spanned ->
+        when (spanned) {
+            is List<*> -> for (item in spanned) {
+                spanBuilder[range.first, range.last + 1] = item ?: continue
+            }
+            is Array<*> -> for (item in spanned) {
+                spanBuilder[range.first, range.last + 1] = item ?: continue
+            }
+            is CharSequence -> {
+                var adjustReplacement: CharSequence = spanned
+                val groups = matchResult.destructured.toList()
+                if (quoteGroup && groups.isNotEmpty()) {
+                    val attachedSpans = if (spanned is Spanned) {
+                        spanned.getSpans(0, spanned.length, Any::class.java)
+                    } else null
+                    groups.forEachIndexed { index, s ->
+                        val groupRegex = "\\$$index".toRegex()
+                        if (adjustReplacement.contains(groupRegex)) {
+                            adjustReplacement = adjustReplacement.replace(groupRegex, s)
+                        }
+                    }
+                    if (attachedSpans != null && adjustReplacement !== spanned) {
+                        attachedSpans.forEach {
+                            if (adjustReplacement is Spannable) {
+                                adjustReplacement.setSpan(it)
+                            } else {
+                                adjustReplacement = SpannableString(adjustReplacement).apply { setSpan(it) }
+                            }
+                        }
+                    }
+                }
+                val matchLength = matchResult.value.length
+                spanBuilder.replace(range.first, range.first + matchLength, adjustReplacement)
+            }
+            else -> spanBuilder[range.first, range.last + 1] = spanned
+        }
+    }
+    return spanBuilder
 }
 
 class SpanBuilder() {
@@ -107,10 +285,6 @@ class SpanBuilder() {
     private val typeCharSequence = 0
     private val typeImage = 1
     private val typeSpace = 2
-
-
-    private var regex: String? = null
-    private var regexGlobal: String? = null
 
     @IntDef(ALIGN_BOTTOM, ALIGN_BASELINE, ALIGN_CENTER, ALIGN_TOP)
     annotation class Align
@@ -590,7 +764,7 @@ class SpanBuilder() {
     // </editor-fold>
 
 
-    // <editor-fold desc="append">
+    // <editor-fold desc="Append">
 
     /**
      * Append the text text.
@@ -728,25 +902,6 @@ class SpanBuilder() {
         return this
     }
 
-
-    /**
-     * 添加全局匹配规则样式
-     *
-     * @param regex String
-     */
-    fun appendRegexGlobal(regex: String) {
-        this.regexGlobal = regex
-    }
-
-    /**
-     * 应用正则到当前跨度文本
-     *
-     * @param regex String
-     */
-    fun appendRegex(regex: String) {
-        this.regex = regex
-    }
-
     // </editor-fold>
 
     fun get(): SpannableStringBuilder {
@@ -780,10 +935,10 @@ class SpanBuilder() {
     }
 
     private fun updateCharCharSequence() {
-        if (text!!.isEmpty()) return
+        if (text.isNullOrEmpty()) return
         var start = builder.length
-        if (start == 0 && lineHeight != -1) {// bug of LineHeightSpan when first line
-            builder.append(Character.toString(2.toChar()))
+        if (start == 0 && lineHeight != -1) { // bug of LineHeightSpan when first line
+            builder.append(2.toChar())
                 .append("\n")
                 .setSpan(AbsoluteSizeSpan(0), 0, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             start = 2
@@ -803,20 +958,10 @@ class SpanBuilder() {
             builder.setSpan(LeadingMarginSpan.Standard(first, rest), start, end, flag)
         }
         if (quoteColor != COLOR_DEFAULT) {
-            builder.setSpan(
-                CustomQuoteSpan(quoteColor, stripeWidth, quoteGapWidth),
-                start,
-                end,
-                flag
-            )
+            builder.setSpan(CustomQuoteSpan(quoteColor, stripeWidth, quoteGapWidth), start, end, flag)
         }
         if (bulletColor != COLOR_DEFAULT) {
-            builder.setSpan(
-                CustomBulletSpan(bulletColor, bulletRadius, bulletGapWidth),
-                start,
-                end,
-                flag
-            )
+            builder.setSpan(CustomBulletSpan(bulletColor, bulletRadius, bulletGapWidth), start, end, flag)
         }
         if (fontSize != -1) {
             builder.setSpan(AbsoluteSizeSpan(fontSize, fontSizeIsDp), start, end, flag)
@@ -873,12 +1018,7 @@ class SpanBuilder() {
             builder.setSpan(ShaderSpan(shader!!), start, end, flag)
         }
         if (shadowRadius != -1f) {
-            builder.setSpan(
-                ShadowSpan(shadowRadius, shadowDx, shadowDy, shadowColor),
-                start,
-                end,
-                flag
-            )
+            builder.setSpan(ShadowSpan(shadowRadius, shadowDx, shadowDy, shadowColor), start, end, flag)
         }
         if (spans != null) {
             for (span in spans!!) {
