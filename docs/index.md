@@ -24,6 +24,7 @@
 
 | 工具                     |                                      |
 | ------------------------ | ------------------------------------ |
+| SpanBuilder.kt            | 快速实现SpannableString, 支持正则/匹配替换   |
 | KeyBoard.kt              | 键盘相关, 键盘遮挡/显示/隐藏/高度...       |
 | Preference.kt            | SharePreference存储, 委托属性                  |
 | DigitsInputFilter.kt     | 输入框小数点以及数字位数限制                     |
@@ -35,7 +36,6 @@
 | DataBindingComponent.kt  | DataBinding常用需求                  |
 | DataBindUtils.kt         | 创建DataBinding                      |
 | ObservableIml            | 如果不便继承BaseObservable可实现该接口等效于   |
-| SpanUtils.kt            | SpannableString工具   |
 
 ### 视图
 
