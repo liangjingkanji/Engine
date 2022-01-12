@@ -68,13 +68,20 @@ object DataBindingComponent {
     )
     @JvmStatic
     fun TextView.setImageDrawable(
-        drawableLeft: Int, drawableTop: Int, drawableRight: Int, drawableBottom: Int
+        leftDrawable: Int, topDrawable: Int, rightDrawable: Int, bottomDrawable: Int
     ) {
-        if (drawableLeft != 0 || drawableTop != 0 || drawableRight != 0 || drawableBottom != 0) {
-            setCompoundDrawablesWithIntrinsicBounds(
-                drawableLeft, drawableTop, drawableRight, drawableBottom
-            )
-        }
+        setCompoundDrawablesWithIntrinsicBounds(leftDrawable, topDrawable, rightDrawable, bottomDrawable)
+    }
+
+    @BindingAdapter(
+        value = ["startDrawable", "topDrawable", "endDrawable", "bottomDrawable"],
+        requireAll = false
+    )
+    @JvmStatic
+    fun TextView.setImageDrawableRelative(
+        startDrawable: Int, topDrawable: Int, endDrawable: Int, bottomDrawable: Int
+    ) {
+        setCompoundDrawablesRelativeWithIntrinsicBounds(startDrawable, topDrawable, endDrawable, bottomDrawable)
     }
 
     @BindingAdapter("android:background")
