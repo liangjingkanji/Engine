@@ -51,11 +51,11 @@ object DataBindingComponent {
     //<editor-fold desc="间距">
     @BindingAdapter("paddingStart", "paddingEnd", requireAll = false)
     @JvmStatic
-    fun View.setPaddingHorizontal(start: View?, end: View?) {
-        post {
-            val startFinal = (start?.width ?: 0) + paddingStart
-            val endFinal = (end?.width ?: 0) + paddingEnd
-            setPaddingRelative(startFinal, paddingTop, endFinal, paddingBottom)
+    fun setPaddingHorizontal(v: View, start: View?, end: View?) {
+        v.post {
+            val startFinal = (start?.width ?: 0) + v.paddingStart
+            val endFinal = (end?.width ?: 0) + v.paddingEnd
+            v.setPaddingRelative(startFinal, v.paddingTop, endFinal, v.paddingBottom)
         }
     }
     //</editor-fold>
@@ -67,10 +67,11 @@ object DataBindingComponent {
         requireAll = false
     )
     @JvmStatic
-    fun TextView.setImageDrawable(
+    fun setImageDrawable(
+        v: TextView,
         leftDrawable: Int, topDrawable: Int, rightDrawable: Int, bottomDrawable: Int
     ) {
-        setCompoundDrawablesWithIntrinsicBounds(leftDrawable, topDrawable, rightDrawable, bottomDrawable)
+        v.setCompoundDrawablesWithIntrinsicBounds(leftDrawable, topDrawable, rightDrawable, bottomDrawable)
     }
 
     @BindingAdapter(
@@ -78,22 +79,23 @@ object DataBindingComponent {
         requireAll = false
     )
     @JvmStatic
-    fun TextView.setImageDrawableRelative(
+    fun setImageDrawableRelative(
+        v: TextView,
         startDrawable: Int, topDrawable: Int, endDrawable: Int, bottomDrawable: Int
     ) {
-        setCompoundDrawablesRelativeWithIntrinsicBounds(startDrawable, topDrawable, endDrawable, bottomDrawable)
+        v.setCompoundDrawablesRelativeWithIntrinsicBounds(startDrawable, topDrawable, endDrawable, bottomDrawable)
     }
 
     @BindingAdapter("android:background")
     @JvmStatic
-    fun View.setBackgroundRes(drawableId: Int) {
-        if (drawableId > NO_ID) setBackgroundResource(drawableId) else background = null
+    fun setBackgroundRes(v: View, drawableId: Int) {
+        if (drawableId > NO_ID) v.setBackgroundResource(drawableId) else v.background = null
     }
 
     @BindingAdapter("android:src")
     @JvmStatic
-    fun ImageView.setImageDrawable(@DrawableRes drawableId: Int) {
-        if (drawableId > NO_ID) setImageResource(drawableId) else setImageDrawable(null)
+    fun setImageDrawable(v: ImageView, @DrawableRes drawableId: Int) {
+        if (drawableId > NO_ID) v.setImageResource(drawableId) else v.setImageDrawable(null)
     }
 
     // </editor-fold>
@@ -107,8 +109,8 @@ object DataBindingComponent {
      */
     @BindingAdapter("invisible")
     @JvmStatic
-    fun View.setVisibleOrInvisible(isVisible: Boolean) {
-        visibility = if (isVisible) {
+    fun setVisibleOrInvisible(v: View, isVisible: Boolean) {
+        v.visibility = if (isVisible) {
             View.VISIBLE
         } else {
             View.INVISIBLE
@@ -121,8 +123,8 @@ object DataBindingComponent {
      */
     @BindingAdapter("invisible")
     @JvmStatic
-    fun View.setVisibleOrInvisible(isVisible: Any?) {
-        visibility = if (isVisible != null) {
+    fun setVisibleOrInvisible(v: View, isVisible: Any?) {
+        v.visibility = if (isVisible != null) {
             View.VISIBLE
         } else {
             View.INVISIBLE
@@ -135,8 +137,8 @@ object DataBindingComponent {
      */
     @BindingAdapter("gone")
     @JvmStatic
-    fun View.setVisibleOrGone(isVisible: Boolean) {
-        visibility = if (isVisible) {
+    fun setVisibleOrGone(v: View, isVisible: Boolean) {
+        v.visibility = if (isVisible) {
             View.VISIBLE
         } else {
             View.GONE
@@ -149,8 +151,8 @@ object DataBindingComponent {
      */
     @BindingAdapter("gone")
     @JvmStatic
-    fun View.setVisibleOrGone(isVisible: Any?) {
-        visibility = if (isVisible != null) {
+    fun setVisibleOrGone(v: View, isVisible: Any?) {
+        v.visibility = if (isVisible != null) {
             View.VISIBLE
         } else {
             View.GONE
@@ -165,14 +167,14 @@ object DataBindingComponent {
 
     @BindingAdapter("android:elevation")
     @JvmStatic
-    fun View.setElevation(dp: Int) {
-        ViewCompat.setElevation(this, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics))
+    fun setElevation(v: View, dp: Int) {
+        ViewCompat.setElevation(v, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), v.resources.displayMetrics))
     }
 
     @BindingAdapter("android:elevation")
     @JvmStatic
-    fun CardView.setElevation(dp: Int) {
-        cardElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics)
+    fun setElevation(v: CardView, dp: Int) {
+        v.cardElevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), v.resources.displayMetrics)
     }
 
     // </editor-fold>
@@ -181,20 +183,20 @@ object DataBindingComponent {
 
     @BindingAdapter("android:enabled")
     @JvmStatic
-    fun View.setEnabled(enable: Any?) {
-        isEnabled = enable != null
+    fun setEnabled(v: View, enable: Any?) {
+        v.isEnabled = enable != null
     }
 
     @BindingAdapter("selected")
     @JvmStatic
-    fun View.setSelected(selected: Any?) {
-        isSelected = selected != null
+    fun setSelected(v: View, selected: Any?) {
+        v.isSelected = selected != null
     }
 
     @BindingAdapter("activated")
     @JvmStatic
-    fun View.setActivated(activated: Any?) {
-        isActivated = activated != null
+    fun setActivated(v: View, activated: Any?) {
+        v.isActivated = activated != null
     }
 
     // </editor-fold>
@@ -208,9 +210,9 @@ object DataBindingComponent {
     @SuppressLint("CheckResult")
     @BindingAdapter("click")
     @JvmStatic
-    fun View.setThrottleClickListener(onClickListener: View.OnClickListener?) {
+    fun setThrottleClickListener(v: View, onClickListener: View.OnClickListener?) {
         if (onClickListener != null) {
-            throttleClick { onClickListener.onClick(this) }
+            v.throttleClick { onClickListener.onClick(this) }
         }
     }
 
@@ -222,15 +224,15 @@ object DataBindingComponent {
     @SuppressLint("CheckResult")
     @BindingAdapter("hit")
     @JvmStatic
-    fun View.hit(throttle: Boolean = true) {
-        var context = context
+    fun hit(v: View, throttle: Boolean = true) {
+        var context = v.context
         while (context is ContextWrapper) {
             if (context is View.OnClickListener) {
                 val clickListener = context as View.OnClickListener
                 if (throttle) {
-                    throttleClick { clickListener.onClick(this) }
+                    v.throttleClick { clickListener.onClick(this) }
                 } else {
-                    setOnClickListener(clickListener)
+                    v.setOnClickListener(clickListener)
                 }
             }
             context = context.baseContext
@@ -245,9 +247,9 @@ object DataBindingComponent {
     @SuppressLint("CheckResult", "ObsoleteSdkInt")
     @BindingAdapter("finish")
     @JvmStatic
-    fun View.finishActivity(enabled: Boolean = true) {
+    fun finishActivity(v: View, enabled: Boolean = true) {
         if (enabled) {
-            var temp = context
+            var temp = v.context
             var activity: Activity? = null
 
             while (temp is ContextWrapper) {
@@ -259,7 +261,7 @@ object DataBindingComponent {
 
             val finalActivity = activity
 
-            throttleClick {
+            v.throttleClick {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     finalActivity!!.finishAfterTransition()
                 } else {
@@ -282,10 +284,10 @@ object DataBindingComponent {
     @SuppressLint("SetTextI18n")
     @BindingAdapter("rmb", "rmbUnit", requireAll = false)
     @JvmStatic
-    fun TextView.formatCNY(number: String?, unit: String?) {
-        if (!number.isNullOrEmpty() && text.contentEquals(number)) {
+    fun formatCNY(v: TextView, number: String?, unit: String?) {
+        if (!number.isNullOrEmpty() && v.text.contentEquals(number)) {
             val format = "${unit ?: "¥"}${number.format()}"
-            if (format != text.toString()) text = format
+            if (format != v.text.toString()) v.text = format
         }
     }
 
@@ -298,13 +300,13 @@ object DataBindingComponent {
     @SuppressLint("SetTextI18n")
     @BindingAdapter("rmb", "rmbUnit", "roundingMode", requireAll = false)
     @JvmStatic
-    fun TextView.formatCNY(number: Double?, prefix: String?, roundingMode: RoundingMode?) {
+    fun formatCNY(v: TextView, number: Double?, prefix: String?, roundingMode: RoundingMode?) {
         val numberFormat = NumberFormat.getInstance()
         numberFormat.minimumFractionDigits = 2
         numberFormat.maximumFractionDigits = 2
         numberFormat.roundingMode = roundingMode ?: RoundingMode.UP
         val format = "${prefix ?: "¥"}${numberFormat.format(number ?: 0.0)}"
-        if (format != text.toString()) text = format
+        if (format != v.text.toString()) v.text = format
     }
 
     /**
@@ -316,13 +318,13 @@ object DataBindingComponent {
     @SuppressLint("SetTextI18n")
     @BindingAdapter("rmb", "rmbUnit", "roundingMode", requireAll = false)
     @JvmStatic
-    fun TextView.formatCNY(number: Long?, prefix: String?, roundingMode: RoundingMode?) {
+    fun formatCNY(v: TextView, number: Long?, prefix: String?, roundingMode: RoundingMode?) {
         val numberFormat = NumberFormat.getInstance()
         numberFormat.minimumFractionDigits = 2
         numberFormat.maximumFractionDigits = 2
         numberFormat.roundingMode = roundingMode ?: RoundingMode.UP
         val format = "${prefix ?: "¥"}${numberFormat.format(number ?: 0 / 100.0)}"
-        if (format != text.toString()) text = format
+        if (format != v.text.toString()) v.text = format
     }
 
     // </editor-fold>
@@ -336,17 +338,17 @@ object DataBindingComponent {
      */
     @BindingAdapter(value = ["dateMilli", "dateFormat"], requireAll = false)
     @JvmStatic
-    fun TextView.setDateFromMillis(milli: Long, format: String? = "yyyy-MM-dd") {
+    fun setDateFromMillis(v: TextView, milli: Long, format: String? = "yyyy-MM-dd") {
         if (milli < 0) {
-            text = ""
+            v.text = ""
             return
         }
         val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
         val date = Date(milli)
         val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
         val formatText = sf.format(date)
-        if (text.contentEquals(formatText)) return
-        text = formatText
+        if (v.text.contentEquals(formatText)) return
+        v.text = formatText
     }
 
 
@@ -357,18 +359,18 @@ object DataBindingComponent {
      */
     @BindingAdapter(value = ["dateMilli", "dateFormat"], requireAll = false)
     @JvmStatic
-    fun TextView.setDateFromMillis(milli: String?, format: String? = "yyyy-MM-dd") {
+    fun setDateFromMillis(v: TextView, milli: String?, format: String? = "yyyy-MM-dd") {
         val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
         val finalMilli = milli?.toLongOrNull() ?: return
         if (finalMilli < 0 || milli.isNullOrBlank()) {
-            text = ""
+            v.text = ""
             return
         }
         val date = Date(finalMilli)
         val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
         val formatText = sf.format(date)
-        if (text.contentEquals(formatText)) return
-        text = formatText
+        if (v.text.contentEquals(formatText)) return
+        v.text = formatText
     }
 
     /**
@@ -378,17 +380,17 @@ object DataBindingComponent {
      */
     @BindingAdapter(value = ["dateSecond", "dateFormat"], requireAll = false)
     @JvmStatic
-    fun TextView.setDateFromSecond(second: Long, format: String? = "yyyy-MM-dd") {
+    fun setDateFromSecond(v: TextView, second: Long, format: String? = "yyyy-MM-dd") {
         if (second < 0) {
-            text = ""
+            v.text = ""
             return
         }
         val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
         val date = Date(second * 1000)
         val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
         val formatText = sf.format(date)
-        if (text.contentEquals(formatText)) return
-        text = formatText
+        if (v.text.contentEquals(formatText)) return
+        v.text = formatText
     }
 
     /**
@@ -398,18 +400,18 @@ object DataBindingComponent {
      */
     @BindingAdapter(value = ["dateSecond", "dateFormat"], requireAll = false)
     @JvmStatic
-    fun TextView.setDateFromSecond(second: String?, format: String? = "yyyy-MM-dd") {
+    fun setDateFromSecond(v: TextView, second: String?, format: String? = "yyyy-MM-dd") {
         val finalFormat = if (format.isNullOrBlank()) "yyyy-MM-dd" else format
         val finalSecond = second?.toLongOrNull() ?: return
         if (finalSecond < 0 || second.isNullOrBlank()) {
-            text = ""
+            v.text = ""
             return
         }
         val date = Date(finalSecond * 1000)
         val sf = SimpleDateFormat(finalFormat, Locale.CHINA)
         val formatText = sf.format(date)
-        if (text.contentEquals(formatText)) return
-        text = formatText
+        if (v.text.contentEquals(formatText)) return
+        v.text = formatText
     }
 
     // </editor-fold>
@@ -417,45 +419,45 @@ object DataBindingComponent {
     //<editor-fold desc="字符串">
     @BindingAdapter("del")
     @JvmStatic
-    fun TextView.setDel(isAdd: Boolean) {
+    fun setDel(v: TextView, isAdd: Boolean) {
         if (isAdd) {
-            paint.flags = Paint.STRIKE_THRU_TEXT_FLAG or Paint.ANTI_ALIAS_FLAG   // 设置中划线并加清晰
+            v.paint.flags = Paint.STRIKE_THRU_TEXT_FLAG or Paint.ANTI_ALIAS_FLAG   // 设置中划线并加清晰
         }
     }
 
     @BindingAdapter("android:text")
     @JvmStatic
-    fun TextView.setTextOfNumber(number: Int) {
+    fun setTextOfNumber(v: TextView, number: Int) {
         val finalText = number.toString()
-        if (!text.contentEquals(finalText)) {
-            text = finalText
+        if (!v.text.contentEquals(finalText)) {
+            v.text = finalText
         }
     }
 
     @BindingAdapter("android:text")
     @JvmStatic
-    fun TextView.setTextOfNumber(number: Long) {
+    fun setTextOfNumber(v: TextView, number: Long) {
         val finalText = number.toString()
-        if (!text.contentEquals(finalText)) {
-            text = finalText
+        if (!v.text.contentEquals(finalText)) {
+            v.text = finalText
         }
     }
 
     @BindingAdapter("android:text")
     @JvmStatic
-    fun TextView.setTextOfNumber(number: Double) {
+    fun setTextOfNumber(v: TextView, number: Double) {
         val finalText = number.toString()
-        if (!text.contentEquals(finalText)) {
-            text = finalText
+        if (!v.text.contentEquals(finalText)) {
+            v.text = finalText
         }
     }
 
     @BindingAdapter("android:text")
     @JvmStatic
-    fun TextView.setTextOfNumber(number: Float) {
+    fun setTextOfNumber(v: TextView, number: Float) {
         val finalText = number.toString()
-        if (!text.contentEquals(finalText)) {
-            text = finalText
+        if (!v.text.contentEquals(finalText)) {
+            v.text = finalText
         }
     }
 
@@ -464,9 +466,9 @@ object DataBindingComponent {
     //<editor-fold desc="网页">
     @BindingAdapter("url")
     @JvmStatic
-    fun WebView.setUrl(url: String?) {
+    fun setUrl(v: WebView, url: String?) {
         if (!url.isNullOrEmpty()) {
-            loadDataWithBaseURL(null, url, "text/html", "UTF-8", null)
+            v.loadDataWithBaseURL(null, url, "text/html", "UTF-8", null)
         }
     }
     //</editor-fold>
@@ -482,8 +484,8 @@ object DataBindingComponent {
      */
     @BindingAdapter("onBind")
     @JvmStatic
-    fun View.setOnBindListener(listener: OnBindListener) {
-        listener.onBind(this)
+    fun setOnBindListener(v: View, listener: OnBindListener) {
+        listener.onBind(v)
     }
 
     /**

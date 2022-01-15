@@ -37,8 +37,8 @@ object GlideDataBindingComponent {
     @BindingAdapter(value = ["imgCorner", "holder", "corner"], requireAll = false)
     @JvmStatic
     @Deprecated("使用imgCircle或img替换")
-    fun ImageView.loadImageCornerWithHolder(url: Any?, holder: Drawable?, @Dimension corner: Int?) {
-        val requestBuilder = Glide.with(context).load(url).placeholder(holder)
+    fun loadImageCornerWithHolder(v: ImageView, url: Any?, holder: Drawable?, @Dimension corner: Int?) {
+        val requestBuilder = Glide.with(v.context).load(url).placeholder(holder)
         if (corner == null) {
             requestBuilder.circleCrop()
         } else {
@@ -47,7 +47,7 @@ object GlideDataBindingComponent {
                 RoundedCorners((corner * app.resources.displayMetrics.density).toInt())
             )
         }
-        requestBuilder.into(this)
+        requestBuilder.into(v)
     }
 
     /**
@@ -57,8 +57,8 @@ object GlideDataBindingComponent {
      */
     @BindingAdapter(value = ["imgCircle", "holder"], requireAll = false)
     @JvmStatic
-    fun ImageView.loadImageCircle(url: Any?, holder: Drawable?) {
-        Glide.with(context).load(url).circleCrop().placeholder(holder).into(this)
+    fun loadImageCircle(v: ImageView, url: Any?, holder: Drawable?) {
+        Glide.with(v.context).load(url).circleCrop().placeholder(holder).into(v)
     }
 
     /**
@@ -69,15 +69,15 @@ object GlideDataBindingComponent {
      */
     @BindingAdapter(value = ["img", "holder", "corner"], requireAll = false)
     @JvmStatic
-    fun ImageView.loadImageWithHolder(url: Any?, holder: Drawable?, corner: Int?) {
-        val requestBuilder = Glide.with(context).load(url).placeholder(holder)
+    fun loadImageWithHolder(v: ImageView, url: Any?, holder: Drawable?, corner: Int?) {
+        val requestBuilder = Glide.with(v.context).load(url).placeholder(holder)
         if (corner != null) {
             requestBuilder.transform(
                 CenterCrop(),
                 RoundedCorners((corner * app.resources.displayMetrics.density).toInt())
             )
         }
-        requestBuilder.into(this)
+        requestBuilder.into(v)
     }
 
     /**
@@ -87,8 +87,8 @@ object GlideDataBindingComponent {
      */
     @BindingAdapter(value = ["gifCircle", "holder"], requireAll = false)
     @JvmStatic
-    fun ImageView.loadGifCircle(url: Any?, holder: Drawable?) {
-        Glide.with(context).asGif().load(url).circleCrop().placeholder(holder).into(this)
+    fun loadGifCircle(v: ImageView, url: Any?, holder: Drawable?) {
+        Glide.with(v.context).asGif().load(url).circleCrop().placeholder(holder).into(v)
     }
 
     /**
@@ -100,14 +100,14 @@ object GlideDataBindingComponent {
     @SuppressLint("CheckResult")
     @BindingAdapter(value = ["gif", "holder", "corner"], requireAll = false)
     @JvmStatic
-    fun ImageView.loadGifWithHolder(url: Any?, holder: Drawable? = null, corner: Int?) {
-        val requestBuilder = Glide.with(context).asGif().load(url).placeholder(holder)
+    fun loadGifWithHolder(v: ImageView, url: Any?, holder: Drawable? = null, corner: Int?) {
+        val requestBuilder = Glide.with(v.context).asGif().load(url).placeholder(holder)
         if (corner != null) {
             requestBuilder.transform(
                 CenterCrop(),
                 RoundedCorners((corner * app.resources.displayMetrics.density).toInt())
             )
         }
-        requestBuilder.into(this)
+        requestBuilder.into(v)
     }
 }
