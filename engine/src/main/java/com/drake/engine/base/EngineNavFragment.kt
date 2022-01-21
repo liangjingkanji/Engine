@@ -46,7 +46,8 @@ abstract class EngineNavFragment<B : ViewDataBinding>(@LayoutRes contentLayoutId
     protected abstract fun initData()
     override fun onClick(v: View) {}
 
-    override fun onResume() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding = DataBindingUtil.bind(view)!!
         try {
             initView()
             initData()
@@ -54,11 +55,6 @@ abstract class EngineNavFragment<B : ViewDataBinding>(@LayoutRes contentLayoutId
             Log.e("Engine", "Initializing failure")
             e.printStackTrace()
         }
-        super.onResume()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding = DataBindingUtil.bind(view)!!
     }
 
 }
