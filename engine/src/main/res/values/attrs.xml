@@ -107,4 +107,9 @@
         <attr name="codeCursorDrawable" format="reference" />
     </declare-styleable>
 
+
+    <declare-styleable name="MaxHeightScrollView">
+        <attr name="scroll_maxHeight" format="dimension" />
+    </declare-styleable>
+
 </resources>
