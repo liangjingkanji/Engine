@@ -27,17 +27,48 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListPopupWindow
 import androidx.annotation.DrawableRes
+import androidx.annotation.IntRange
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
+import com.drake.engine.utils.dp
+import kotlin.math.min
 
 
 /**
- * 设置背景透明
+ * 设置对话框宽度, 同时对话框背景为透明
+ * 如果要求xml布局的宽度有效, 请嵌套一层
+ * @param width 宽度, 单位dp, 默认为屏幕宽度(如果横屏则为屏幕高度)
+ * @param marginHorizontal 水平外间距, 单位dp
  */
-fun Dialog.setTransparent() {
-    window?.apply { setBackgroundDrawableResource(android.R.color.transparent) }
+fun Dialog.setWidth(
+    @IntRange(from = 0) width: Int = 0,
+    @IntRange(from = 0) marginHorizontal: Int = 0
+) {
+    window?.apply {
+        val lp = attributes
+        val displayMetrics = context.resources.displayMetrics
+        if (width == 0) {
+            lp.width = min(displayMetrics.widthPixels, displayMetrics.heightPixels) - marginHorizontal.dp
+        } else {
+            lp.width = width.dp - marginHorizontal.dp
+        }
+        attributes = lp
+        setBackgroundDrawableResource(android.R.color.transparent)
+    }
 }
+
+/**
+ * 设置对话框宽度, 同时对话框背景为透明
+ * 如果要求xml布局的宽度有效, 请嵌套一层
+ * @param width 宽度, 单位dp, 默认为屏幕宽度(如果横屏则为屏幕高度)
+ * @param marginHorizontal 水平外间距, 单位dp
+ */
+fun DialogFragment.setWidth(
+    @IntRange(from = 0) width: Int = 0,
+    @IntRange(from = 0) marginHorizontal: Int = 0
+) = dialog?.setWidth(width, marginHorizontal)
 
 
 /**
@@ -66,17 +97,6 @@ fun View.pullMenu(vararg list: String): ListPopupWindow {
         anchorView = this@pullMenu
         setAdapter(ArrayAdapter(context, android.R.layout.simple_list_item_1, list))
     }
-}
-
-/**
- * 解决DialogFragment宽度限制问题
- */
-fun androidx.fragment.app.DialogFragment.setWidthNoLimit() {
-    @Suppress("DEPRECATION")
-    setStyle(
-        androidx.fragment.app.DialogFragment.STYLE_NO_TITLE,
-        android.R.style.Theme_Material_Light_Dialog_MinWidth
-    )
 }
 
 /**
