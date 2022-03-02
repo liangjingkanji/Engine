@@ -27,6 +27,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListPopupWindow
 import androidx.annotation.DrawableRes
+import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
@@ -37,22 +38,28 @@ import kotlin.math.min
 
 
 /**
- * 设置对话框宽度, 同时对话框背景为透明
+ * 设置对话框宽度(默认为屏幕宽度的80%(如果横屏则为屏幕高度)), 同时对话框背景为透明
  * 如果要求xml布局的宽度有效, 请嵌套一层
- * @param width 宽度, 单位dp, 默认为屏幕宽度(如果横屏则为屏幕高度)
+ * @param width 宽度, 单位dp, 0 表示使用[percent]百分比宽度
  * @param marginHorizontal 水平外间距, 单位dp
+ * @param percent 占屏幕宽度百分比, 1 表示全屏宽度
  */
-fun Dialog.setWidth(
+fun Dialog.setMaxWidth(
     @IntRange(from = 0) width: Int = 0,
-    @IntRange(from = 0) marginHorizontal: Int = 0
+    @IntRange(from = 0) marginHorizontal: Int = 0,
+    @FloatRange(from = 0.0, to = 1.0) percent: Float = 0.8f,
 ) {
     window?.apply {
         val lp = attributes
-        val displayMetrics = context.resources.displayMetrics
-        if (width == 0) {
-            lp.width = min(displayMetrics.widthPixels, displayMetrics.heightPixels) - marginHorizontal.dp
-        } else {
-            lp.width = width.dp - marginHorizontal.dp
+        when (width) {
+            0 -> {
+                val displayMetrics = context.resources.displayMetrics
+                val maxWidth = min(displayMetrics.widthPixels, displayMetrics.heightPixels)
+                lp.width = (maxWidth * percent).toInt() - marginHorizontal.dp
+            }
+            else -> {
+                lp.width = width.dp - marginHorizontal.dp
+            }
         }
         attributes = lp
         setBackgroundDrawableResource(android.R.color.transparent)
@@ -60,16 +67,17 @@ fun Dialog.setWidth(
 }
 
 /**
- * 设置对话框宽度, 同时对话框背景为透明
+ * 设置对话框宽度(默认为屏幕宽度的80%(如果横屏则为屏幕高度)), 同时对话框背景为透明
  * 如果要求xml布局的宽度有效, 请嵌套一层
- * @param width 宽度, 单位dp, 默认为屏幕宽度(如果横屏则为屏幕高度)
+ * @param width 宽度, 单位dp, 0 表示使用[percent]百分比宽度
  * @param marginHorizontal 水平外间距, 单位dp
+ * @param percent 占屏幕宽度百分比, 1 表示全屏宽度
  */
-fun DialogFragment.setWidth(
+fun DialogFragment.setMaxWidth(
     @IntRange(from = 0) width: Int = 0,
-    @IntRange(from = 0) marginHorizontal: Int = 0
-) = dialog?.setWidth(width, marginHorizontal)
-
+    @IntRange(from = 0) marginHorizontal: Int = 0,
+    @FloatRange(from = 0.0, to = 1.0) percent: Float = 0.8f,
+) = dialog?.setMaxWidth(width, marginHorizontal, percent)
 
 /**
  * 设置列表对话框的分割线
