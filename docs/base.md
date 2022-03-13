@@ -4,6 +4,18 @@
 
 每个界面都应当继承自`Engine<组件类型>`的抽象类
 
+| 基类 | 描述 |
+|-|-|
+| Engine.kt | 当前Activity, 当前Application |
+| EngineActivity | Activity |
+| EngineSwipeActivity | 可侧滑返回的Activity |
+| EngineToolbarActivity | 拥有工具栏的Activity |
+| EngineFragment | Fragment |
+| EngineNavFragment | 适用于Navigation导航框架的Fragment基类 |
+| EngineDialog | 对话框基类 |
+| EngineDialogFragment | DialogFragment基类 |
+| EngineBottomSheetDialogFragment | BottomSheetDialogFragment基类 |
+
 ## 基类
 
 例如: EngineActivity 提供最基础的界面

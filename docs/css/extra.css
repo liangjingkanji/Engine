@@ -70,12 +70,13 @@
     font-weight: bold;
     font-style: normal;
 }
+
 * {
     -webkit-font-feature-settings: "liga" on, "calt" on;
     -webkit-font-smoothing: subpixel-antialiased;
     -moz-osx-font-smoothing: auto;
     text-rendering: optimizeLegibility;
-    font-family: "JetBrains Mono", "HYZhengYuan", monospace !important;
+    font-family: "JetBrains Mono", HYZhengYuan, monospace !important;
 }
 
 /*布局*/
@@ -117,7 +118,18 @@ table tr:nth-child(2n), thead {
     border: 1px solid #dfe2e5;
 }
 
+/*隐藏搜索框, 因为不支持中文搜索*/
+.md-search__form {
+    visibility: hidden;
+}
+
 /*引用*/
+.md-typeset :is(.admonition,details) {
+    font-size: 12px;
+}
+[dir=ltr] .md-typeset blockquote {
+    border-left:none;
+}
 .md-typeset blockquote {
     color: inherit;
     padding: 10px 16px;

@@ -38,4 +38,6 @@ markdown_extensions:
 nav:
   - 引擎索引: index.md
   - 基类: base.md
+  - 视图: view.md
+  - 工具: utils.md
   - 函数文档: api/index.html
