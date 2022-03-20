@@ -37,7 +37,13 @@ object GlideDataBindingComponent {
     @BindingAdapter(value = ["imgCorner", "holder", "corner"], requireAll = false)
     @JvmStatic
     @Deprecated("使用imgCircle或img替换")
-    fun loadImageCornerWithHolder(v: ImageView, url: Any?, holder: Drawable?, @Dimension corner: Int?) {
+    fun loadImageCornerWithHolder(
+        v: ImageView,
+        url: Any?,
+        holder: Drawable?,
+        @Dimension corner: Int?
+    ) {
+        if (url == null && holder == null) v.setImageDrawable(null)
         val requestBuilder = Glide.with(v.context).load(url).placeholder(holder)
         if (corner == null) {
             requestBuilder.circleCrop()
@@ -58,6 +64,7 @@ object GlideDataBindingComponent {
     @BindingAdapter(value = ["imgCircle", "holder"], requireAll = false)
     @JvmStatic
     fun loadImageCircle(v: ImageView, url: Any?, holder: Drawable?) {
+        if (url == null && holder == null) v.setImageDrawable(null)
         Glide.with(v.context).load(url).circleCrop().placeholder(holder).into(v)
     }
 
@@ -70,6 +77,7 @@ object GlideDataBindingComponent {
     @BindingAdapter(value = ["img", "holder", "corner"], requireAll = false)
     @JvmStatic
     fun loadImageWithHolder(v: ImageView, url: Any?, holder: Drawable?, corner: Int?) {
+        if (url == null && holder == null) v.setImageDrawable(null)
         val requestBuilder = Glide.with(v.context).load(url).placeholder(holder)
         if (corner != null) {
             requestBuilder.transform(
