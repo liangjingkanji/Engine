@@ -475,12 +475,14 @@ object DataBindingComponent {
 
     //<editor-fold desc="回调">
     /**
-     * 在绑定视图时可以用于Model来处理UI, 由于破坏视图和逻辑解耦的规则不是很建议使用
-     *
-     * @see OnBindListener 该接口支持泛型定义具体视图
-     *
-     * @receiver View
-     * @param listener OnBindListener<View>
+     * 可将视图传递给函数调用. 在绑定视图时可以用于Model来处理UI, 由于破坏视图和逻辑解耦的规则不是很建议使用
+     * 使用方法:
+     *  onBind="{(v)->m.bind(v)}" 或者  onBind="{m::bind}", 此写法要求method方法签名一致
+     *      fun bind(v: View) {
+     *          if (v is TextView) {
+     *              // ... do something
+     *          }
+     *      }
      */
     @BindingAdapter("onBind")
     @JvmStatic
@@ -488,9 +490,6 @@ object DataBindingComponent {
         listener.onBind(v)
     }
 
-    /**
-     * 在绑定视图时可以用于Model来处理UI, 由于破坏视图和逻辑解耦的规则不是很建议使用
-     */
     interface OnBindListener {
         fun onBind(v: View)
     }
