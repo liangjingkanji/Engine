@@ -24,6 +24,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -205,7 +206,7 @@ public final class CameraUtils {
                 }
             }
         }
-        return StringUtils.isEmpty(path) ? originalUri.getPath() : null;
+        return TextUtils.isEmpty(path) ? originalUri.getPath() : null;
     }
 
     /**

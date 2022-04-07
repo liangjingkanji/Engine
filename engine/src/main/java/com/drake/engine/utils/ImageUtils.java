@@ -16,6 +16,8 @@
 
 package com.drake.engine.utils;
 
+import static com.drake.engine.base.EngineKt.app;
+
 import android.annotation.TargetApi;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -62,8 +64,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import static com.drake.engine.base.EngineKt.app;
 
 /**
  * <pre>
@@ -2003,9 +2003,9 @@ public final class ImageUtils {
         }
         try {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
-            byte[] b = new byte[Units.KB];
+            byte[] b = new byte[1024];
             int len;
-            while ((len = is.read(b, 0, Units.KB)) != -1) {
+            while ((len = is.read(b, 0, 1024)) != -1) {
                 os.write(b, 0, len);
             }
             return os.toByteArray();
