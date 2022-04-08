@@ -71,13 +71,13 @@ dependencies {
     // ---
 
     // ==================================我的其他库==================================
-    implementation 'com.github.liangjingkanji:Net:3.0.24' // 网络请求.异步任务
-    implementation "com.squareup.okhttp3:okhttp:4.9.1"
-    implementation 'com.github.liangjingkanji:BRV:1.3.36' // 列表
+    implementation 'com.github.liangjingkanji:Net:3.2.0' // 网络请求.异步任务
+    implementation "com.squareup.okhttp3:okhttp:4.9.3"
+    implementation 'com.github.liangjingkanji:BRV:1.3.58' // 列表
     implementation 'com.github.liangjingkanji:debugkit:1.2.11' // 调试工具
     implementation 'com.github.liangjingkanji:Serialize:1.2.2' // 序列化数据存储
     implementation 'com.github.liangjingkanji:Channel:1.1.4' // 事件分发
-    implementation 'com.github.liangjingkanji:Tooltip:1.1.3' // 吐司
+    implementation 'com.github.liangjingkanji:Tooltip:1.1.7' // 吐司
     implementation 'com.github.liangjingkanji:FlycoTabLayout:2.0.3' // 标签栏
     implementation 'com.github.liangjingkanji:LogCat:1.1.0' // 日志工具
 
