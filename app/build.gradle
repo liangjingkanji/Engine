@@ -80,6 +80,7 @@ dependencies {
     implementation 'com.github.liangjingkanji:Tooltip:1.1.7' // 吐司
     implementation 'com.github.liangjingkanji:FlycoTabLayout:2.0.3' // 标签栏
     implementation 'com.github.liangjingkanji:LogCat:1.1.0' // 日志工具
+    implementation 'com.github.liangjingkanji:StatusBar:2.0.2' // 状态栏工具
 
 
     // ==================================第三方==================================
