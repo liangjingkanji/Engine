@@ -24,10 +24,19 @@ import androidx.appcompat.app.AppCompatActivity
 lateinit var app: Application
 
 object Engine {
+
+    /** 初始化本框架 */
+    fun initialize(app: Application) {
+        com.drake.engine.base.app = app
+        app.registerActivityLifecycleCallbacks(activityCallbacks)
+    }
+
+    /** 当前activity */
     @JvmStatic
     val currentActivity: AppCompatActivity?
         get() = activityCallbacks.currentActivityWeak?.get()
 
+    /** 默认的生命周期回调 */
     @JvmStatic
     var activityCallbacks: EngineActivityCallbacks = EngineActivityCallbacks()
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.drake.engine.utils
+package com.drake.engine.adapter
 
 import android.app.Application
 import android.content.ContentProvider
@@ -24,7 +24,7 @@ import android.net.Uri
 import com.drake.engine.base.Engine
 import com.drake.engine.base.app
 
-class InitContentProvider : ContentProvider() {
+internal class EngineInitializer : ContentProvider() {
     override fun onCreate(): Boolean {
         val application = context?.applicationContext as? Application ?: return false
         app = application

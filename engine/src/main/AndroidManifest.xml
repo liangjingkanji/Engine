@@ -7,7 +7,7 @@
 
     <application>
         <provider
-            android:name=".utils.InitContentProvider"
+            android:name=".adapter.EngineInitializer"
             android:authorities="${applicationId}.drake.engineInit"
             android:enabled="true"
             android:multiprocess="true"

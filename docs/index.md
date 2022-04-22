@@ -6,8 +6,21 @@
 
 本项目存在很多独立依赖的第三方库, 为避免耦合发生并不会默认集成
 
-## 独立依赖
-Engine库中使用的独立依赖存在于Demo中名为sample的Module的`build.gradle`下
+
+使用前请初始化框架
+```kotlin
+class App : Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+
+        Engine.initialize(this)
+    }
+}
+```
+
+## 其他依赖
+Engine库中使用的独立依赖存在于Demo中名为sample的Module的`build.gradle`下, 要求开发者自己可选依赖
 
 | 函数 | 描述 |
 |-|-|
