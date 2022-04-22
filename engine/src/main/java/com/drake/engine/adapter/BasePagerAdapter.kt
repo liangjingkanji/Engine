@@ -46,4 +46,8 @@ class BasePagerAdapter(var viewList: ArrayList<View>, var titles: ArrayList<Stri
         return titles?.get(position)
     }
 
+    override fun getItemPosition(`object`: Any): Int {
+        return POSITION_NONE
+    }
+
 }
