@@ -461,6 +461,12 @@ object DataBindingComponent {
         }
     }
 
+    @BindingAdapter("android:textColor")
+    @JvmStatic
+    fun setTextColor(text: TextView, color: String) {
+        text.setTextColor(android.graphics.Color.parseColor(color))
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="网页">
