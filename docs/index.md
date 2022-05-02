@@ -24,9 +24,10 @@ Engine库中使用的独立依赖存在于Demo中名为sample的Module的`build.
 
 | 函数 | 描述 |
 |-|-|
-| [Net](https://github.com/liangjingkanji/Net) | 基于协程的并发网络请求库 |
-| [BRV](https://github.com/liangjingkanji/BRV) | 基于DSL作用域快速创建列表 |
-| [spannable](https://github.com/liangjingkanji/spannable) | Android最强Spannable工具, 首个支持替换/正则匹配Spannable的库 |
+| [Net](https://github.com/liangjingkanji/Net) | 🍉 Android 最强大的创新式协程并发网络请求 [开发必备] |
+| [BRV](https://github.com/liangjingkanji/BRV) | 🌽 Android 最强大的RecyclerView库, 比BRVAH更优雅和强大 |
+| [soft-input-event](https://github.com/liangjingkanji/soft-input-event) | Android软键盘遮挡/平滑动画最佳解决方案 |
+| [spannable](https://github.com/liangjingkanji/spannable) | Android最好的Spannable构建工具, 首个支持正则匹配/GIF动画/图文混排 |
 | [Serialize](https://github.com/liangjingkanji/Serialize) | 应用数据管理的神器, 比数据库更方便, 可创建自动读写本地/意外销毁恢复的字段. 支持组件传递数据 |
 | [StatusBar](https://github.com/liangjingkanji/StatusBar) | 透明状态栏 |
 | [StateLayout](https://github.com/liangjingkanji/StateLayout) | 缺省页 |
