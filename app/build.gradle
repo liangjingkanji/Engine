@@ -65,25 +65,21 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
     implementation project(path: ":engine")
 
-    // --- Glide
+    // ==================================全家桶==================================
+    implementation 'com.github.liangjingkanji:Net:3.4.6' // 网络请求.异步任务
+    implementation "com.squareup.okhttp3:okhttp:4.9.3"
+    implementation 'com.github.liangjingkanji:BRV:1.3.66' // 列表
+    implementation 'com.github.liangjingkanji:debugkit:1.2.11' // 调试工具
+    implementation 'com.github.liangjingkanji:Serialize:1.2.3' // 序列化数据存储
+    implementation 'com.github.liangjingkanji:Channel:1.1.4' // 事件分发
+    implementation 'com.github.liangjingkanji:Tooltip:1.2.1' // 吐司
+    implementation 'com.github.liangjingkanji:FlycoTabLayout:2.0.3' // 标签栏
+    implementation 'com.github.liangjingkanji:LogCat:1.2.2' // 日志工具
+    implementation 'com.github.liangjingkanji:StatusBar:2.0.2' // 状态栏工具
+    implementation 'com.github.liangjingkanji:soft-input-event:1.0.5' // 键盘遮挡
+    implementation 'com.github.liangjingkanji:spannable:1.1.2' // 富文本
+
+    // ==================================工具==================================
     implementation "com.github.bumptech.glide:glide:$glide_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"
-    // ---
-
-    // ==================================我的其他库==================================
-    implementation 'com.github.liangjingkanji:Net:3.2.0' // 网络请求.异步任务
-    implementation "com.squareup.okhttp3:okhttp:4.9.3"
-    implementation 'com.github.liangjingkanji:BRV:1.3.58' // 列表
-    implementation 'com.github.liangjingkanji:debugkit:1.2.11' // 调试工具
-    implementation 'com.github.liangjingkanji:Serialize:1.2.2' // 序列化数据存储
-    implementation 'com.github.liangjingkanji:Channel:1.1.4' // 事件分发
-    implementation 'com.github.liangjingkanji:Tooltip:1.1.7' // 吐司
-    implementation 'com.github.liangjingkanji:FlycoTabLayout:2.0.3' // 标签栏
-    implementation 'com.github.liangjingkanji:LogCat:1.1.0' // 日志工具
-    implementation 'com.github.liangjingkanji:StatusBar:2.0.2' // 状态栏工具
-
-
-    // ==================================第三方==================================
-    implementation "com.yanzhenjie:permission:2.0.3" // 全选
-    implementation "com.king.zxing:zxing-lite:1.0.3" // 二维码
 }
