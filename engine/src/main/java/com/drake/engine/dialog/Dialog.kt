@@ -34,6 +34,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.drake.engine.utils.dp
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlin.math.min
 
 
@@ -78,6 +79,38 @@ fun DialogFragment.setMaxWidth(
     @IntRange(from = 0) marginHorizontal: Int = 0,
     @FloatRange(from = 0.0, to = 1.0) percent: Float = 0.8f,
 ) = dialog?.setMaxWidth(width, marginHorizontal, percent)
+
+/**
+ * 设置对话框宽度(默认为屏幕宽度的80%(如果横屏则为屏幕高度)), 同时对话框背景为透明
+ * 如果要求xml布局的宽度有效, 请嵌套一层
+ * @param width 宽度, 单位dp, 0 表示使用[percent]百分比宽度
+ * @param marginHorizontal 水平外间距, 单位dp
+ * @param percent 占屏幕宽度百分比, 1 表示全屏宽度
+ */
+fun BottomSheetDialogFragment.setMaxWidth(
+    @IntRange(from = 0) width: Int = 0,
+    @IntRange(from = 0) marginHorizontal: Int = 0,
+    @FloatRange(from = 0.0, to = 1.0) percent: Float = 0.8f,
+) {
+    dialog?.let {
+        it.window?.apply {
+            val lp = attributes
+            when (width) {
+                0 -> {
+                    val displayMetrics = context.resources.displayMetrics
+                    val maxWidth = min(displayMetrics.widthPixels, displayMetrics.heightPixels)
+                    lp.width = (maxWidth * percent).toInt() - marginHorizontal.dp
+                }
+                else -> {
+                    lp.width = width.dp - marginHorizontal.dp
+                }
+            }
+            attributes = lp
+            it.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+                ?.setBackgroundColor(Color.TRANSPARENT)
+        }
+    }
+}
 
 /**
  * 设置列表对话框的分割线
