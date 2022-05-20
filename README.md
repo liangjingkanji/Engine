@@ -1,5 +1,7 @@
-
-<p align="center"><strong>本库为快速开发而生</strong></p>
+<p align="center">
+<img alt="图片" src="https://cloud.githubusercontent.com/assets/1190261/26751376/63f96538-486a-11e7-81cf-5bc83a945207.png" width="10%"/>
+</p>
+<p align="center"><strong>Engine是为摸鱼而生的跨业务终端基础组件</strong></p>
 
 <p align="center"><a href="http://liangjingkanji.github.io/Engine/">使用文档</a>
  | <a href="https://serverless-page-bucket-5ka5085e-1252757332.cos-website.ap-shanghai.myqcloud.com">备用访问</a>
@@ -17,7 +19,12 @@
 <p align="center"><strong>欢迎贡献代码/问题</strong></p>
 <br>
 
-
+<p align="center">
+<img src="https://raw.githubusercontent.com/WeMobileDev/article/master/assets/mars/mars.png" width="70%"/>
+<p align="center">
+<small>图片仅供装逼</small>
+</p>
+</p>
 
 ## 使用
 
@@ -57,6 +64,11 @@ dependencyResolutionManagement {
 implementation 'com.github.liangjingkanji:Engine:0.0.60'
 ```
 
+## Contributing
+
+<img src="https://avatars.githubusercontent.com/u/18461506?s=200&v=4" width="8%"/>
+
+感谢其贡献的图片
 
 ## License
 
