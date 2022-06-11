@@ -34,8 +34,7 @@ abstract class EngineDialogFragment<B : ViewDataBinding>(@LayoutRes contentLayou
             initView()
             initData()
         } catch (e: Exception) {
-            Log.e("Engine", "Initializing failure")
-            e.printStackTrace()
+            Log.e("Engine", "Initializing failure", e)
         }
     }
 

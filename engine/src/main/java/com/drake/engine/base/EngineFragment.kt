@@ -43,8 +43,7 @@ abstract class EngineFragment<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
             initView()
             initData()
         } catch (e: Exception) {
-            Log.e("Engine", "Initializing failure")
-            e.printStackTrace()
+            Log.e("Engine", "Initializing failure", e)
         }
     }
 
