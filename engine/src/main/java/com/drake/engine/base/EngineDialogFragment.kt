@@ -16,6 +16,7 @@
 
 package com.drake.engine.base
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -41,4 +42,17 @@ abstract class EngineDialogFragment<B : ViewDataBinding>(@LayoutRes contentLayou
     abstract fun initView()
     abstract fun initData()
     override fun onClick(v: View) {}
+
+    var onDismissListener: DialogInterface.OnDismissListener? = null
+    var onCancelListener: DialogInterface.OnCancelListener? = null
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        onDismissListener?.onDismiss(dialog)
+    }
+
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
+        onCancelListener?.onCancel(dialog)
+    }
 }
