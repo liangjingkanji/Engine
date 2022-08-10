@@ -35,6 +35,7 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.BindingMethod
 import androidx.databinding.BindingMethods
 import com.drake.engine.utils.throttleClick
+import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -446,7 +447,7 @@ object DataBindingComponent {
     @BindingAdapter("android:text")
     @JvmStatic
     fun setTextOfNumber(v: TextView, number: Double) {
-        val finalText = number.toString()
+        val finalText = BigDecimal.valueOf(number).toPlainString()
         if (!v.text.contentEquals(finalText)) {
             v.text = finalText
         }
@@ -455,7 +456,7 @@ object DataBindingComponent {
     @BindingAdapter("android:text")
     @JvmStatic
     fun setTextOfNumber(v: TextView, number: Float) {
-        val finalText = number.toString()
+        val finalText = BigDecimal(number.toString()).toPlainString()
         if (!v.text.contentEquals(finalText)) {
             v.text = finalText
         }
