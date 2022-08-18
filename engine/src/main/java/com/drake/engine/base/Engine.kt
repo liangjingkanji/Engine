@@ -18,10 +18,11 @@ package com.drake.engine.base
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 
 @SuppressLint("StaticFieldLeak")
-lateinit var app: Application
+lateinit var app: Context
 
 object Engine {
 

@@ -61,7 +61,7 @@ dependencyResolutionManagement {
 然后在 module 的 build.gradle 添加依赖框架
 
 ```groovy
-implementation 'com.github.liangjingkanji:Engine:0.0.65'
+implementation 'com.github.liangjingkanji:Engine:0.0.66'
 ```
 
 ## Contributing
