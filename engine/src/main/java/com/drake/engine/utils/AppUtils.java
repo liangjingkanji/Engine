@@ -16,6 +16,8 @@
 
 package com.drake.engine.utils;
 
+import static com.drake.engine.base.EngineKt.app;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -36,8 +38,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.drake.engine.base.EngineKt.app;
 
 
 public final class AppUtils {
@@ -66,7 +66,27 @@ public final class AppUtils {
      * Install the app.
      * <p>Target APIs greater than 25 must hold
      * {@code <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />}</p>
+     *  Use default authority:
+     *         <provider
+     *             android:name="com.drake.engine.interfaces.EngineFileProvider"
+     *             android:authorities="${applicationId}.drake.file_provider"
+     *             android:exported="false"
+     *             android:grantUriPermissions="true">
+     *             <meta-data
+     *                 android:name="android.support.FILE_PROVIDER_PATHS"
+     *                 android:resource="@xml/file_provider_paths" />
+     *         </provider>
      *
+     * @param file      The file.
+     */
+    public static void installApp(final File file) {
+        installApp(file, app.getPackageName() + ".drake.file_provider");
+    }
+
+    /**
+     * Install the app.
+     * <p>Target APIs greater than 25 must hold
+     * {@code <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />}</p>
      * @param file      The file.
      * @param authority Target APIs greater than 23 must hold the authority of a FileProvider defined
      *                  in a {@code <provider>} element in your app's manifest.
@@ -75,9 +95,7 @@ public final class AppUtils {
         if (!isFileExists(file)) {
             return;
         }
-        app.startActivity(
-                IntentUtils.getInstallAppIntent(file,
-                        authority, true));
+        app.startActivity(IntentUtils.getInstallAppIntent(file, authority, true));
     }
 
     /**
