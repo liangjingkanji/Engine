@@ -21,15 +21,17 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatCheckBox
 import com.drake.engine.R
 
-
+/**
+ * 默认禁言点击改变选中状态, 使用[filter]或者[checkable]配置是否可选中
+ */
 class FilterCheckBox : AppCompatCheckBox {
 
-    var checkable = true
+    var checkable = false
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.FilterCheckBox)
-        checkable = attributes.getBoolean(R.styleable.FixedViewPager_pager_scrollable, true)
+        checkable = attributes.getBoolean(R.styleable.FilterCheckBox_filter_checkable, false)
         attributes.recycle()
     }
 
