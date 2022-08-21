@@ -26,7 +26,10 @@ lateinit var app: Context
 
 object Engine {
 
-    /** 初始化本框架 */
+    /**
+     * Engine会使用AppStartup默认初始化无需执行本函数
+     * 但是多进程应用要求在Application中初始化
+     */
     fun initialize(app: Application) {
         com.drake.engine.base.app = app
         app.registerActivityLifecycleCallbacks(activityCallbacks)
