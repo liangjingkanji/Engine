@@ -101,17 +101,28 @@ class NestedRadioGroup : RadioGroup {
      * 返回对应Id的[RadioButton]的索引位置
      */
     fun indexOfId(@IdRes id: Int): Int {
-        return getRadioButtonFromGroup(this).indexOfFirst { it.id == id }
+        return getRadioButton().indexOfFirst { it.id == id }
     }
 
     /**
      * 选中对应索引的[RadioButton]
      */
     fun checkIndex(index: Int) {
-        val button = getRadioButtonFromGroup(this).getOrNull(index) ?: return
+        val button = getRadioButton().getOrNull(index) ?: return
         if (button.id != checkedRadioButtonId) {
             button.isChecked = true
         }
+    }
+
+    /**
+     * 是否存在选中[RadioButton]
+     */
+    fun hasChecked(): Boolean {
+        return getRadioButton().any { it.isChecked }
+    }
+
+    fun getRadioButton(): ArrayList<RadioButton> {
+        return getRadioButtonFromGroup(this)
     }
 
     private fun getRadioButtonFromGroup(group: ViewGroup?): ArrayList<RadioButton> {
