@@ -63,6 +63,10 @@ android {
         suppressInheritedMembers.set(true)
         moduleName.set("Engine")
     }
+    lintOptions {
+        disable "NonConstantResourceId"
+        checkReleaseBuilds false
+    }
 }
 
 

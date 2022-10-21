@@ -18,8 +18,8 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.5.31'
-        coroutine_version = '1.5.2'
+        kotlin_version = '1.7.20'
+        coroutine_version = '1.6.1'
         glide_version = '4.11.0'
     }
 
@@ -30,7 +30,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath 'org.jetbrains.dokka:dokka-gradle-plugin:1.4.32'
     }
