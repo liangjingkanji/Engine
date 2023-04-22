@@ -43,7 +43,7 @@ abstract class EngineToolbarActivity<B : ViewDataBinding>(@LayoutRes contentLayo
     /**
      * 构建一个Toolbar
      */
-    protected fun onCreateToolbar(inflater: LayoutInflater, container: ViewGroup): View {
+    open fun onCreateToolbar(inflater: LayoutInflater, container: ViewGroup): View {
         return inflater.inflate(R.layout.layout_engine_toolbar, container, false)
     }
 
