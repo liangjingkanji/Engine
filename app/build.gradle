@@ -58,20 +58,19 @@ dependencies {
     implementation project(path: ":engine")
 
     // ==================================全家桶==================================
-    implementation 'com.github.liangjingkanji:Net:3.5.2' // 网络请求.异步任务
-    implementation "com.squareup.okhttp3:okhttp:4.10.0"
-    implementation 'com.github.liangjingkanji:BRV:1.3.82' // 列表
+    implementation 'com.github.liangjingkanji:Net:3.5.8' // 网络请求.异步任务
+    implementation "com.squareup.okhttp3:okhttp:4.11.0"
+    implementation 'com.github.liangjingkanji:BRV:1.4.1' // 列表
     implementation 'com.github.liangjingkanji:debugkit:1.3.0' // 调试工具
-    implementation 'com.github.liangjingkanji:Serialize:1.3.2' // 序列化数据存储
+    implementation 'com.github.liangjingkanji:Serialize:3.0.1' // 序列化数据存储
     implementation 'com.github.liangjingkanji:Channel:1.1.5' // 事件分发
     implementation 'com.github.liangjingkanji:Tooltip:1.2.2' // 吐司
     implementation 'com.github.liangjingkanji:FlycoTabLayout:2.0.3' // 标签栏
     implementation 'com.github.liangjingkanji:LogCat:1.2.4' // 日志工具
     implementation 'com.github.liangjingkanji:StatusBar:2.0.2' // 状态栏工具
-    implementation 'com.github.liangjingkanji:soft-input-event:1.0.7' // 键盘遮挡
-    implementation 'com.github.liangjingkanji:spannable:1.2.3' // 富文本
+    implementation 'com.github.liangjingkanji:soft-input-event:1.0.9' // 键盘遮挡
+    implementation 'com.github.liangjingkanji:spannable:1.2.6' // 富文本
 
     // ==================================工具==================================
     implementation "com.github.bumptech.glide:glide:$glide_version"
-    kapt "com.github.bumptech.glide:compiler:$glide_version"
 }
