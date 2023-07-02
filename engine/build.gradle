@@ -16,13 +16,8 @@
 
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
-apply plugin: "kotlin-android-extensions"
 apply plugin: "kotlin-kapt"
 apply plugin: 'org.jetbrains.dokka'
-
-apply plugin: "com.github.dcendents.android-maven"
-group = "com.gitlab.liangjingkanji"
-
 
 android {
     compileSdkVersion 29
@@ -43,29 +38,12 @@ android {
         }
     }
 
-    dataBinding {
-        enabled = true
-    }
-
-    dexOptions {
-        preDexLibraries true
-        maxProcessCount 8
-        javaMaxHeapSize "4g"
-    }
-
-    compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
-    }
+    buildFeatures.dataBinding = true
 
     dokkaHtml {
         outputDirectory.set(file("$rootDir/docs/api"))
         suppressInheritedMembers.set(true)
         moduleName.set("Engine")
-    }
-    lintOptions {
-        disable "NonConstantResourceId"
-        checkReleaseBuilds false
     }
 }
 
@@ -76,7 +54,5 @@ dependencies {
 
     compileOnly "com.google.android.material:material:1.4.0"
     compileOnly 'androidx.viewpager2:viewpager2:1.0.0'
-    compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
-    compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
     compileOnly "com.github.bumptech.glide:glide:$glide_version"
 }
