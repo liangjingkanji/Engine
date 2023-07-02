@@ -39,8 +39,6 @@ abstract class EngineFragment<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         DataBindingUtil.bind<B>(view)
-        val engineActivity = (requireActivity() as? EngineActivity<*>)
-        engineActivity?.onBackPressed(this::onBackPressed)
 
         try {
             initView()

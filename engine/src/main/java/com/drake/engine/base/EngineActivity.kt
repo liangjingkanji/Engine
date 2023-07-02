@@ -33,7 +33,6 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
     lateinit var binding: B
     lateinit var rootView: View
 
-    private val onBackPressInterceptors = ArrayList<() -> Boolean>()
     private var onTouchEvent: (MotionEvent.() -> Boolean)? = null
 
     override fun setContentView(layoutResId: Int) {
@@ -69,23 +68,6 @@ abstract class EngineActivity<B : ViewDataBinding>(@LayoutRes contentLayoutId: I
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         val b = super.dispatchTouchEvent(event)
         return onTouchEvent?.invoke(event) ?: b
-    }
-
-
-    /**
-     * 返回键事件
-     * @param block 返回值表示是否拦截事件
-     */
-    @Deprecated("建议使用onBackPressedDispatcher")
-    fun onBackPressed(block: () -> Boolean) {
-        onBackPressInterceptors.add(block)
-    }
-
-    override fun onBackPressed() {
-        onBackPressInterceptors.forEach {
-            if (it.invoke()) return
-        }
-        super.onBackPressed()
     }
 
     fun requireActivity(): AppCompatActivity {
