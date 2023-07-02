@@ -28,14 +28,17 @@ import androidx.fragment.app.Fragment
 abstract class EngineFragment<B : ViewDataBinding>(@LayoutRes contentLayoutId: Int = 0) :
     Fragment(contentLayoutId), OnClickListener {
 
-    lateinit var binding: B
+    val binding: B
+        get() {
+            return DataBindingUtil.bind(requireView())!!
+        }
 
     protected abstract fun initView()
     protected abstract fun initData()
     override fun onClick(v: View) {}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding = DataBindingUtil.bind(view)!!
+        DataBindingUtil.bind<B>(view)
         val engineActivity = (requireActivity() as? EngineActivity<*>)
         engineActivity?.onBackPressed(this::onBackPressed)
 

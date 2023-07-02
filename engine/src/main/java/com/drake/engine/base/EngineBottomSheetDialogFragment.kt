@@ -22,24 +22,25 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.drake.engine.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 abstract class EngineBottomSheetDialogFragment<B : ViewDataBinding> : BottomSheetDialogFragment(),
     OnClickListener {
 
-    lateinit var binding: B
+    val binding: B
+        get() {
+            return DataBindingUtil.bind(requireView())!!
+        }
     lateinit var behavior: BottomSheetBehavior<FrameLayout>
     lateinit var rootView: FrameLayout
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val viewFinal =
-            view ?: dialog?.findViewById<ViewGroup>(android.R.id.content)?.getChildAt(0) ?: return
-        binding = DataBindingUtil.bind(viewFinal)!!
+        DataBindingUtil.bind<B>(view)
         rootView = dialog!!.findViewById(com.google.android.material.R.id.design_bottom_sheet)
         behavior = BottomSheetBehavior.from(rootView)
 

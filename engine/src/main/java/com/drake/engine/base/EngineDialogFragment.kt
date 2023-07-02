@@ -28,9 +28,13 @@ import androidx.fragment.app.DialogFragment
 
 abstract class EngineDialogFragment<B : ViewDataBinding>(@LayoutRes contentLayoutId: Int = 0) : DialogFragment(contentLayoutId), OnClickListener {
 
-    lateinit var binding: B
+    val binding: B
+        get() {
+            return DataBindingUtil.bind(requireView())!!
+        }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding = DataBindingUtil.bind(view)!!
+        DataBindingUtil.bind<B>(view)
         try {
             initView()
             initData()

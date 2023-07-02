@@ -30,7 +30,11 @@ import androidx.fragment.app.Fragment
 abstract class EngineNavFragment<B : ViewDataBinding>(@LayoutRes contentLayoutId: Int = 0) :
     Fragment(contentLayoutId), OnClickListener {
 
-    lateinit var binding: B
+    val binding: B
+        get() {
+            return DataBindingUtil.bind(requireView())!!
+        }
+
     var contentView: View? = null
 
     override fun onCreateView(
@@ -47,7 +51,7 @@ abstract class EngineNavFragment<B : ViewDataBinding>(@LayoutRes contentLayoutId
     override fun onClick(v: View) {}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding = DataBindingUtil.bind(view)!!
+        DataBindingUtil.bind<B>(view)
         try {
             initView()
             initData()
